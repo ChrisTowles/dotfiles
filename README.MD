@@ -16,7 +16,7 @@ cd dotFiles
 
 # make symbolic link for .zshrc
 cd ~/
-ln -s /home/ctowles/code/dotfiles/.zshrc .zshrc
+ln -s $HOME/code/p/dotfiles/.zshrc $HOME/.zshrc
 ```
 
 ## Terminal shell - ZSH
