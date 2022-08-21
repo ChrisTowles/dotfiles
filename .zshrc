@@ -40,6 +40,12 @@ alias rmd='rm -rf' # remove directory
 # install Gum https://github.com/charmbracelet/gum#installation
 
 
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+  # eval "$(~/.linuxbrew/bin/brew shellenv)"
+  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+  #eval $($(brew --prefix)/bin/brew shellenv)
+fi 
+
 echo-red() {
   gum style --foreground "#FF0000" "$1"
 }
@@ -51,7 +57,13 @@ echo-green() {
 echo-yellow() {
   gum style --foreground "#FFFF00" "$1"
 }
+
+
+
+
 echo-green "Chris's ZSH Profile"
+
+
 
 # -------------------------------- #
 # Node Package Manager
@@ -137,7 +149,7 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
     # Only for linux
     # sudo apt install xclip xsel
 
-    echo "linux"
+    # echo "linux"
     alias pbcopy='xclip -selection clipboard'
     alias pbpaste='xclip -selection clipboard -o'
 fi
@@ -323,6 +335,7 @@ export PATH="$PNPM_HOME:$PATH"
 # Install pyenv
 # pyenv install --list 
 # pyenv install 3.10.4
+
 
 export PYENV_ROOT="$HOME/.pyenv"
 command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
