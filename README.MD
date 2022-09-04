@@ -38,6 +38,10 @@ mv ~/.zshrc.old ~/.zshrc
 - [pnpm](https://pnpm.io/) - fast node manager with monorepos support.
 - [antfu/ni](https://github.com/antfu/ni) - use the right package manager
 
+## VsCode Extensions
+
+[Full List of used Extensions](./vscode-extendsions.md)
+
 ## History
 
 So I have a private repo I've been using to backup my `.zshrc` and other common scripts but recently when rebuilding my home computer I thought I copy [Anthony Fu](https://github.com/antfu) and his [dotfiles](https://github.com/antfu/dotfiles) repo and make my it public.
