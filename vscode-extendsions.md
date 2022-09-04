@@ -12,7 +12,7 @@
 - [vscode-icons-team.vscode-icons](https://marketplace.visualstudio.com/items?itemName=vscode-icons-team.vscode-icons)
 - [antfu.where-am-i](https://marketplace.visualstudio.com/items?itemName=antfu.where-am-i)
 
-## Grammer and Spelling
+## Grammar and Spelling
 
 - [Code Spell Checker](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker)
 - [valentjn.vscode-ltex](https://marketplace.visualstudio.com/items?itemName=valentjn.vscode-ltex)
