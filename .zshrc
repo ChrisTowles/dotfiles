@@ -30,14 +30,24 @@ export ZSH="$HOME/.oh-my-zsh"
 source $ZSH/oh-my-zsh.sh
 
 
+
 # -------------------------------- #
 # System level Changes Package Manager
 # -------------------------------- #
 
-alias ls='ls -aGl' # have ls have the directory colors (G) and hidden dirs 'a'
+alias ls='ls -al --color=auto' # have ls have the directory colors (G) and hidden dirs 'a'
 alias rmd='rm -rf' # remove directory
 
+# Fix issue where `ls` didn't have colors - https://github.com/spaceship-prompt/spaceship-prompt/issues/436
+unset LSCOLORS
+export CLICOLOR=1
+export CLICOLOR_FORCE=1
+
+
+# install brew for linux and MacOs
+
 # install Gum https://github.com/charmbracelet/gum#installation
+# brew install gum
 
 
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
@@ -69,9 +79,12 @@ echo-green "Chris's ZSH Profile"
 # Node Package Manager
 # -------------------------------- #
 
-# Install NVM
+# Install NVM - https://github.com/nvm-sh/nvm
+# nvm install node
 
-# install pnpm 
+# install pnpm - https://pnpm.io/installation
+# brew install pnpm
+
 # pnpm setup
 # check what it added to bottom of zshrc
 
@@ -332,9 +345,11 @@ export PATH="$PNPM_HOME:$PATH"
 
 ## Pyenv
 
-# Install pyenv
+# Install pyenv 
+# brew install pyenv
+
 # pyenv install --list 
-# pyenv install 3.10.4
+# pyenv install 3.10.6
 
 
 export PYENV_ROOT="$HOME/.pyenv"
@@ -344,3 +359,4 @@ eval "$(pyenv init -)"
 
 # load addintional scripts local to this machine...
 source $HOME/.zshrc_local
+

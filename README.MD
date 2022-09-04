@@ -11,12 +11,19 @@ cd ~
 mkdir -p ~/code/p
 cd ~/code/p
 git clone https://github.com/ChrisTowles/dotfiles.git
-cd dotFiles
+cd dotfiles
 
 
 # make symbolic link for .zshrc
 cd ~/
+mv .zshrc .zshrc.old
 ln -s $HOME/code/p/dotfiles/.zshrc $HOME/.zshrc
+touch $HOME/.zshrc_local
+
+# switch back to previous .zshrc file
+rm ~/.zshrc
+mv ~/.zshrc.old ~/.zshrc
+
 ```
 
 ## Terminal shell - ZSH
