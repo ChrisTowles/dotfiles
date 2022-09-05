@@ -8,7 +8,7 @@
 - [antfu.file-nesting](https://marketplace.visualstudio.com/items?itemName=antfu.file-nesting)
 - [moshfeu.compare-folders](https://marketplace.visualstudio.com/items?itemName=moshfeu.compare-folders)
 - [k--kato.intellij-idea-keybindings](https://marketplace.visualstudio.com/items?itemName=k--kato.intellij-idea-keybindings) (from years of WebStorm ...)
-- [vscode-icons-team.vscode-icons](https://marketplace.visualstudio.com/items?itemName=vscode-icons-team.vscode-icons)
+
 
 - [donjayamanne.githistory](https://marketplace.visualstudio.com/items?itemName=donjayamanne.githistory)
 - [GitKraken Gitlens](https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens)
@@ -17,6 +17,7 @@
 
 - [GitHub Theme](https://marketplace.visualstudio.com/items?itemName=GitHub.github-vscode-theme) Using Dark.
 - [antfu.where-am-i](https://marketplace.visualstudio.com/items?itemName=antfu.where-am-i)
+- [vscode-icons-team.vscode-icons](https://marketplace.visualstudio.com/items?itemName=vscode-icons-team.vscode-icons)
 
 ## Grammar and Spelling
 
