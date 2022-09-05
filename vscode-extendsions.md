@@ -5,18 +5,24 @@
 ## General
 
 - [GitHub.copilot](https://marketplace.visualstudio.com/items?itemName=GitHub.copilot)
-- [donjayamanne.githistory](https://marketplace.visualstudio.com/items?itemName=donjayamanne.githistory)
 - [antfu.file-nesting](https://marketplace.visualstudio.com/items?itemName=antfu.file-nesting)
 - [moshfeu.compare-folders](https://marketplace.visualstudio.com/items?itemName=moshfeu.compare-folders)
 - [k--kato.intellij-idea-keybindings](https://marketplace.visualstudio.com/items?itemName=k--kato.intellij-idea-keybindings) (from years of WebStorm ...)
 - [vscode-icons-team.vscode-icons](https://marketplace.visualstudio.com/items?itemName=vscode-icons-team.vscode-icons)
+
+- [donjayamanne.githistory](https://marketplace.visualstudio.com/items?itemName=donjayamanne.githistory)
+- [GitKraken Gitlens](https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens)
+
+## visual Changes
+
+- [GitHub Theme](https://marketplace.visualstudio.com/items?itemName=GitHub.github-vscode-theme) Using Dark.
 - [antfu.where-am-i](https://marketplace.visualstudio.com/items?itemName=antfu.where-am-i)
 
 ## Grammar and Spelling
 
 - [Code Spell Checker](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker)
 - [valentjn.vscode-ltex](https://marketplace.visualstudio.com/items?itemName=valentjn.vscode-ltex)
-- ~~[znck.grammarly](https://marketplace.visualstudio.com/items?itemName=znck.grammarly)~~
+- ~~[znck.grammarly](https://marketplace.visualstudio.com/items?itemName=znck.grammarly)~~ (unsure how much better it was than LTeX for most of the markdown I do)
 
 ## Markdown
 
