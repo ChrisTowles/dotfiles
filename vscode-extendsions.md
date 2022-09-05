@@ -7,11 +7,12 @@
 - [GitHub.copilot](https://marketplace.visualstudio.com/items?itemName=GitHub.copilot)
 - [antfu.file-nesting](https://marketplace.visualstudio.com/items?itemName=antfu.file-nesting)
 - [moshfeu.compare-folders](https://marketplace.visualstudio.com/items?itemName=moshfeu.compare-folders)
-- [k--kato.intellij-idea-keybindings](https://marketplace.visualstudio.com/items?itemName=k--kato.intellij-idea-keybindings) (from years of WebStorm ...)
-
-
 - [donjayamanne.githistory](https://marketplace.visualstudio.com/items?itemName=donjayamanne.githistory)
 - [GitKraken Gitlens](https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens)
+
+## Keybindings
+
+- [k--kato.intellij-idea-keybindings](https://marketplace.visualstudio.com/items?itemName=k--kato.intellij-idea-keybindings) (from years of WebStorm ...)
 
 ## visual Changes
 
@@ -30,6 +31,7 @@
 - [Telesoho.vscode-markdown-paste-image](https://marketplace.visualstudio.com/items?itemName=Telesoho.vscode-markdown-paste-image)
 - [bierner.markdown-preview-github-styles](https://marketplace.visualstudio.com/items?itemName=bierner.markdown-preview-github-styles)
 - [DavidAnson.vscode-markdownlint](https://marketplace.visualstudio.com/items?itemName=DavidAnson.vscode-markdownlint)
+- [markdown-all-in-one](https://marketplace.visualstudio.com/items?itemName=yzhang.markdown-all-in-one)
 
 ## Vue Related
 
