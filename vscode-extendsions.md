@@ -16,7 +16,6 @@
 
 ## visual Changes
 
-- [GitHub Theme](https://marketplace.visualstudio.com/items?itemName=GitHub.github-vscode-theme) Using Dark.
 - [antfu.where-am-i](https://marketplace.visualstudio.com/items?itemName=antfu.where-am-i)
 - [vscode-icons-team.vscode-icons](https://marketplace.visualstudio.com/items?itemName=vscode-icons-team.vscode-icons)
 
