@@ -35,7 +35,7 @@ source $ZSH/oh-my-zsh.sh
 # System level Changes Package Manager
 # -------------------------------- #
 
-alias ls='ls -al --color=auto' # have ls have the directory colors (G) and hidden dirs 'a'
+alias ls='ls -al' # have ls have the directory colors (G) and hidden dirs 'a'
 alias rmd='rm -rf' # remove directory
 
 # Fix issue where `ls` didn't have colors - https://github.com/spaceship-prompt/spaceship-prompt/issues/436
@@ -211,7 +211,11 @@ git-ingored() {
 
 }
 
+# -------------------------------- #
+# Gitkraken CLI
+# -------------------------------- #
 
+alias gk='(eval "gitkraken --new-window -p \"$(git rev-parse --show-toplevel)\" -l /dev/null >/dev/null 2>&1 &")'
 # -------------------------------- #
 # Github CLI
 # -------------------------------- #
