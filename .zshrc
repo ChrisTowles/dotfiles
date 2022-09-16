@@ -1,10 +1,28 @@
 # install oh my zsh
+# install brew
 
-# git clone https://github.com/denysdovhan/spaceship-prompt.git "$ZSH_CUSTOM/themes/spaceship-prompt" --depth=1
-# or `brew install spaceship`
+# configure git
+# git config --global user.email "you@example.com"
+# git config --global user.name "Your Name"
 
-# ln -s "$ZSH_CUSTOM/themes/spaceship-prompt/spaceship.zsh-theme" "$ZSH_CUSTOM/themes/spaceship.zsh-theme"
-ZSH_THEME="spaceship"
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+  # eval "$(~/.linuxbrew/bin/brew shellenv)"
+  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+  #eval $($(brew --prefix)/bin/brew shellenv)
+else
+  eval "$(/opt/homebrew/bin/brew shellenv)"  
+fi 
+
+
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+  # git clone https://github.com/denysdovhan/spaceship-prompt.git "$ZSH_CUSTOM/themes/spaceship-prompt" --depth=1
+  # ln -s "$ZSH_CUSTOM/themes/spaceship-prompt/spaceship.zsh-theme" "$ZSH_CUSTOM/themes/spaceship.zsh-theme"
+  ZSH_THEME="spaceship"
+else 
+  # `brew install spaceship` better than git clone, due to remembering to update
+  source "/opt/homebrew/opt/spaceship/spaceship.zsh"
+
+fi
 
 # git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 # git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
@@ -16,8 +34,6 @@ plugins=(
   zsh-z #  jump quickly to directories that you have visited frequently
 )
 
-
-ZSH_THEME="spaceship"
 # If you come from bash you might have to change your $PATH.
 
 # Path to your oh-my-zsh installation.
@@ -28,7 +44,6 @@ export ZSH="$HOME/.oh-my-zsh"
 #ENABLE_CORRECTION="true"
 
 source $ZSH/oh-my-zsh.sh
-
 
 
 # -------------------------------- #
@@ -50,12 +65,6 @@ export CLICOLOR_FORCE=1
 # brew install gum
 
 
-if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-  # eval "$(~/.linuxbrew/bin/brew shellenv)"
-  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-  #eval $($(brew --prefix)/bin/brew shellenv)
-fi 
-
 echo-red() {
   gum style --foreground "#FF0000" "$1"
 }
@@ -69,28 +78,51 @@ echo-yellow() {
 }
 
 
-
-
 echo-green "Chris's ZSH Profile"
-
-
 
 # -------------------------------- #
 # Node Package Manager
 # -------------------------------- #
 
 # Install NVM - https://github.com/nvm-sh/nvm
+# brew install nvm
+# mkdir ~/.nvm
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+  export NVM_DIR="$HOME/.nvm"
+
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+else 
+  export NVM_DIR="$HOME/.nvm"
+  [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
+  [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+fi
+
+# nvm ls-remote
 # nvm install node
+# nvm install --lts                     Install the latest LTS version
+# nvm use --lts
+
 
 # install pnpm - https://pnpm.io/installation
 # brew install pnpm
 
-# pnpm setup
-# check what it added to bottom of zshrc
 
+
+# pnpm setup
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+  #linux folder
+  export PNPM_HOME="$HOME/.local/share/pnpm"  
+else
+  # mac folder
+  export PNPM_HOME="$HOME/Library/pnpm"
+fi
+
+export PATH="$PNPM_HOME:$PATH"
+# pnpm end
 
 # install @antfu/ni
-# npm i -g @antfu/ni
+# pnpm i -g @antfu/ni
 
 
 
@@ -106,6 +138,58 @@ alias lint="nr lint"
 alias lintf="nr lint --fix"
 alias release="nr release"
 
+# -------------------------------- #
+# Github CLI
+# -------------------------------- #
+
+# Use gh from https://cli.github.com/
+# brew install gh
+# this will create completes at /opt/homebrew/share/zsh/site-functions
+
+
+# If not installed via Brew
+# then generate # GH autocompletion # https://cli.github.com/manual/gh_completion
+# "gh completion -s zsh > /usr/local/share/zsh/site-functions/_gh"
+
+# load the autocompletions
+autoload -U compinit
+compinit -i
+
+
+
+# then login "gh auth login"
+
+alias ghci='gh run list -L 1'
+
+# Setup GH alias
+gh-alias-setup() {
+  # gh m
+  # creates alias to see any issues assigned to me
+
+  gh alias set m --shell \
+    'PAGER="less -FX" gh issue list --state open --assignee @me'
+
+  #gh iv 
+  # creates alias to open issue on website
+  gh alias set iv --shell \
+    'gh issue view $1 -w' # open issue on the web
+}
+
+# create branch based on issue name
+gh-i() {
+  title=`gh issue view $1 --json title --jq .title`
+  slugTemp=`echo "$title" | sed -e 's/[^[:alnum:]]/-/g'` # replace spaces with `-`
+  slugTemp=`echo "$slugTemp" | sed -e 's/--/-/g'` # replace -- with `-`
+  slugTemp=`echo "$slugTemp" | sed -e 's/--/-/g'` # replace -- with `-` a second time. 
+  slugTemp=`echo "$slugTemp" | sed -e 's/--/-/g'` # replace -- with `-` just to be sure.
+  slugTemp=`echo "$slugTemp" | sed -E 's/-$//g'` # remove any trailing dashes
+  slug=`echo "$slugTemp" | awk '{ print tolower($1) }'`  # to lower case
+  branchName="feature/$1-$slug"; 
+  echo "issue:      $1" 
+  echo "title:      $title" 
+  echo "branchName: $branchName" 
+  git checkout -b "$branchName"
+}
 
 
 # -------------------------------- #
@@ -216,51 +300,6 @@ git-ingored() {
 # -------------------------------- #
 
 alias gk='(eval "gitkraken --new-window -p \"$(git rev-parse --show-toplevel)\" -l /dev/null >/dev/null 2>&1 &")'
-# -------------------------------- #
-# Github CLI
-# -------------------------------- #
-
-# Use gh from https://cli.github.com/
-
-# then login "gh auth login"
-# If not installed via Brew
-# then generate # GH autocompletion # https://cli.github.com/manual/gh_completion
-# "gh completion -s zsh > /usr/local/share/zsh/site-functions/_gh"
-
-autoload -U compinit
-compinit -i
-
-alias ghci='gh run list -L 1'
-
-# Setup GH alias
-gh-alias-setup() {
-  # gh m
-  # creates alias to see any issues assigned to me
-
-  gh alias set m --shell \
-    'PAGER="less -FX" gh issue list --state open --assignee @me'
-
-  #gh iv 
-  # creates alias to open issue on website
-  gh alias set iv --shell \
-    'gh issue view $1 -w' # open issue on the web
-}
-
-# create branch based on issue name
-gh-i() {
-  title=`gh issue view $1 --json title --jq .title`
-  slugTemp=`echo "$title" | sed -e 's/[^[:alnum:]]/-/g'` # replace spaces with `-`
-  slugTemp=`echo "$slugTemp" | sed -e 's/--/-/g'` # replace -- with `-`
-  slugTemp=`echo "$slugTemp" | sed -e 's/--/-/g'` # replace -- with `-` a second time. 
-  slugTemp=`echo "$slugTemp" | sed -e 's/--/-/g'` # replace -- with `-` just to be sure.
-  slugTemp=`echo "$slugTemp" | sed -E 's/-$//g'` # remove any trailing dashes
-  slug=`echo "$slugTemp" | awk '{ print tolower($1) }'`  # to lower case
-  branchName="feature/$1-$slug"; 
-  echo "issue:      $1" 
-  echo "title:      $title" 
-  echo "branchName: $branchName" 
-  git checkout -b "$branchName"
-}
 
 
 # -------------------------------- #
@@ -328,37 +367,25 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
 fi
 
 
-## NVM - Node Version Manager
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 
-# pnpm
-if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-  #linux folder
-  export PNPM_HOME="$HOME/.local/share/pnpm"  
-else
-  # mac folder
-  export PNPM_HOME="$HOME/Library/pnpm"
-fi
 
-export PATH="$PNPM_HOME:$PATH"
-# pnpm end
+
 
 
 ## Pyenv
 
 # Install pyenv 
 # brew install pyenv
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+  export PYENV_ROOT="$HOME/.pyenv"
+  command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+  eval "$(pyenv init -)"
+fi
 
 # pyenv install --list 
 # pyenv install 3.10.6
 
-
-export PYENV_ROOT="$HOME/.pyenv"
-command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
 # Pyenv end
 
 # load addintional scripts local to this machine...

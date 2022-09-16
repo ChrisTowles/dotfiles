@@ -18,6 +18,8 @@ cd dotfiles
 cd ~/
 mv .zshrc .zshrc.old
 ln -s $HOME/code/p/dotfiles/.zshrc $HOME/.zshrc
+
+# create a per machine only file, Also I also use this to load additional scripts from a private repo.
 touch $HOME/.zshrc_local
 
 # switch back to previous .zshrc file
@@ -30,6 +32,7 @@ mv ~/.zshrc.old ~/.zshrc
 
 - [.zshrc](.zshrc)
 - [oh my zsh](https://ohmyz.sh/)
+- brew
 - [spaceship-prompt](https://github.com/spaceship-prompt/spaceship-prompt)
 - [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions)
 - [zsh-syntax-highlighting](https://github.com/zsh-users/zsh-syntax-highlighting)
@@ -42,6 +45,13 @@ mv ~/.zshrc.old ~/.zshrc
 
 [Full List of used Extensions](./vscode-extendsions.md)
 
+## Mac Apps
+
+- Iterm2
+- Monosnap
+- Copyq
+- Magnet
+                       
 ## History
 
 So I have a private repo I've been using to backup my `.zshrc` and other common scripts but recently when rebuilding my home computer I thought I copy [Anthony Fu](https://github.com/antfu) and his [dotfiles](https://github.com/antfu/dotfiles) repo and make my it public.
