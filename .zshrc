@@ -380,7 +380,11 @@ fi
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
   export PYENV_ROOT="$HOME/.pyenv"
   command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+  eval "$(pyenv virtualenv-init -)"
   eval "$(pyenv init -)"
+else
+  eval "$(pyenv init -)"
+  eval "$(pyenv virtualenv-init -)"
 fi
 
 # pyenv install --list 
