@@ -20,7 +20,7 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
   ZSH_THEME="spaceship"
 else 
   # `brew install spaceship` better than git clone, due to remembering to update
-  source "/opt/homebrew/opt/spaceship/spaceship.zsh" "$ZSH_CUSTOM/themes/spaceship-prompt"
+  source "/opt/homebrew/opt/spaceship/spaceship.zsh""$ZSH_CUSTOM/themes/spaceship-prompt"
 
 fi
 
@@ -50,7 +50,7 @@ source $ZSH/oh-my-zsh.sh
 # System level Changes Package Manager
 # -------------------------------- #
 
-alias ls='ls -al --color' # have ls have the directory colors (G) and hidden dirs 'a'
+alias ls='ls -al' # have ls have the directory colors (G) and hidden dirs 'a'
 alias rmd='rm -rf' # remove directory
 
 # Fix issue where `ls` didn't have colors - https://github.com/spaceship-prompt/spaceship-prompt/issues/436
@@ -63,7 +63,6 @@ export CLICOLOR_FORCE=1
 
 # install Gum https://github.com/charmbracelet/gum#installation
 # brew install gum
-
 
 echo-red() {
   gum style --foreground "#FF0000" "$1"
@@ -89,6 +88,9 @@ echo-green "Chris's ZSH Profile"
 
 
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+  export NVM_DIR="$HOME/.nvm"
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
   
 else 
   export NVM_DIR="$HOME/.nvm"
@@ -296,6 +298,7 @@ gh-pr() {
   fi
  
 }
+alias gh
 
 git-ingored() {
   echo "Showing all files not included in Git"
@@ -415,3 +418,4 @@ fi
 # load addintional scripts local to this machine...
 source $HOME/.zshrc_local
 
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
