@@ -2,10 +2,25 @@
 
 ## Description
 
-Setup dotfiles `.zshrc` from github.
+Optinated setup I use on my machine for things like terminal and  dot files like `.zshrc`.
+
+## Install basic preprecs
+
+
+- git
+- vscode
+- terminal
+  - iTerm2 on mac
+  
+
+### Linux
+
+[ubuntu notes](./ubuntu-notes.md)
+
+
+## Setup ZSH alialas
 
 ```bash
-
 # clone dotfiles repo locally
 cd ~
 mkdir -p ~/code/p
@@ -13,12 +28,22 @@ cd ~/code/p
 git clone https://github.com/ChrisTowles/dotfiles.git
 cd dotfiles
 
+```
+## Link a few files from the repo to home directory
 
+```bash
 # make symbolic link for .zshrc
 cd ~/
 mv .zshrc .zshrc.old
 ln -s $HOME/code/p/dotfiles/.zshrc $HOME/.zshrc
 
+## if using wezterm
+ln -s $HOME/code/p/dotfiles/.wezterm.lua $HOME/.wezterm.lua
+```
+
+## local only scripts
+
+```bash
 # create a per machine only file, Also I also use this to load additional scripts from a private repo.
 touch $HOME/.zshrc_local
 
@@ -49,9 +74,19 @@ mv ~/.zshrc.old ~/.zshrc
 
 - Iterm2
 - Monosnap
+- Copyq - clipboard manager
+  - setup autostart and keybinding
+- Magnet - window manager
+
+## Linux Apps
+- [wezterm](https://github.com/wez/wezterm)
 - Copyq
-- Magnet
-                       
+
+## Windows
+- WSL
+- [Ditto](https://ditto-cp.sourceforge.io/) clipborard manager
+- ninite
+
 ## History
 
-So I have a private repo I've been using to backup my `.zshrc` and other common scripts but recently when rebuilding my home computer I thought I copy [Anthony Fu](https://github.com/antfu) and his [dotfiles](https://github.com/antfu/dotfiles) repo and make my it public.
+So I have a private repo I've been using to backup my `.zshrc` and other common scripts but recently when rebuilding my home computer I thought I copy [Anthony Fu](https://github.com/antfu) and his [dotfiles](https://github.com/antfu/dotfiles) repo and made mine public.
