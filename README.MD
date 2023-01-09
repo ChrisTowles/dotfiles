@@ -6,17 +6,14 @@ Optinated setup I use on my machine for things like terminal and  dot files like
 
 ## Install basic preprecs
 
-
 - git
 - vscode
 - terminal
   - iTerm2 on mac
   
-
 ### Linux
 
 [ubuntu notes](./ubuntu-notes.md)
-
 
 ## Setup ZSH alialas
 
@@ -29,6 +26,7 @@ git clone https://github.com/ChrisTowles/dotfiles.git
 cd dotfiles
 
 ```
+
 ## Link a few files from the repo to home directory
 
 ```bash
@@ -37,8 +35,6 @@ cd ~/
 mv .zshrc .zshrc.old
 ln -s $HOME/code/p/dotfiles/.zshrc $HOME/.zshrc
 
-## if using wezterm
-ln -s $HOME/code/p/dotfiles/.wezterm.lua $HOME/.wezterm.lua
 ```
 
 ## local only scripts
@@ -57,7 +53,6 @@ mv ~/.zshrc.old ~/.zshrc
 
 - [.zshrc](.zshrc)
 - [oh my zsh](https://ohmyz.sh/)
-- brew
 - [spaceship-prompt](https://github.com/spaceship-prompt/spaceship-prompt)
 - [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions)
 - [zsh-syntax-highlighting](https://github.com/zsh-users/zsh-syntax-highlighting)
@@ -77,12 +72,14 @@ mv ~/.zshrc.old ~/.zshrc
 - Copyq - clipboard manager
   - setup autostart and keybinding
 - Magnet - window manager
+- brew
 
 ## Linux Apps
-- [wezterm](https://github.com/wez/wezterm)
+
 - Copyq
 
 ## Windows
+
 - WSL
 - [Ditto](https://ditto-cp.sourceforge.io/) clipborard manager
 - ninite

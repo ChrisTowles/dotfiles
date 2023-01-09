@@ -20,8 +20,7 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
   ZSH_THEME="spaceship"
 else 
   # `brew install spaceship` better than git clone, due to remembering to update
-  source "/opt/homebrew/opt/spaceship/spaceship.zsh""$ZSH_CUSTOM/themes/spaceship-prompt"
-
+  source "/opt/homebrew/opt/spaceship/spaceship.zsh" "$ZSH_CUSTOM/themes/spaceship-prompt"
 fi
 
 # git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
@@ -416,6 +415,6 @@ fi
 # Pyenv end
 
 # load addintional scripts local to this machine...
-source $HOME/.zshrc_local
+source $HOME/.zshrc_local.sh
 
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+############### Anything after this auto added ################
