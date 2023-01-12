@@ -51,6 +51,7 @@ source $ZSH/oh-my-zsh.sh
 
 alias ls='ls -al' # have ls have the directory colors (G) and hidden dirs 'a'
 alias rmd='rm -rf' # remove directory
+alias rmdir='rm -rf' # remove directory
 
 # Fix issue where `ls` didn't have colors - https://github.com/spaceship-prompt/spaceship-prompt/issues/436
 unset LSCOLORS
@@ -227,6 +228,7 @@ alias grm='git rm'
 alias gmv='git mv'
 
 alias gmain='git checkout main'
+alias gmaster='git checkout master'
 
 alias gco='git checkout'
 alias gcob='git checkout -b'

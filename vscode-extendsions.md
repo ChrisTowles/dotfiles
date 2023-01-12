@@ -36,7 +36,6 @@
 
 - [Vue Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar)
 - [antfu.smart-clicks](https://marketplace.visualstudio.com/items?itemName=antfu.smart-clicks)
-- [ZixuanChen.vitest-explorer](https://marketplace.visualstudio.com/items?itemName=ZixuanChen.vitest-explorer)
 
 ## Python
 
