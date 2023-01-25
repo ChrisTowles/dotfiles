@@ -84,7 +84,7 @@ echo-green "Chris's ZSH Profile"
 # -------------------------------- #
 # mkdir ~/.nvm
 # Install NVM - https://github.com/nvm-sh/nvm#installing-and-updating
-# 
+# pnpm install-completion zsh
 
 
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
