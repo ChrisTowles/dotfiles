@@ -359,7 +359,7 @@ function forks() {
   cd ~/code/f/$1
 }
 
-function pr() {
+function pr-list() {
   if [ $1 = "ls" ]; then
     gh pr list
   else
@@ -421,4 +421,5 @@ fi
 source $HOME/.zshrc_local.sh
 
 ############### Anything after this auto added ################
+export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
 export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
