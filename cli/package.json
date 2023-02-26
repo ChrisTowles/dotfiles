@@ -17,7 +17,7 @@
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "bin": {
-    "to": "bin/cli.mjs"
+    "towles-cli": "bin/cli.mjs"
   },
   "files": [
     "dist"
