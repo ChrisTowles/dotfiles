@@ -1,0 +1,67 @@
+{
+  "name": "towles-cli",
+  "type": "module",
+  "version": "0.0.1",
+  "packageManager": "pnpm@7.12.0",
+  "description": "A common set of CLI tools i use",
+  "license": "MIT",
+  "homepage": "https://github.com/ChrisTowles/dotfiles#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ChrisTowles/dotfiles.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ChrisTowles/dotfiles/issues"
+  },
+  "main": "dist/index.mjs",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "to": "bin/cli.mjs"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "lint": "eslint .",
+    "dev": "cross-env DEBUG=towles-cli:* esno ./src/cli.ts",
+    "start": "esno ./src/cli.ts",
+    "build": "unbuild",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "nr build",
+    "release": "bumpp && pnpm publish --no-git-checks",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "@antfu/ni": "^0.18.6",
+    "@npmcli/config": "^6.1.0",
+    "commander": "^10.0.0",
+    "detect-indent": "^7.0.1",
+    "fzf": "^0.5.1",
+    "prompts": "^2.4.2"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^0.30.1",
+    "@antfu/utils": "^0.6.3",
+    "@types/cli-progress": "^3.11.0",
+    "@types/debug": "^4.1.7",
+    "@types/node": "^18.11.9",
+    "@types/prompts": "^2.4.1",
+    "bumpp": "^8.2.1",
+    "cli-progress": "^3.11.2",
+    "cross-env": "^7.0.3",
+    "debug": "^4.3.4",
+    "deepmerge": "^4.2.2",
+    "eslint": "^8.27.0",
+    "esno": "^0.16.3",
+    "fast-glob": "^3.2.12",
+    "picocolors": "^1.0.0",
+    "rimraf": "^3.0.2",
+    "typescript": "^4.9.3",
+    "unbuild": "^1.0.1",
+    "vitest": "^0.25.2"
+  },
+  "eslintConfig": {
+    "extends": "@antfu"
+  }
+}
