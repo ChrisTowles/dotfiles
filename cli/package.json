@@ -1,9 +1,9 @@
 {
-  "name": "towles-cli",
+  "name": "towles-tool",
   "type": "module",
   "version": "0.0.1",
   "packageManager": "pnpm@7.12.0",
-  "description": "A common set of CLI tools i use",
+  "description": "A common set of CLI tools I use",
   "license": "MIT",
   "homepage": "https://github.com/ChrisTowles/dotfiles#readme",
   "repository": {
@@ -17,7 +17,8 @@
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "bin": {
-    "towles-cli": "bin/cli.mjs"
+    "towles-cli": "bin/cli.mjs",
+    "tt": "bin/cli.mjs"
   },
   "files": [
     "dist"
@@ -38,7 +39,8 @@
     "commander": "^10.0.0",
     "detect-indent": "^7.0.1",
     "fzf": "^0.5.1",
-    "prompts": "^2.4.2"
+    "prompts": "^2.4.2",
+    "towles-cli": "^0.0.1"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.30.1",
