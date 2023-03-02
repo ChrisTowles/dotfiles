@@ -2,9 +2,19 @@ import { type Command, Option } from 'commander'
 import prompts, { type Choice } from 'prompts'
 import c from 'picocolors'
 import { Fzf } from 'fzf'
+import { isGithubCliInstalled } from '../utils/gh-cli-wrapper'
 
 export interface BranchCommandOptions {
   cwd: string
+}
+
+const checkPreqrequisites = async () => {
+  // todo, cache this
+  const cliInstalled = await isGithubCliInstalled()
+  if (!cliInstalled) {
+    console.log('Github CLI not installed')
+    process.exit(1)
+  }
 }
 
 export const SetupBranchCommand = (program: Command): void => {
@@ -12,6 +22,8 @@ export const SetupBranchCommand = (program: Command): void => {
     .description('create branch from github ticket')
     .addOption(new Option('-C, --cwd <cwd>', 'specify the current working directory'))
     .action(async (args: BranchCommandOptions) => {
+      await checkPreqrequisites()
+
       const raw = [
         { key: 'value1', description: 'description1' },
         { key: 'value2', description: 'description2' },
