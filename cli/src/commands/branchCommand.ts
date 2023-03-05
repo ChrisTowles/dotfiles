@@ -2,7 +2,8 @@ import { type Command, Option } from 'commander'
 import prompts, { type Choice } from 'prompts'
 import c from 'picocolors'
 import { Fzf } from 'fzf'
-import { isGithubCliInstalled } from '../utils/gh-cli-wrapper'
+import { getIssues, isGithubCliInstalled } from '../utils/gh-cli-wrapper'
+import { limitText } from '../render'
 
 export interface BranchCommandOptions {
   cwd: string
@@ -24,27 +25,25 @@ export const SetupBranchCommand = (program: Command): void => {
     .action(async (args: BranchCommandOptions) => {
       await checkPreqrequisites()
 
-      const raw = [
-        { key: 'value1', description: 'description1' },
-        { key: 'value2', description: 'description2' },
-      ]
-
-      const terminalColumns = process.stdout?.columns || 80
-
-      function limitText(text: string, maxWidth: number) {
-        if (text.length <= maxWidth)
-          return text
-        return `${text.slice(0, maxWidth)}${c.dim('…')}`
+      const currentIssues = await getIssues({ assignedToMe: true })
+      if (currentIssues.length === 0) {
+        console.log(c.yellow('No issues found'))
+        process.exit(1)
       }
-      const choices: Choice[] = raw
-        .map(({ key, description }) => ({
-          title: key,
-          value: key,
-          description: limitText(description, terminalColumns - 15),
-        }))
+      else {
+        console.log(c.green(`${currentIssues.length} Issues found assigned to you`))
+      }
 
-      const fzf = new Fzf(raw, {
-        selector: item => `${item.key} ${item.description}`,
+      const choices: Choice[] = currentIssues.map(i =>
+        ({
+          title: i.number.toString(),
+          value: i.number,
+          description: limitText(i.title, 15),
+        } as Choice),
+      )
+
+      const fzf = new Fzf(currentIssues, {
+        selector: item => `${item.number} ${item.title}`,
         casing: 'case-insensitive',
       })
 
@@ -56,7 +55,7 @@ export const SetupBranchCommand = (program: Command): void => {
           choices,
           async suggest(input: string, choices: Choice[]) {
             const results = fzf.find(input)
-            return results.map(r => choices.find(c => c.value === r.item.key))
+            return results.map(r => choices.find(c => c.value === r.item.number))
           },
         })
         if (!fn)

@@ -64,3 +64,12 @@ export function formatTable(lines: string[][], align: string, spaces = '  ') {
     return pad(chars, maxLen[i])
   }).join(spaces))
 }
+
+const getTerminalColumns = () => process.stdout?.columns || 80
+
+export const limitText = (text: string, colsLessThanTerminalMax: number): string => {
+  const maxWidth = getTerminalColumns() - colsLessThanTerminalMax
+  if (text.length <= maxWidth)
+    return text
+  return `${text.slice(0, maxWidth)}${c.dim('…')}`
+}
