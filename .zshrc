@@ -59,21 +59,22 @@ export CLICOLOR=1
 export CLICOLOR_FORCE=1
 
 
-# install brew for linux and MacOs
-
-# install Gum https://github.com/charmbracelet/gum#installation
-# brew install gum
-
 echo-red() {
-  gum style --foreground "#FF0000" "$1"
+  RED='\033[0;31m'
+  NC='\033[0m' # No Color
+  echo "${RED} $1 ${NC}"
 }
 
 echo-green() {
-  gum style --foreground "#32CD32" "$1"
+  GREEN='\033[0;32m'
+  NC='\033[0m' # No Color
+  echo "${GREEN} $1 ${NC}"
 }
 
 echo-yellow() {
-  gum style --foreground "#FFFF00" "$1"
+  YELLOW='\033[1;33m'
+  NC='\033[0m' # No Color
+  echo "${YELLOW} $1 ${NC}"
 }
 
 
