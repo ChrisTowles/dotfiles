@@ -1,3 +1,5 @@
+import { inspect } from 'node:util'
+import kuler from 'kuler'
 import c from 'picocolors'
 
 const ansiRegex = ({ onlyFirst = false } = {}) => {
@@ -9,6 +11,10 @@ const ansiRegex = ({ onlyFirst = false } = {}) => {
   return new RegExp(pattern, onlyFirst ? undefined : 'g')
 }
 const stripAnsi = (str: string) => typeof str === 'string' ? str.replace(ansiRegex(), '') : str
+
+export function prettyPrintJson(obj: any) {
+  console.log(inspect(obj, { colors: true, depth: Infinity }))
+}
 
 export function visualLength(str: string) {
   if (str === '')
@@ -23,10 +29,7 @@ export function visualLength(str: string) {
     if (!code)
       continue
 
-    // Ignore control characters
-    if (code <= 0x1F || (code >= 0x7F && code <= 0x9F))
-      continue
-
+    // Ignore control characterscolor
     // Ignore combining characters
     if (code >= 0x300 && code <= 0x36F)
       continue
@@ -65,11 +68,16 @@ export function formatTable(lines: string[][], align: string, spaces = '  ') {
   }).join(spaces))
 }
 
-const getTerminalColumns = () => process.stdout?.columns || 80
+export const getTerminalColumns = () => process.stdout?.columns || 80
 
-export const limitText = (text: string, colsLessThanTerminalMax: number): string => {
-  const maxWidth = getTerminalColumns() - colsLessThanTerminalMax
+export const limitText = (text: string, maxWidth: number): string => {
   if (text.length <= maxWidth)
     return text
   return `${text.slice(0, maxWidth)}${c.dim('…')}`
+}
+
+export function printWithHexColor({ msg, hex }: { msg: string; hex: string }): string {
+  const colorWithHex = hex.startsWith('#') ? hex : `#${hex}`
+  const text = kuler(msg, colorWithHex).toString()
+  return text
 }
