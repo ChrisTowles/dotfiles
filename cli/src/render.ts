@@ -73,7 +73,8 @@ export const getTerminalColumns = () => process.stdout?.columns || 80
 export const limitText = (text: string, maxWidth: number): string => {
   if (text.length <= maxWidth)
     return text
-  return `${text.slice(0, maxWidth)}${c.dim('…')}`
+  // subtract 1 so room for the ellipsis
+  return `${text.slice(0, maxWidth - 1)}${c.dim('…')}`
 }
 
 export function printWithHexColor({ msg, hex }: { msg: string; hex: string }): string {
