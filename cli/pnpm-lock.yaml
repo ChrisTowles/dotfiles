@@ -1,67 +1,68 @@
 lockfileVersion: 5.4
 
-importers:
+specifiers:
+  '@antfu/eslint-config': ^0.36.0
+  '@antfu/ni': ^0.20.0
+  '@antfu/utils': ^0.7.2
+  '@npmcli/config': ^6.1.3
+  '@types/cli-progress': ^3.11.0
+  '@types/debug': ^4.1.7
+  '@types/kuler': ^2.0.0
+  '@types/node': ^18.14.6
+  '@types/prompts': ^2.4.2
+  bumpp: ^9.0.0
+  cli-progress: ^3.12.0
+  commander: ^10.0.0
+  cross-env: ^7.0.3
+  debug: ^4.3.4
+  deepmerge: ^4.3.0
+  detect-indent: ^7.0.1
+  eslint: ^8.35.0
+  esno: ^0.16.3
+  fast-glob: ^3.2.12
+  fzf: ^0.5.1
+  kuler: ^2.0.0
+  picocolors: ^1.0.0
+  prompts: ^2.4.2
+  rimraf: ^4.3.0
+  strip-ansi: ^7.0.1
+  typescript: ^4.9.5
+  unbuild: ^1.1.2
+  vitest: ^0.29.2
+  zx: ^7.2.0
 
-  .:
-    specifiers:
-      '@antfu/eslint-config': ^0.36.0
-      '@antfu/ni': ^0.20.0
-      '@antfu/utils': ^0.7.2
-      '@npmcli/config': ^6.1.3
-      '@types/cli-progress': ^3.11.0
-      '@types/debug': ^4.1.7
-      '@types/kuler': ^2.0.0
-      '@types/node': ^18.14.6
-      '@types/prompts': ^2.4.2
-      bumpp: ^9.0.0
-      cli-progress: ^3.12.0
-      commander: ^10.0.0
-      cross-env: ^7.0.3
-      debug: ^4.3.4
-      deepmerge: ^4.3.0
-      detect-indent: ^7.0.1
-      eslint: ^8.35.0
-      esno: ^0.16.3
-      fast-glob: ^3.2.12
-      fzf: ^0.5.1
-      kuler: ^2.0.0
-      picocolors: ^1.0.0
-      prompts: ^2.4.2
-      rimraf: ^4.3.0
-      typescript: ^4.9.5
-      unbuild: ^1.1.2
-      vitest: ^0.29.2
-      zx: ^7.2.0
-    dependencies:
-      '@antfu/ni': 0.20.0
-      '@npmcli/config': 6.1.3
-      '@types/kuler': 2.0.0
-      commander: 10.0.0
-      detect-indent: 7.0.1
-      fzf: 0.5.1
-      kuler: 2.0.0
-      prompts: 2.4.2
-      zx: 7.2.0
-    devDependencies:
-      '@antfu/eslint-config': 0.36.0_ycpbpc6yetojsgtrx3mwntkhsu
-      '@antfu/utils': 0.7.2
-      '@types/cli-progress': 3.11.0
-      '@types/debug': 4.1.7
-      '@types/node': 18.14.6
-      '@types/prompts': 2.4.2
-      bumpp: 9.0.0
-      cli-progress: 3.12.0
-      cross-env: 7.0.3
-      debug: 4.3.4
-      deepmerge: 4.3.0
-      eslint: 8.35.0
-      esno: 0.16.3
-      fast-glob: 3.2.12
-      picocolors: 1.0.0
-      rimraf: 4.3.0
-      typescript: 4.9.5
-      unbuild: 1.1.2
-      vitest: 0.29.2
+dependencies:
+  '@antfu/ni': 0.20.0
+  '@npmcli/config': 6.1.3
+  '@types/kuler': 2.0.0
+  commander: 10.0.0
+  detect-indent: 7.0.1
+  fzf: 0.5.1
+  kuler: 2.0.0
+  prompts: 2.4.2
+  strip-ansi: 7.0.1
+  zx: 7.2.0
+
+devDependencies:
+  '@antfu/eslint-config': 0.36.0_ycpbpc6yetojsgtrx3mwntkhsu
+  '@antfu/utils': 0.7.2
+  '@types/cli-progress': 3.11.0
+  '@types/debug': 4.1.7
+  '@types/node': 18.14.6
+  '@types/prompts': 2.4.2
+  bumpp: 9.0.0
+  cli-progress: 3.12.0
+  cross-env: 7.0.3
+  debug: 4.3.4
+  deepmerge: 4.3.0
+  eslint: 8.35.0
+  esno: 0.16.3
+  fast-glob: 3.2.12
+  picocolors: 1.0.0
+  rimraf: 4.3.0
+  typescript: 4.9.5
+  unbuild: 1.1.2
+  vitest: 0.29.2
 
 packages:
 
@@ -1168,7 +1169,6 @@ packages:
   /ansi-regex/6.0.1:
     resolution: {integrity: sha512-n5M855fKb2SsfMIiFFoVrABHJC8QtHwVx+mHWP3QcEqBHYienj5dHSgjbxtC0WEZXYt4wcD6zrQElDPhFuZgfA==}
     engines: {node: '>=12'}
-    dev: true
 
   /ansi-styles/3.2.1:
     resolution: {integrity: sha512-VT0ZI6kZRdTh8YyJw3SMbYm/u+NqfsAxEpWO0Pf9sq8/e94WxxOpPKx9FR1FlyCtOVDNOQ+8ntlqFxiRc+r5qA==}
@@ -4023,7 +4023,6 @@ packages:
     engines: {node: '>=12'}
     dependencies:
       ansi-regex: 6.0.1
-    dev: true
 
   /strip-bom/3.0.0:
     resolution: {integrity: sha512-vavAMRXOgBVNF6nyEEmL3DBK19iRpDcoIwW+swQ+CbGiu7lju6t+JklA1MHweoWtadgt4ISVUsXLyDq34ddcwA==}
