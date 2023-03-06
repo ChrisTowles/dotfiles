@@ -14,7 +14,7 @@ export const isGithubCliInstalled = async (): Promise<boolean> => {
 
 export interface Issue {
   labels: {
-    label: string
+    name: string
     color: string
   }[]
   number: number
