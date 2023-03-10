@@ -1,6 +1,6 @@
-import { getMergedBranches, isGitDirectory, getLocalBranchNames, getDefaultMainBranchName } from './git-wrapper'
+import { getDefaultMainBranchName, getLocalBranchNames, getMergedBranches, isGitDirectory } from './git-wrapper'
 
-describe('gh-cli-wrapper', () => {
+describe('git-wrapper', () => {
   it('isGitDirectory', async () => {
     const result = await isGitDirectory()
     expect(result).toBe(true)
@@ -13,7 +13,7 @@ describe('gh-cli-wrapper', () => {
       expect(result[0].trim()).toBe(result[0])
   })
 
-  it('getDefaultMainBranchName', async () => {
+  it('getLocalBranchNames', async () => {
     const result = await getLocalBranchNames()
     expect(result.includes('main')).toBeDefined()
   })

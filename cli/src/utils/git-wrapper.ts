@@ -31,9 +31,15 @@ export const getMergedBranches = async (mainBranchName = 'main'): Promise<string
 export const getLocalBranchNames = async (): Promise<string[]> => {
   // Note: git branch --merged returns the current branch name as well
   // also won't branches that were squashed
-  const result = await $`git branch`
+  const result = await $`PAGER= git branch` // PAGER= to disable paging on mac
   const branchNames = result.stdout.split(os.EOL)
-    .map(branchName => branchName.trim())
+
+    .map((branchName) => {
+      if (branchName.startsWith('* ')) { // mac has a * in front of the current branch
+        branchName = branchName.slice(2)
+      }
+      return branchName.trim()
+    })
     .filter(branchName => branchName !== '')
 
   return branchNames
@@ -41,7 +47,6 @@ export const getLocalBranchNames = async (): Promise<string[]> => {
 
 export const getDefaultMainBranchName = async (): Promise<string> => {
   const result = await getLocalBranchNames()
-
   const list = result.filter(branchName => branchName.toLowerCase() === 'main' || branchName.toLowerCase() === 'master')
   if (list.length > 0)
     return list[0]
