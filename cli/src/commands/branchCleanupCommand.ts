@@ -23,7 +23,7 @@ export const SetupBranchCleanupCommand = (program: Command): void => {
 
       if (alreadyMergedBranches.length === 0) {
         console.log(c.yellow('No branches found to cleanup'))
-        process.exit(1)
+        process.exit(0)
       }
 
       console.log(`Found ${c.green(alreadyMergedBranches.length)} branches that have already been merged to ${mainBranchName}.`)
