@@ -2,7 +2,7 @@
 
 ## Description
 
-Optinated setup I use on my machine for things like terminal and  dot files like `.zshrc`.
+Opinionated setup I use on my machine for things like terminal and  dot files like `.zshrc`.
 
 ## Install basic preprecs
 
@@ -67,12 +67,63 @@ mv ~/.zshrc.old ~/.zshrc
 
 ## Mac Apps
 
+- [xcode](https://developer.apple.com/xcode/)
+  - ```bash
+
+      xcode-select -p
+      # If you get a path back (like /Applications/Xcode.app/Contents/Developer) then you're good to go
+
+      # Otherwise to install
+      xcode-select --install
+    ```
+
+- brew
+  - ```bash
+    # install brew
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+
+    brew doctor
+
+    brew update
+    ```
+
+- git
+  - ```bash
+    brew install git
+    ```
+- zsh
+  - ```bash
+    brew install zsh
+
+    # change default shell to zsh
+    chsh -s /usr/local/bin/zsh
+    ```
 - Iterm2
+  - ```bash
+    # install iterm2
+    brew install iterm2 --cask
+    ```
+- [oh my zsh](https://ohmyz.sh/)
+  - ```bash
+    # install oh my zsh
+    sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+    ```
+- Nerd Fonts
+  - ```bash
+    # install nerd fonts
+    brew tap homebrew/cask-fonts
+    brew install --cask font-hack-nerd-font
+    ```
+  - Now in iterm2 go to `Preferences > Profiles > Text` and set the font to `Hack Nerd Font`
+
 - Monosnap
 - Copyq - clipboard manager
   - setup autostart and keybinding
 - Magnet - window manager
-- brew
+
+### Todo
+
+Look into [Powerlevel10k](https://github.com/romkatv/powerlevel10k#powerlevel10k) vs [Spaceship](https://github.com/spaceship-prompt/spaceship-prompt). Currently, using Spaceship and loving it. 
 
 ## Linux Apps
 
