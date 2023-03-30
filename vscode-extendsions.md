@@ -27,7 +27,7 @@
 
 ## Markdown
 
-- [Telesoho.vscode-markdown-paste-image](https://marketplace.visualstudio.com/items?itemName=Telesoho.vscode-markdown-paste-image)
+- [Chris Towles.Markdown Paste Image](https://marketplace.visualstudio.com/items?itemName=chris-towles.markdown-paste-image) - yep I made this one. 
 - [bierner.markdown-preview-github-styles](https://marketplace.visualstudio.com/items?itemName=bierner.markdown-preview-github-styles)
 - [DavidAnson.vscode-markdownlint](https://marketplace.visualstudio.com/items?itemName=DavidAnson.vscode-markdownlint)
 - [markdown-all-in-one](https://marketplace.visualstudio.com/items?itemName=yzhang.markdown-all-in-one)
