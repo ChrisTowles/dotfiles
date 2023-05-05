@@ -96,7 +96,9 @@ else
   [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" # This loads nvm bash_completion
 fi
 # or if you prefer to forcedly use .nvmrc prior to default, then
-test -f .nvmrc && nvm use || nvm use default
+node-enable() {
+  test -f .nvmrc && nvm use || nvm use default
+}
 
 # nvm ls-remote
 # nvm install node
@@ -393,12 +395,23 @@ fi
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
   export PYENV_ROOT="$HOME/.pyenv"
   command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
-  eval "$(pyenv virtualenv-init -)"
-  eval "$(pyenv init -)"
+
 else
-  eval "$(pyenv init -)"
-  eval "$(pyenv virtualenv-init -)"
+
 fi
+
+function py-enable() {
+  # i only use python in a few projects so only start it a few times
+
+  if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+    # TODO: figure out if the order matters
+    eval "$(pyenv virtualenv-init -)"
+    eval "$(pyenv init -)"
+  else
+    eval "$(pyenv init -)"
+    eval "$(pyenv virtualenv-init -)"
+  fi
+}
 
 # pyenv install --list
 # pyenv install 3.10.6

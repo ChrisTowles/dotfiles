@@ -121,6 +121,16 @@ mv ~/.zshrc.old ~/.zshrc
   - setup autostart and keybinding
 - Magnet - window manager
 
+- vscode insiders - make "code" as open "code-insiders" that other apps can pickup instead of a bash alias.
+
+```sh
+cd /usr/local/bin
+ls
+sudo unlink code
+sudo ln -s "/Applications/Visual Studio Code - Insiders.app/Contents/Resources/app/bin/code" code
+```
+
+
 ### Todo
 
 Look into [Powerlevel10k](https://github.com/romkatv/powerlevel10k#powerlevel10k) vs [Spaceship](https://github.com/spaceship-prompt/spaceship-prompt). Currently, using Spaceship and loving it. 
