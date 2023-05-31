@@ -2,9 +2,10 @@ import { type Command, Option } from 'commander'
 import prompts, { type Choice } from 'prompts'
 import c from 'picocolors'
 import { Fzf } from 'fzf'
+import _ from 'lodash'
 import type { Issue } from '../utils/gh-cli-wrapper'
 import { getIssues, isGithubCliInstalled } from '../utils/gh-cli-wrapper'
-import { getTerminalColumns, limitText, prettyPrintJson, printWithHexColor } from '../render'
+import { getTerminalColumns, limitText, printWithHexColor } from '../render'
 import { createBranch } from '../utils/git-wrapper'
 
 export interface BranchCommandOptions {
@@ -28,6 +29,8 @@ export const createBranchNameFromIssue = (selectedIssue: Issue): string => {
   slug = slug.replaceAll('--', '-')
   slug = slug.replaceAll('--', '-') // in case there are multiple spaces
   slug = slug.replaceAll('--', '-') // in case there are multiple spaces
+  slug = _.trimEnd(slug, '-') // take off any extra dashes at the end
+  
 
   const branchName = `feature/${selectedIssue.number}-${slug}`
   return branchName

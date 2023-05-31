@@ -395,9 +395,9 @@ fi
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
   export PYENV_ROOT="$HOME/.pyenv"
   command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
-
+  eval "$(pyenv init -)"
 else
-
+  eval "$(pyenv init -)"
 fi
 
 function py-enable() {
@@ -406,9 +406,8 @@ function py-enable() {
   if [[ "$OSTYPE" == "linux-gnu"* ]]; then
     # TODO: figure out if the order matters
     eval "$(pyenv virtualenv-init -)"
-    eval "$(pyenv init -)"
+
   else
-    eval "$(pyenv init -)"
     eval "$(pyenv virtualenv-init -)"
   fi
 }
