@@ -221,8 +221,8 @@ alias gst='git stash'
 alias grm='git rm'
 alias gmv='git mv'
 
-alias gmain='git checkout main'
-alias gmaster='git checkout master'
+alias gmain='git stash && git checkout main && git pull'
+alias gmaster='git stash && git checkout master && git pull'
 
 alias gco='git checkout'
 alias gcob='git checkout -b'
