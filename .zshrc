@@ -17,6 +17,7 @@ else
 fi
 
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+  # sudo apt-get install fonts-powerline
   # git clone https://github.com/denysdovhan/spaceship-prompt.git "$ZSH_CUSTOM/themes/spaceship-prompt" --depth=1
   # ln -s "$ZSH_CUSTOM/themes/spaceship-prompt/spaceship.zsh-theme" "$ZSH_CUSTOM/themes/spaceship.zsh-theme"
   ZSH_THEME="spaceship"
@@ -381,9 +382,9 @@ function serve() {
 ###
 
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-  #  issue with not wrapping in quotes on linux
+  #  issue with not wrapping in quotes on linux, shows issues when copying and pasting constantly with `^[[200~`
   ## https://superuser.com/questions/1532688/pasting-required-text-into-terminal-emulator-results-in-200required-text
-  #  printf "\e[?2004l"
+  printf "\e[?2004l"
 fi
 
 ## Pyenv
