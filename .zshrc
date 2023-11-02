@@ -203,6 +203,9 @@ gh-i() {
   git checkout -b "$branchName"
 }
 
+# stash current changes and checkout a PR by number
+alias gco='git stash && gh pr checkout '
+
 # -------------------------------- #
 # Git
 # -------------------------------- #
@@ -225,7 +228,7 @@ alias gmv='git mv'
 alias gmain='git stash && git checkout main && git pull'
 alias gmaster='git stash && git checkout master && git pull'
 
-alias gco='git checkout'
+#alias gco='git checkout'
 alias gcob='git checkout -b'
 
 alias gb='git branch'
