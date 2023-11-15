@@ -204,7 +204,7 @@ gh-i() {
 }
 
 # stash current changes and checkout a PR by number
-alias gco='git stash && gh pr checkout '
+alias gco='git stash && gh pr list | cat && gh pr checkout '
 
 # -------------------------------- #
 # Git

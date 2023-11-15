@@ -7,10 +7,9 @@ pnpm i
 
 pnpm build
 
-pnpm link -g
-```
+npm install --global .
 
-
+tt --help
 ```
 
 towles-cli
