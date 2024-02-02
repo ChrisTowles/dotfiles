@@ -41,6 +41,10 @@ plugins=(
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
+# increase history size, default is 1000
+HISTSIZE=50000
+SAVEHIST=50000
+
 # Uncomment the following line to enable command auto-correction.
 #ENABLE_CORRECTION="true"
 
@@ -313,6 +317,10 @@ git-ingored() {
   echo "git ls-files . --ignored --exclude-standard --others | grep -v node_modules"
 
 }
+
+##
+# pnpm i http-server -g
+alias host="http-server -P http://localhost:8080? dist" # proxy to self for vue routing https://stackoverflow.com/a/69143401/484543
 
 # -------------------------------- #
 # Gitkraken CLI

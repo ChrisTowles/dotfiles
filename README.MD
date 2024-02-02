@@ -65,9 +65,7 @@ mv ~/.zshrc.old ~/.zshrc
 
 [Full List of used Extensions](./vscode-extendsions.md)
 
-## Mac Apps
-
-- [xcode](https://developer.apple.com/xcode/)
+## Mac Ap- [xcode](https://developer.apple.com/xcode/)
   - ```bash
 
       xcode-select -p
@@ -117,8 +115,11 @@ mv ~/.zshrc.old ~/.zshrc
   - Now in iterm2 go to `Preferences > Profiles > Text` and set the font to `Hack Nerd Font`
 
 - Monosnap
-- Copyq - clipboard manager
-  - setup autostart and keybinding
+- Clipboard manager
+  - Copyq - clipboard manager (linux)
+    - setup autostart and keybinding
+  - maccy - tried as alternative to copyq after issues with it locking up when pasting.
+
 - Magnet - window manager
 
 - vscode insiders - make "code" as open "code-insiders" that other apps can pickup instead of a bash alias.
