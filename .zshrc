@@ -208,7 +208,7 @@ gh-i() {
 }
 
 # stash current changes and checkout a PR by number
-alias gco='git stash && gh pr list | cat && gh pr checkout '
+alias gco='git stash && gh pr checkout '
 
 # -------------------------------- #
 # Git
@@ -233,13 +233,12 @@ alias gmain='git stash && git checkout main && git pull'
 alias gmaster='git stash && git checkout master && git pull'
 
 #alias gco='git checkout'
-alias gcob='git checkout -b'
+alias gcb='git checkout -b'
 
 alias gb='git branch'
-alias gbd='git branch -d'
 
 alias grb='git rebase'
-alias grbom='git rebase origin/master'
+alias grbom='git rebase origin/main'
 alias grbc='git rebase --continue'
 
 alias gl='git log'
@@ -423,6 +422,7 @@ function py-enable() {
     eval "$(pyenv virtualenv-init -)"
   fi
 }
+py-enable
 
 # pyenv install --list
 # pyenv install 3.10.6
