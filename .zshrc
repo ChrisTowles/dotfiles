@@ -229,8 +229,20 @@ alias gst='git stash'
 alias grm='git rm'
 alias gmv='git mv'
 
-alias gmain='git stash && git checkout main && git pull'
-alias gmaster='git stash && git checkout master && git pull'
+gmain() {
+
+  git stash
+
+  if [ $(git rev-parse --verify main 2>/dev/null) ]; then
+    echo "checking out main"
+    git checkout main
+  else
+    echo "checking out master"
+    git checkout master
+  fi
+  git pull
+
+}
 
 #alias gco='git checkout'
 alias gcb='git checkout -b'
