@@ -233,12 +233,13 @@ gmain() {
 
   git stash
 
-  if [ $(git rev-parse --verify main 2>/dev/null) ]; then
-    echo "checking out main"
-    git checkout main
-  else
+  main_branch=$(git branch -l main)
+  if [ -z "${main_branch}" ]; then
     echo "checking out master"
     git checkout master
+  else
+    echo "checking out main"
+    git checkout main
   fi
   git pull
 
