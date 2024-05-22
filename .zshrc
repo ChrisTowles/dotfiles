@@ -54,7 +54,12 @@ source $ZSH/oh-my-zsh.sh
 # System level Changes Package Manager
 # -------------------------------- #
 
-alias ls='ls -al'    # have ls have the directory colors (G) and hidden dirs 'a'
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+  alias ls='ls -al --color=always'
+else
+  alias ls='ls -al' 
+fi
+
 alias rmd='rm -rf'   # remove directory
 alias rmdir='rm -rf' # remove directory
 
