@@ -14,12 +14,13 @@ Change shortcut to set take screenshot.
 
 
 
-
 ## Apps
 
 - [Chrome](https://www.google.com/chrome/browser-tools/)
 - [Slack](https://slack.com/downloads)
+  - add as startup item.
 - [Discord]
+ - add as startup item.
 - CopyQ
   - can be installed from Pop!shop but be sure to install as Deb, NOT FLAT PACK
   - Change settings

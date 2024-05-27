@@ -57,7 +57,7 @@ source $ZSH/oh-my-zsh.sh
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
   alias ls='ls -al --color=always'
 else
-  alias ls='ls -al' 
+  alias ls='ls -al'
 fi
 
 alias rmd='rm -rf'   # remove directory
@@ -421,6 +421,9 @@ fi
 # brew install pyenv
 # https://github.com/pyenv/pyenv#automatic-installer
 
+# pyenv-virtualenv is a plugin that is required.
+# https://github.com/pyenv/pyenv-virtualenv
+
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
   export PYENV_ROOT="$HOME/.pyenv"
   command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
@@ -440,7 +443,7 @@ function py-enable() {
     eval "$(pyenv virtualenv-init -)"
   fi
 }
-#py-enable
+py-enable
 
 # pyenv install --list
 # pyenv install 3.10.6
@@ -449,11 +452,3 @@ function py-enable() {
 source $HOME/.zshrc_local.sh
 
 ############### Anything after this auto added ################
-
-# pnpm
-export PNPM_HOME="/home/ctowles/.local/share/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
-# pnpm end
