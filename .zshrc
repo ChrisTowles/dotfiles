@@ -440,7 +440,7 @@ function py-enable() {
     eval "$(pyenv virtualenv-init -)"
   fi
 }
-py-enable
+#py-enable
 
 # pyenv install --list
 # pyenv install 3.10.6
@@ -449,3 +449,11 @@ py-enable
 source $HOME/.zshrc_local.sh
 
 ############### Anything after this auto added ################
+
+# pnpm
+export PNPM_HOME="/home/ctowles/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end

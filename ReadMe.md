@@ -8,12 +8,11 @@ Opinionated setup I use on my machine for things like terminal and  dot files li
 
 - git
 - vscode
-- terminal
-  - iTerm2 on mac
+
   
 ### Linux
 
-[ubuntu notes](./ubuntu-notes.md)
+[Linux setup Notes](./linux-setup-notes.md)
 
 ## Setup ZSH alialas
 
