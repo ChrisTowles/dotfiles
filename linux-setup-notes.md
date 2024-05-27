@@ -7,7 +7,11 @@ Latest OS I'm using is Pop_OS as of 2024-05-27.
 ```bash
 sudo apt install git zsh curl
 
+# SETUP YOUR GIT CREDENTIALS
+git config --global user.name "Your Name"
+git config --global user.email you@example.com
 ```
+
 Change shortcut to set take screenshot.
 
 ![](docs/images/keybinding-set-take-screenshot.png)
