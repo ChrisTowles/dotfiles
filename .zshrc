@@ -16,8 +16,12 @@ else
   eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
+# https://www.nerdfonts.com/font-downloads
+# "FiraMono Nerd Font"
+# set the font of the terminal application
+
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-  # sudo apt-get install fonts-powerline
+
   # git clone https://github.com/denysdovhan/spaceship-prompt.git "$ZSH_CUSTOM/themes/spaceship-prompt" --depth=1
   # ln -s "$ZSH_CUSTOM/themes/spaceship-prompt/spaceship.zsh-theme" "$ZSH_CUSTOM/themes/spaceship.zsh-theme"
   ZSH_THEME="spaceship"

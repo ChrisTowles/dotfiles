@@ -52,6 +52,10 @@ This means `ctrl` + `shift` + `c` is the kill command.
 Setup zsh. 
  
 
+Download "FiraMono Nerd Font" from https://www.nerdfonts.com/font-downloads
+  
+Set `FiraMono Nerd Font` as terminal font.
+
 
 ## VS Code
 
@@ -89,4 +93,9 @@ This means `ctrl` + `c` is copy and `ctrl` + `v` is paste. But if command is run
 
 ```
 
-
+Download "FiraMono Nerd Font" from https://www.nerdfonts.com/font-downloads
+  
+Set `FiraMono Nerd Font` as terminal font, and editor font.
+Download "FiraMono Nerd Font" from https://www.nerdfonts.com/font-downloads
+  
+Set `FiraMono Nerd Font` as terminal font, and editor font.
