@@ -52,9 +52,6 @@ export PATH=$PATH:$ANDROID_HOME/tools
 export PATH=$PATH:$ANDROID_HOME/bin
 export PATH=$PATH:$ANDROID_HOME/platform-tools
 
-
-studio
-
 ```
 
 ## Add to POP_OS App List
@@ -83,3 +80,55 @@ StartupWMClass=jetbrains-studio
 
 
 ```
+
+
+
+## Flutter SDK
+
+https://docs.flutter.dev/get-started/install/linux/android
+
+```bash
+sudo apt-get update -y && sudo apt-get upgrade -y;
+sudo apt-get install -y curl git unzip xz-utils zip libglu1-mesa
+
+sudo apt-get install \
+    libc6:i386 libncurses5:i386 \
+    libstdc++6:i386 lib32z1 \
+    libbz2-1.0:i386
+
+```
+
+First create directory for the SDK.
+
+```bash
+export FLUTTER_SDK_BASE=$HOME/Android/
+
+```
+
+Now use VScode with Flutter Extension enabled to download the `Run Flutter Doctor`.
+
+That will fail and give you option to install Flutter SDK. choose `$FLUTTER_SDK_BASE` which will create the `$FLUTTER_SDK_BASE/flutter` folder.
+
+After that runs.
+
+
+### Add to profile
+
+
+```bash
+
+
+#export ANDROID_HOME
+export FLUTTER_SDK_BASE=$HOME/Android/
+
+# setup flutter in path
+export PATH=$PATH:$FLUTTER_SDK_BASE/flutter/bin
+
+
+```
+
+now test
+```bash
+flutter
+```
+
