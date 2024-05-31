@@ -29,4 +29,3 @@ plex-setup() {
     sudo chmod g+s "/var/lib/plexmediaserver/Library"
 }
 ```
-
