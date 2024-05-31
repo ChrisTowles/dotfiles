@@ -48,8 +48,9 @@ alias studio=/usr/share/android-studio/bin/studio.sh
 export ANDROID_HOME=$HOME/Android/Sdk
 
 # setup ANDROID
-export PATH=$PATH:$ANDROID_HOME/tools
 export PATH=$PATH:$ANDROID_HOME/bin
+export PATH=$PATH:$ANDROID_HOME/tools
+# we not going to add "$ANDROID_HOME/tools/bin" on linux, these are the unix tools, we'll install below
 export PATH=$PATH:$ANDROID_HOME/platform-tools
 
 ```
@@ -132,3 +133,87 @@ now test
 flutter
 ```
 
+Now test everything is setup.
+
+
+```bash
+flutter doctor
+
+adb
+
+```
+
+
+You will likely still need to accept license and install a few more apt packages.
+
+
+## Java SDK 
+
+the `sdkmanager` will need `JAVA_HOME` set.
+
+Install `openjdk-18-jdk`. To find its install folder.
+
+```bash
+sudo apt install openjdk-18-jdk
+```
+
+confirm install.
+```bash
+java --version
+```
+
+Now Lets find its home folder.
+
+```bash
+which java
+# follow that link 
+ls /usr/bin/java
+
+# and follow that link again.
+ls /etc/alternatives/java
+
+```
+ 
+Which resulted in `/usr/lib/jvm/java-18-openjdk-amd64/bin/java`.
+
+
+Not add `JAVA_HOME` to profile and without `/bin` on the end.
+
+
+```bash
+export JAVA_HOME=/usr/lib/jvm/java-18-openjdk-amd64
+```
+Now in new terminal lets test it.
+
+```bash
+echo "java home: $JAVA_HOME"
+```
+
+Following <https://stackoverflow.com/questions/46402772/failed-to-install-android-sdk-java-lang-noclassdeffounderror-javax-xml-bind-a> to reslove issue when trying to run `sdkmanager`
+
+Install the Android cmd tools from with in Android Studio on linux.
+
+![](../images/android-cmd-tool-install.png)
+
+Now add the path to your profile.
+
+```bash
+export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
+```
+
+now lets test `sdkmanager`.
+
+```bash
+sdkmanager --version
+```
+
+## Final Check
+
+Ensure all the checks pass.
+
+```bash
+flutter doctor 
+
+```
+
+![](../images/flutter-doctor-final-check.png)
