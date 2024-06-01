@@ -9,6 +9,12 @@
 https://marketplace.visualstudio.com/items?itemName=Continue.continue
 
 
+Make sure nvida gpu drivers are setup.
+
+```bash
+nvidia-smi
+```
+
 ###  setup ollama
 
 https://github.com/ollama/ollama/tree/main
