@@ -201,20 +201,7 @@ gh-mv() {
 }
 
 # create branch based on issue name
-gh-i() {
-  title=$(gh issue view $1 --json title --jq .title)
-  slugTemp=$(echo "$title" | sed -e 's/[^[:alnum:]]/-/g') # replace spaces with `-`
-  slugTemp=$(echo "$slugTemp" | sed -e 's/--/-/g')        # replace -- with `-`
-  slugTemp=$(echo "$slugTemp" | sed -e 's/--/-/g')        # replace -- with `-` a second time.
-  slugTemp=$(echo "$slugTemp" | sed -e 's/--/-/g')        # replace -- with `-` just to be sure.
-  slugTemp=$(echo "$slugTemp" | sed -E 's/-$//g')         # remove any trailing dashes
-  slug=$(echo "$slugTemp" | awk '{ print tolower($1) }')  # to lower case
-  branchName="feature/$1-$slug"
-  echo "issue:      $1"
-  echo "title:      $title"
-  echo "branchName: $branchName"
-  git checkout -b "$branchName"
-}
+# i use the "tt branch" from the cli folder to do this now.
 
 # stash current changes and checkout a PR by number
 alias gco='git stash && gh pr checkout '
@@ -222,8 +209,12 @@ alias gco='git stash && gh pr checkout '
 # -------------------------------- #
 # Git
 # -------------------------------- #
+# Use gh from https://cli.github.com/
 
-# Use gh from https://cli.github.com/# Go to project root
+# Note: that Oh-my-zsh also adds some git alias
+# https://github.com/ohmyzsh/ohmyzsh/blob/master/plugins/git/git.plugin.zsh
+
+# Go to project root
 alias grt='cd "$(git rev-parse --show-toplevel)"'
 
 ## Most get aliases are from https://github.com/antfu/dotfiles/blob/main/.zshrc and i'm still working on which i like.
@@ -232,8 +223,8 @@ alias gs='git status'
 alias gp='git push'
 alias gpf='git push --force'
 alias gpft='git push --follow-tags'
-alias gpl='git pull --rebase'
-alias gcl='git clone'
+#alias gpl='git pull --rebase'
+#alias gcl='git clone'
 alias gst='git stash'
 alias grm='git rm'
 alias gmv='git mv'
@@ -244,10 +235,10 @@ gmain() {
 
   main_branch=$(git branch -l main)
   if [ -z "${main_branch}" ]; then
-    echo "checking out master"
+    echo-yellow "checking out master"
     git checkout master
   else
-    echo "checking out main"
+    echo-yellow "checking out main"
     git checkout main
   fi
   git pull
@@ -263,19 +254,19 @@ alias grb='git rebase'
 alias grbom='git rebase origin/main'
 alias grbc='git rebase --continue'
 
-alias gl='git log'
-alias glo='git log --oneline --graph'
+alias gl='git log --graph --pretty="%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%ar) %C(bold blue)<%an>%Creset" --all --date=short'
 
 alias grh='git reset HEAD'
 alias grh1='git reset HEAD~1'
 
 alias ga='git add'
-alias gA='git add -A'
+alias gai='git add --patch' # asks for each chuck, it feels more intuitive than "--interactive"
+alias gA='git add --all'
 
 alias gc='git commit'
 alias gcm='git commit -m'
 alias gca='git commit -a'
-alias gcam='git add -A && git commit -m'
+alias gcam='git add --all && git commit -m'
 alias gfrb='git fetch origin && git rebase origin/master'
 
 alias gxn='git clean -dn'
@@ -379,27 +370,15 @@ alias dreset='docker-compose down; docker volume prune'
 # -------------------------------- #
 
 function i() {
+  # useful for quick directory change
+  # type "i p" to go to my personal repositories folder
+  # type "i f" to go to my forked repositories folder
+
   cd ~/code/$1
 }
 
-function repros() {
-  cd ~/code/r/$1
-}
-
-function forks() {
-  cd ~/code/f/$1
-}
-
 function pr-list() {
-  if [ $1 = "ls" ]; then
-    gh pr list
-  else
-    gh pr checkout $1
-  fi
-}
-
-function dir() {
-  mkdir $1 && cd $1
+  gh pr list
 }
 
 # pnpm i -g live-server

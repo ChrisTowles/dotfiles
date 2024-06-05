@@ -64,7 +64,7 @@ mv ~/.zshrc.old ~/.zshrc
 
 [Full List of used Extensions](./vscode-extendsions.md)
 
-## Mac Ap- [xcode](https://developer.apple.com/xcode/)
+## Mac - [xcode](https://developer.apple.com/xcode/)
   - ```bash
 
       xcode-select -p
