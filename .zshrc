@@ -424,9 +424,10 @@ function py-enable() {
 
   else
     eval "$(pyenv virtualenv-init -)"
+    py-enable
   fi
 }
-py-enable
+
 
 # pyenv install --list
 # pyenv install 3.10.6
