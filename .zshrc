@@ -35,6 +35,8 @@ fi
 # git clone https://github.com/agkozak/zsh-z $ZSH_CUSTOM/plugins/zsh-z
 plugins=(
   git
+  aws # auto complete for aws CLIv2
+  docker
   zsh-autosuggestions # suggests commands as you type based on history and completions.
   zsh-syntax-highlighting
   zsh-z #  jump quickly to directories that you have visited frequently
