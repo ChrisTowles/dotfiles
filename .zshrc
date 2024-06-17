@@ -267,7 +267,7 @@ alias gA='git add --all'
 
 alias gc='git commit'
 alias gcm='git commit -m'
-alias gca='git commit -a'
+alias gca='git commit --amend --no-edit' # --no-edit is important, otherwise it will ask you to edit the commit message.
 alias gcam='git add --all && git commit -m'
 alias gfrb='git fetch origin && git rebase origin/master'
 
@@ -429,7 +429,6 @@ function py-enable() {
     py-enable
   fi
 }
-
 
 # pyenv install --list
 # pyenv install 3.10.6
