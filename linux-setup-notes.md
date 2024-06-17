@@ -10,6 +10,10 @@ sudo apt install git zsh curl
 # SETUP YOUR GIT CREDENTIALS
 git config --global user.name "Your Name"
 git config --global user.email you@example.com
+
+# change git commit message editor to vscode
+git config --global core.editor "code --wait"
+
 ```
 
 Change shortcut to set take screenshot.
