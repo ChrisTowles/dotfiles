@@ -68,6 +68,8 @@ fi
 
 alias rmd='rm -rf'   # remove directory
 alias rmdir='rm -rf' # remove directory
+alias hg='history | grep ' # search history
+
 
 # Fix issue where `ls` didn't have colors - https://github.com/spaceship-prompt/spaceship-prompt/issues/436
 unset LSCOLORS
