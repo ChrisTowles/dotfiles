@@ -37,6 +37,7 @@ plugins=(
   git
   aws # auto complete for aws CLIv2
   docker
+  kubectl # auto complete for kubectl
   zsh-autosuggestions # suggests commands as you type based on history and completions.
   zsh-syntax-highlighting
   zsh-z #  jump quickly to directories that you have visited frequently
