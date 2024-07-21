@@ -36,12 +36,17 @@ fi
 plugins=(
   git
   aws # auto complete for aws CLIv2
-  docker
+  docker # https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/docker
+  docker-compose # https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/docker-compose
   kubectl # auto complete for kubectl
   zsh-autosuggestions # suggests commands as you type based on history and completions.
   zsh-syntax-highlighting
   zsh-z #  jump quickly to directories that you have visited frequently
 )
+
+# enable option-stacking for docker autocomplete - https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/docker
+zstyle ':completion:*:*:docker:*' option-stacking yes
+zstyle ':completion:*:*:docker-*:*' option-stacking yes
 
 # If you come from bash you might have to change your $PATH.
 
