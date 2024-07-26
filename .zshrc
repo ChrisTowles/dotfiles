@@ -408,6 +408,23 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
   printf "\e[?2004l"
 fi
 
+
+
+## PNG Compression
+
+## Compress all PNG files in repo not yet checked in
+png-compress() {
+
+  LIST=($(git status | grep .png))
+  for file in $LIST
+  do
+    echo "-- Processing $file..."
+    du -h "$file"
+    pngquant "$file" --ext .png --force
+    du -h "$file"
+  done
+}
+
 ## Pyenv
 
 # Install pyenv
