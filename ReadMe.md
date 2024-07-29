@@ -4,11 +4,10 @@
 
 Opinionated setup I use on my machine for things like terminal and  dot files like `.zshrc`.
 
-## Install basic preprecs
+## Install core tools
 
 - git
 - vscode
-
   
 ### Linux
 
@@ -65,24 +64,26 @@ mv ~/.zshrc.old ~/.zshrc
 [Full List of used Extensions](./vscode-extendsions.md)
 
 ## Mac - [xcode](https://developer.apple.com/xcode/)
-  - ```bash
 
-      xcode-select -p
-      # If you get a path back (like /Applications/Xcode.app/Contents/Developer) then you're good to go
+```bash
 
-      # Otherwise to install
-      xcode-select --install
-    ```
+ # If you get a path back (like /Applications/Xcode.app/Contents/Developer) then you're good to go
+xcode-select -p
+
+# Otherwise to install
+xcode-select --install
+
+```
 
 - brew
-  - ```bash
-    # install brew
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 
-    brew doctor
+```bash
+# install brew
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 
-    brew update
-    ```
+brew doctor
+brew update
+```
 
 - git
   - ```bash
@@ -129,7 +130,6 @@ ls
 sudo unlink code
 sudo ln -s "/Applications/Visual Studio Code - Insiders.app/Contents/Resources/app/bin/code" code
 ```
-
 
 ### Todo
 
