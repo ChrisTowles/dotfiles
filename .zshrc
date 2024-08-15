@@ -209,6 +209,9 @@ gh-m() {
 gh-mv() {
   gh mv
 }
+# open repo in browser
+alias ghb="gh browse"
+
 
 # create branch based on issue name
 # i use the "tt branch" from the cli folder to do this now.
