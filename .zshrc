@@ -209,8 +209,9 @@ gh-m() {
 gh-mv() {
   gh mv
 }
+
 # open repo in browser
-alias ghb="gh browse"
+alias gw="gh browse"
 
 
 # create branch based on issue name
