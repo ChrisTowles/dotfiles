@@ -6,6 +6,10 @@ import { ofetch } from "ofetch";
 import open from "open";
 
 
+
+// Added this to my toolbox, i have a more advanced version of this in my work toolbox for gov cloud and such. But for now i'll just use the basic one
+// When working on personal projects i got tried of needed to sign in with MFA for my aws CLI and again signin with MFA for the console.
+
 export const SetupAwsConsoleLoginCommand = (program: Command): void => {
   program.command('aws-console')
     .description('use aws cli permissions to open aws console')
