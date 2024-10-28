@@ -196,7 +196,13 @@ gh-alias-setup() {
   # creates alias to open issue on website
   gh alias set iv --shell \
     'gh issue view $1 -w' # open issue on the web
+
+
+  gh alias set pr-ls --shell \
+    'PAGER="less -FX" gh pr list'
+  
 }
+
 # alias to github cli with the dash so both work.
 gh-iv() {
   gh iv $1
@@ -209,6 +215,8 @@ gh-m() {
 gh-mv() {
   gh mv
 }
+
+alias gpr="gh pr-ls"
 
 # open repo in browser
 alias gw="gh browse"

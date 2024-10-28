@@ -55,3 +55,11 @@ Now setup in config file with the chat model and autocomplete model.
   // other settings...
 }
 ```
+
+## Testing performance tip posted by Jonson Chu
+
+https://x.com/kyrylosilin/status/1849921659546812732
+
+```json
+"disable-hardware-acceleration": true
+```
