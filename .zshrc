@@ -33,6 +33,8 @@ fi
 # git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 # git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 # git clone https://github.com/agkozak/zsh-z $ZSH_CUSTOM/plugins/zsh-z
+# git clone https://github.com/kutsan/zsh-system-clipboard $ZSH_CUSTOM/plugins/zsh-system-clipboard # OMG, this is amazing, fixes the copy and paste issue with zsh on linux so that it works like it does on mac.
+
 plugins=(
   git
   aws # auto complete for aws CLIv2
@@ -41,8 +43,10 @@ plugins=(
   kubectl # auto complete for kubectl
   zsh-autosuggestions # suggests commands as you type based on history and completions.
   zsh-syntax-highlighting
+  zsh-system-clipboard # copy and paste commands in zsh with the buffer from os clipboard, use  zle -al to see all key bindings actions
   zsh-z #  jump quickly to directories that you have visited frequently
 )
+
 
 # enable option-stacking for docker autocomplete - https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/docker
 zstyle ':completion:*:*:docker:*' option-stacking yes
@@ -133,9 +137,6 @@ node-enable() {
 
 # pnpm setup
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-  #linux folder
-  export PNPM_HOME="$HOME/.local/share/pnpm"
-else
   # mac folder
   export PNPM_HOME="$HOME/Library/pnpm"
 fi
@@ -472,5 +473,25 @@ function py-enable() {
 
 # load addintional scripts local to this machine...
 source $HOME/.zshrc_local.sh
+############## KeyBindings
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+
+
+  # This file contains only zsh bindings. bash bindings are in .inputrc.
+  # Show all commands available in zsh for key binding: zle -al
+  # More info about key bindings: https://unix.stackexchange.com/questions/116562/key-bindings-table?rq=1
+
+  # fixes issues with copying an post in terminal leaves `^[[200~` at the start of text
+  # https://superuser.com/questions/1532688/pasting-required-text-into-terminal-emulator-results-in-200required-text 
+  # had issues trying to use `~/.inputrc` so using this instead
+  bindkey "\C-v" ""
+  bindkey "^V" "zsh-system-clipboard-vicmd-vi-yank"
+  
+  set enable-bracketed-paste off
+  # this is used into combo with zsh-system-clipboard plugin above
+
+fi
 
 ############### Anything after this auto added ################
+
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"

@@ -5,12 +5,10 @@
 still unsure about this. 
 https://github.com/egoist/shell-ask
 
-```
+```bash
 npm i -g shell-ask
 code ~/.config/shell-ask/config.json
 ```
-
-
 
 
 ```json
@@ -33,4 +31,15 @@ git diff HEAD | ask cm
 ifconfig | ask "give me this as markdown table with Interface and IP Address"
 
 ```
+
+## Fix `^[[200~` issue in terminal paste
+
+In some terminals, you might encounter an issue where the character `^[[200~` appears when pasting text. This can be fixed by adding the following file:
+
+
+` ~/.inputrc` can be used in bash but ZSH is different.
+
+Check what I did in `.zshrc` with bindkey and https://github.com/kutsan/zsh-system-clipboard.
+
+
 
