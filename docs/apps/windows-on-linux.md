@@ -1,4 +1,4 @@
-# Windows on Linux
+# Windows VM on Linux
 
 After no luck getting fusion 360 snap to work. And issues with Windows 11 not having disk drivers for my ASUS ROG Strix Z790-E, and failing to load the drivers off another USB even..... I gave up.
 
@@ -29,3 +29,7 @@ Download the ISO and mount it to the VM.
 Install the Agent for Windows.
 
 This will allow you to change the screen resolution, mouse integration, etc.
+
+
+
+
