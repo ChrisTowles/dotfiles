@@ -40,7 +40,7 @@ plugins=(
   aws # auto complete for aws CLIv2
   docker # https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/docker
   docker-compose # https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/docker-compose
-  kubectl # auto complete for kubectl
+  # kubectl # auto complete for kubectl
   zsh-autosuggestions # suggests commands as you type based on history and completions.
   zsh-syntax-highlighting
   zsh-system-clipboard # copy and paste commands in zsh with the buffer from os clipboard, use  zle -al to see all key bindings actions
