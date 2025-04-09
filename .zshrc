@@ -504,7 +504,9 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
   # https://superuser.com/questions/1532688/pasting-required-text-into-terminal-emulator-results-in-200required-text 
   # had issues trying to use `~/.inputrc` so using this instead
   bindkey "\C-v" ""
-  bindkey "^V" "zsh-system-clipboard-vicmd-vi-yank"
+
+  # 2025-04-09 has issue where pasteing left out some characters.. so disabling.
+  #bindkey "^V" "zsh-system-clipboard-vicmd-vi-yank" 
   
   set enable-bracketed-paste off
   # this is used into combo with zsh-system-clipboard plugin above
