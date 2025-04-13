@@ -73,3 +73,16 @@ plex-setup() {
     sudo chmod g+s "/var/lib/plexmediaserver/Library"
 }
 ```
+
+
+
+## Downlaod m3u8 with youtube-dl
+
+use the `--hls-prefer-native` flag to download the m3u8 file with youtube-dl. This will ensure that the native HLS downloader is used, which can resume downloads.
+
+```bash
+youtube-dl  --hls-prefer-native "https:/1080/index.m3u8" -o "movie.mp4"
+
+```
+
+

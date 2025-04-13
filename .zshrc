@@ -12,6 +12,8 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
   # note: give up on brew for linux, every time its been a mistake
   # eval "$(~/.linuxbrew/bin/brew shellenv)"
   #eval $($(brew --prefix)/bin/brew shellenv)
+  echo "Linux, using vscode-insiders"
+  alias code="code-insiders"
 else
   eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
