@@ -248,7 +248,7 @@ alias gw="gh browse"
 # i use the "tt branch" from the cli folder to do this now.
 
 # stash current changes and checkout a PR by number
-alias gco='git stash && gh pr checkout '
+alias gco='git stash && gmain && gh pr checkout '
 
 # -------------------------------- #
 # Git
