@@ -141,8 +141,9 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
 
 else
   export NVM_DIR="$HOME/.nvm"
-  [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"                                       # This loads nvm
-  [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" # This loads nvm bash_completion
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
 fi
 # or if you prefer to forcedly use .nvmrc prior to default, then
 node-enable() {
@@ -160,9 +161,19 @@ node-enable() {
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
   # mac folder
   export PNPM_HOME="$HOME/Library/pnpm"
+else 
+
+  # pnpm
+  export PNPM_HOME="$HOME/Library/pnpm"
+  case ":$PATH:" in
+    *":$PNPM_HOME:"*) ;;
+    *) export PATH="$PNPM_HOME:$PATH" ;;
+  esac
+  # pnpm end
+
+
 fi
 
-export PATH="$PNPM_HOME:$PATH"
 # pnpm end
 
 # install @antfu/ni
@@ -442,7 +453,8 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
   printf "\e[?2004l"
 fi
 
-
+## DBeavers
+# brew install --cask dbeaver-community
 
 ## PNG Compression
 
@@ -466,6 +478,7 @@ png-compress() {
 # https://github.com/pyenv/pyenv#automatic-installer
 
 # pyenv-virtualenv is a plugin that is required.
+# brew install pyenv-virtualenv
 # https://github.com/pyenv/pyenv-virtualenv
 
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
@@ -489,7 +502,7 @@ function py-enable() {
   fi
 }
 
-# pyenv install --list
+# `pyenv install --list`
 # pyenv install 3.10.6
 
 # load addintional scripts local to this machine...
@@ -516,3 +529,4 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
 fi
 
 ############### Anything after this auto added ################
+
