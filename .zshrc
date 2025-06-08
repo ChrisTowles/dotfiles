@@ -6,7 +6,7 @@
 # git config --global user.name "Your Name"
 
 # push the current branch and set the remote as upstream automatically every time you push
-# git config --global --add --bool push.autoSetupRemote true
+# git config --global push.default current
 
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
   # note: give up on brew for linux, every time its been a mistake
@@ -471,42 +471,14 @@ png-compress() {
   done
 }
 
-## Pyenv
-
-# Install pyenv
-# brew install pyenv
-# https://github.com/pyenv/pyenv#automatic-installer
-
-# pyenv-virtualenv is a plugin that is required.
-# brew install pyenv-virtualenv
-# https://github.com/pyenv/pyenv-virtualenv
-
-if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-  export PYENV_ROOT="$HOME/.pyenv"
-  command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
-  eval "$(pyenv init -)"
-else
-  eval "$(pyenv init -)"
-fi
-
-function py-enable() {
-  # i only use python in a few projects so only start it a few times
-
-  if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-    # TODO: figure out if the order matters
-    eval "$(pyenv virtualenv-init -)"
-
-  else
-    eval "$(pyenv virtualenv-init -)"
-    py-enable
-  fi
-}
-
-# `pyenv install --list`
-# pyenv install 3.10.6
+## Python Env
+## uv - install uv
+# https://docs.astral.sh/uv/getting-started/installation/
+# curl -LsSf https://astral.sh/uv/install.sh | sh
 
 # load addintional scripts local to this machine...
 source $HOME/.zshrc_local.sh
+
 ############## KeyBindings
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
 
