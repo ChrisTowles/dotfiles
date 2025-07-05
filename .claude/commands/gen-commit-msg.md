@@ -11,8 +11,6 @@ Your task is to help the user to generate a commit message and commit the change
 
 ```
 <type>:<space><message title>
-
-<bullet points summarizing what was updated>
 ```
 
 ## Example Titles
@@ -24,21 +22,8 @@ refactor(api): split user controller logic
 docs(readme): add usage section
 ```
 
-## Example with Title and Body
-
-```
-feat(auth): add JWT login flow
-
-- Implemented JWT token validation logic
-- Added documentation for the validation component
-```
-
-## Rules
-
 * title is lowercase, no period at the end.
 * Title should be a clear summary, max 50 characters.
-* Use the body (optional) to explain *why*, not just *what*.
-* Bullet points should be concise and high-level.
 
 Avoid
 
