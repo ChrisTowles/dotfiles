@@ -35,6 +35,22 @@ https://docs.anthropic.com/en/docs/claude-code/mcp
 Setup Brave Search, GitHub, and Postgres servers using the Model Context Protocol (MCP) with `claude`.
 
 
+### Add MCP Servers
+```bash
+claude mcp add filesystem -- npx -y @modelcontextprotocol/server-filesystem "${pwd}"
+claude mcp add github-server --transport sse https://api.github.com/mcp
+
+```
+
+
+## remove MCP Servers
+
+```bash
+claude mcp remove filesystem
+claude mcp remove github-server
+```
+
+
 ## Typescript Projects with MCP Servers
 
 

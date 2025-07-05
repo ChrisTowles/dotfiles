@@ -519,7 +519,6 @@ gcm() {
   
   message=$(claude -p "generate a commit message with no body for the current git changes" --output-format json | jq -r '.result')
   echo "----"
-  
   echo "Commit message: $message"
   echo "----"
   # ask if the user wants to change that message
