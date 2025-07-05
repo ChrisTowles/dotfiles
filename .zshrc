@@ -512,31 +512,29 @@ fpath+=~/.zfunc; autoload -Uz compinit; compinit
 
 alias claude="/home/ctowles/.claude/local/claude"
 
+unalias gcm #
 
-
-
-
-## Compress all PNG files in repo not yet checked in
 gcm() {
  
   
-  message=$(claude -p "generate a commit message  with no body for the current git changes" --output-format json | jq -r '.result')
+  message=$(claude -p "generate a commit message with no body for the current git changes" --output-format json | jq -r '.result')
   echo "----"
   
   echo "Commit message: $message"
   echo "----"
   # ask if the user wants to change that message
-  echo -n "Use this commit message? (Y/n) "
-  read -q REPLY
-  echo ""
-  echo "---"
-  echo "REPLY: $REPLY"
-  echo "----"
+  echo -n "Edit this commit message? (N/y) "
+  # NOTE, in zsh defaults to "n" for no, so we can just read without setting a default. #https://zsh.sourceforge.io/Doc/Release/Shell-Builtin-Commands.html#index-read
+  read -q REPLY 
+  echo "----" 
+  
+  #echo "---"
+  #echo "REPLY: $REPLY"
+  #echo "----"
 
-  if [[ "$REPLY" == "y" || "$REPLY" == "Y" ]]; then
+  if [[ "$REPLY" == "n" || "$REPLY" == "N" ]]; then
       git commit -m "$message"
   else
-
     echo "Please enter the commit message:"
     read message
     git commit -m "$message"
@@ -544,10 +542,12 @@ gcm() {
 
 }
 
-
+unalias gca
 gca() {
- 
-  git add .
+  
+  echo "adding all changes to commit"
+  git add --all
+  echo "Generating commit message..."
   gcm
 
 }
