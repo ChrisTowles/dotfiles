@@ -319,8 +319,8 @@ alias gai='git add --patch' # asks for each chuck, it feels more intuitive than 
 alias gA='git add --all'
 
 alias gc='git commit'
-alias gcm='git commit -m'
-alias gca='git commit --amend --no-edit' # --no-edit is important, otherwise it will ask you to edit the commit message.
+#alias gcm='git commit -m'
+#alias gca='git commit --amend --no-edit' # --no-edit is important, otherwise it will ask you to edit the commit message.
 alias gcam='git add --all && git commit -m'
 alias gfrb='git fetch origin && git rebase origin/master'
 
@@ -500,6 +500,57 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
 
 fi
 
+
+
+
+###### Claude Code 
+
+# install claude code ![claude-app-setup](/docs/apps/claude-code.md)
+
+ 
+fpath+=~/.zfunc; autoload -Uz compinit; compinit
+
+alias claude="/home/ctowles/.claude/local/claude"
+
+
+
+
+
+## Compress all PNG files in repo not yet checked in
+gcm() {
+ 
+  
+  message=$(claude -p "generate a commit message  with no body for the current git changes" --output-format json | jq -r '.result')
+  echo "----"
+  
+  echo "Commit message: $message"
+  echo "----"
+  # ask if the user wants to change that message
+  echo -n "Use this commit message? (Y/n) "
+  read -q REPLY
+  echo ""
+  echo "---"
+  echo "REPLY: $REPLY"
+  echo "----"
+
+  if [[ "$REPLY" == "y" || "$REPLY" == "Y" ]]; then
+      git commit -m "$message"
+  else
+
+    echo "Please enter the commit message:"
+    read message
+    git commit -m "$message"
+  fi
+
+}
+
+
+gca() {
+ 
+  git add .
+  gcm
+
+}
+
 ############### Anything after this auto added ################
 
-fpath+=~/.zfunc; autoload -Uz compinit; compinit
