@@ -551,5 +551,11 @@ gca() {
 
 }
 
+# shorthand alias to run claude prompt
+
+c() {
+ claude -p "${1}" 
+}
+
 ############### Anything after this auto added ################
 
