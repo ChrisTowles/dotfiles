@@ -502,3 +502,4 @@ fi
 
 ############### Anything after this auto added ################
 
+fpath+=~/.zfunc; autoload -Uz compinit; compinit
