@@ -12,7 +12,7 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
   # note: give up on brew for linux, every time its been a mistake
   # eval "$(~/.linuxbrew/bin/brew shellenv)"
   #eval $($(brew --prefix)/bin/brew shellenv)
-  echo "Linux, using vscode-insiders"
+  #echo "Linux, using vscode-insiders"
   alias code="code-insiders"
 else
   eval "$(/opt/homebrew/bin/brew shellenv)"
@@ -533,11 +533,15 @@ gcm() {
 
   if [[ "$REPLY" == "n" || "$REPLY" == "N" ]]; then
       git commit -m "$message"
+      git push
   else
     echo "Please enter the commit message:"
     read message
     git commit -m "$message"
+    git push
   fi
+
+
 
 }
 
