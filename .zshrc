@@ -526,11 +526,11 @@ gca() {
 # shorthand alias to run claude prompt
 
 c() {
- claude -p "${1}" 
+ claude -p "$@"
 }
 
 ### Nerd Dictation
-dict() {
+dict-start() {
   # start the nerd-dictation service
   echo "Starting nerd-dictation service..."
   cd $HOME/code/f/nerd-dictation && source .venv/bin/activate && ./nerd-dictation begin &

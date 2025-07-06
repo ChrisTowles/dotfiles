@@ -25,16 +25,17 @@ contents
     }
 }
 ```
-## 
+## Setup OS level dictation 
 
-Setup OS level dictation 
+This turned out way more complicated than i thought it would be.
+
 
 - https://github.com/arunk140/gnome-command-menu
 - https://www.youtube.com/watch?v=Cw1SESc8sdA
 - leading to https://github.com/ggml-org/whisper.cpp
 - after lots of research, I found that the best way to get dictation working on Linux is to use the `whisper.cpp` project, which provides a command line interface for Whisper models.
 - in the PopOS store, the last placed i looked, i found, https://github.com/chidiwilliams/buzz
-
+- finally back to just using the `nerd-dictation` project. Then 
 
 
 ```bash 
@@ -42,13 +43,15 @@ Setup OS level dictation
 
 git clone https://github.com/ideasman42/nerd-dictation.git
 cd nerd-dictation
-wget https://alphacephei.com/kaldi/models/vosk-model-small-en-us-0.15.zip
-unzip vosk-model-small-en-us-0.15.zip
-mv vosk-model-small-en-us-0.15 model
+
+## Since we are not on mobile, using the bigger en-us model 
+wget https://alphacephei.com/kaldi/models/vosk-model-en-us-0.22.zip
+unzip vosk-model-en-us-0.22.zip
+mv vosk-model-en-us-0.22 model
 
 ## setup python virtual environment
 uv venv --python 3.11
-source source .venv/bin/activate
+source .venv/bin/activate
 
 # isntall single dependencies
 uv pip install vosk 
@@ -70,13 +73,28 @@ stop it
 cd $HOME/code/f/nerd-dictation && source .venv/bin/activate && ./nerd-dictation end
 ```
 
+Ok, with that i finally have a Speech that works in the claude code terminal app that i can still Speak to and it will type what i say.
+
+I really looked for a better toggle key solution but even with the OS shortchots, it was not working well. So for now i'm using the command line to start and stop the service. 
+
+best i found was key words to start and stop the service. 
+means its always listening, but i can just say "dictation start" or "nerd dictation stop" to control it.
+
+```bash
+cp ./config/nerd-dictation.py ~/.config/nerd-dictation/nerd-dictation.py 
+```
+
+then using the 'dict-start' and 'dict-stop' commands to control it locateed in the `.zshrc` file.
+
 
 ### Setup Keybindings
-- On PopOS, open Settings > Keyboard Shortcuts
+- ~~On PopOS, open Settings > Keyboard Shortcuts~~ this method does not work well yet, maybe i'm doing something wrong.
     https://support.system76.com/articles/keyboard-shortcuts/
 
- hello talking one two three
-```
+
+
+
+
 
 ## Additonal MCP Servers
 
