@@ -132,48 +132,16 @@ echo-green "Chris's ZSH Profile"
 # -------------------------------- #
 # mkdir ~/.nvm
 # Install NVM - https://github.com/nvm-sh/nvm#installing-and-updating
-# pnpm install-completion zsh
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-  export NVM_DIR="$HOME/.nvm"
-  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm
-  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
-
-else
-  export NVM_DIR="$HOME/.nvm"
-  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-fi
-# or if you prefer to forcedly use .nvmrc prior to default, then
-node-enable() {
-  test -f .nvmrc && nvm use || nvm use default
-}
-
-# nvm ls-remote
-# nvm install node
-# nvm install --lts                     Install the latest LTS version
-# nvm use --lts
-
-# install pnpm - https://pnpm.io/installation
-
-# pnpm setup
-if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-  # mac folder
-  export PNPM_HOME="$HOME/Library/pnpm"
-else 
-
-  # pnpm
-  export PNPM_HOME="$HOME/Library/pnpm"
-  case ":$PATH:" in
-    *":$PNPM_HOME:"*) ;;
-    *) export PATH="$PNPM_HOME:$PATH" ;;
-  esac
-  # pnpm end
-
-
-fi
-
+# pnpm
+export PNPM_HOME="/home/ctowles/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
 # pnpm end
 
 # install @antfu/ni
@@ -561,5 +529,17 @@ c() {
  claude -p "${1}" 
 }
 
-############### Anything after this auto added ################
+### Nerd Dictation
+dict() {
+  # start the nerd-dictation service
+  echo "Starting nerd-dictation service..."
+  cd $HOME/code/f/nerd-dictation && source .venv/bin/activate && ./nerd-dictation begin &
+}
 
+dict-stop() {
+  # stop the nerd-dictation service
+  echo "Stopping nerd-dictation service..."
+  cd $HOME/code/f/nerd-dictation && source .venv/bin/activate && ./nerd-dictation end
+}
+
+############### Anything after this auto added ################

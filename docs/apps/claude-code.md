@@ -25,7 +25,58 @@ contents
     }
 }
 ```
+## 
 
+Setup OS level dictation 
+
+- https://github.com/arunk140/gnome-command-menu
+- https://www.youtube.com/watch?v=Cw1SESc8sdA
+- leading to https://github.com/ggml-org/whisper.cpp
+- after lots of research, I found that the best way to get dictation working on Linux is to use the `whisper.cpp` project, which provides a command line interface for Whisper models.
+- in the PopOS store, the last placed i looked, i found, https://github.com/chidiwilliams/buzz
+
+
+
+```bash 
+
+
+git clone https://github.com/ideasman42/nerd-dictation.git
+cd nerd-dictation
+wget https://alphacephei.com/kaldi/models/vosk-model-small-en-us-0.15.zip
+unzip vosk-model-small-en-us-0.15.zip
+mv vosk-model-small-en-us-0.15 model
+
+## setup python virtual environment
+uv venv --python 3.11
+source source .venv/bin/activate
+
+# isntall single dependencies
+uv pip install vosk 
+
+## move model so we don't have to specify it every time
+mkdir -p ~/.config/nerd-dictation
+mv ./model ~/.config/nerd-dictation
+```
+
+# Start the dictation service
+
+```bash
+cd $HOME/code/f/nerd-dictation && source .venv/bin/activate && ./nerd-dictation begin &
+```
+
+stop it
+
+```bash
+cd $HOME/code/f/nerd-dictation && source .venv/bin/activate && ./nerd-dictation end
+```
+
+
+### Setup Keybindings
+- On PopOS, open Settings > Keyboard Shortcuts
+    https://support.system76.com/articles/keyboard-shortcuts/
+
+ hello talking one two three
+```
 
 ## Additonal MCP Servers
 
