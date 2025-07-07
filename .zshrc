@@ -533,7 +533,31 @@ c() {
 dict-start() {
   # start the nerd-dictation service
   echo "Starting nerd-dictation service..."
-  cd $HOME/code/f/nerd-dictation && source .venv/bin/activate && ./nerd-dictation begin &
+  
+  # Check if LanguageTool Docker container is already running
+  if docker ps --format "table {{.Names}}" | grep -q "languagetool"; then
+    echo "LanguageTool Docker container is already running"
+  else
+    echo "Starting LanguageTool Docker container..."
+    docker run --detach --rm -it -p 8010:8010 -e langtool_pipelinePrewarming=true -e Java_Xms=1g -e Java_Xmx=2g erikvl87/languagetool 
+    
+    # Wait for LanguageTool to be ready on port 8010
+    echo "Waiting for LanguageTool to be ready on port 8010..."
+    timeout=30
+    elapsed=0
+    while ! nc -z localhost 8010; do
+      if [ $elapsed -ge $timeout ]; then
+        echo "Timeout: LanguageTool did not start within $timeout seconds"
+        echo "Aborting..."
+        return 1
+      fi
+      sleep 1
+      elapsed=$((elapsed + 1))
+    done
+    echo "LanguageTool is ready!"
+  fi
+  
+  cd $HOME/code/f/nerd-dictation && source .venv/bin/activate && uv run hotkey.py
 }
 
 dict-stop() {
