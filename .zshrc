@@ -483,22 +483,20 @@ alias claude="/home/ctowles/.claude/local/claude"
 unalias gcm #
 
 gcm() {
- 
+  if [[ -n "$1" ]]; then
+    message="$1"
+  else
+    message=$(claude -p "generate a commit message with no body for the current git changes" --output-format json | jq -r '.result')
+  fi
   
-  message=$(claude -p "generate a commit message with no body for the current git changes" --output-format json | jq -r '.result')
   echo "----"
   echo "Commit message: $message"
   echo "----"
-  # ask if the user wants to change that message
   echo -n "Edit this commit message? (N/y) "
-  # NOTE, in zsh defaults to "n" for no, so we can just read without setting a default. #https://zsh.sourceforge.io/Doc/Release/Shell-Builtin-Commands.html#index-read
   read -q REPLY 
+  echo
   echo "----" 
   
-  #echo "---"
-  #echo "REPLY: $REPLY"
-  #echo "----"
-
   if [[ "$REPLY" == "n" || "$REPLY" == "N" ]]; then
       git commit -m "$message"
       git push
@@ -508,9 +506,6 @@ gcm() {
     git commit -m "$message"
     git push
   fi
-
-
-
 }
 
 unalias gca
