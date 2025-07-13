@@ -1,7 +1,6 @@
 Your task is to help the user to generate a commit message and commit the changes using git.
 
 ## Guidelines
-- use the `git status -s` command to check for any files that have been modified but not staged.
 - list all unstaged files that have been modified, and advise the user to stage them.
 - ask if these files should be added to the commit.
 - if yes, generate a commit message based on the changes in the staged files.
@@ -16,6 +15,7 @@ Your task is to help the user to generate a commit message and commit the change
 ## Example Titles
 
 ```
+chore: update dependencies
 feat(auth): add JWT login flow
 fix(ui): handle null pointer in sidebar
 refactor(api): split user controller logic

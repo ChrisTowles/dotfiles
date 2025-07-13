@@ -193,3 +193,17 @@ claude --dangerously-skip-permissions
 ```
 
 
+## Boris Cherny Resources
+
+- [Boris Cherny's LinkedIn Profile](https://www.linkedin.com/in/bcherny/)
+  - give his profile a follow, he is the author of the O'Reilly book "Programming TypeScript" and making your Typescript scale.
+- [Boris Cherny's GitHub Profile](https://github.com/bcherny)
+    - check out his projects, especially the `ts-mcp` project which is a TypeScript implementation of the Model Context Protocol (MCP).
+- [Boris Cherny's Website](https://borischerny.com/)
+    - doesn't updated it much lately, but has some good resources.
+- [Frontend Interview Questions](https://borischerny.com/javascript/%22functional/programming%22/2017/06/09/Frontend-Interview-Questions.html)
+    - [Frontend Interview Questions - Answers](https://github.com/bcherny/frontend-interview-questions)
+    - Comprehensive collection of frontend interview questions and answers
+- 
+
+
