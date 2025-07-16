@@ -160,8 +160,18 @@ alias lintf="nr lint --fix"
 alias release="nr release"
 
 # -------------------------------- #
+# @towles/tool
+# -------------------------------- #
+# install @towles/tool
+# npm i -g @towles/tool
+
+
+# -------------------------------- #
 # Github CLI
 # -------------------------------- #
+
+
+
 
 # Use gh from https://cli.github.com/
 # brew install gh
@@ -287,6 +297,7 @@ alias gai='git add --patch' # asks for each chuck, it feels more intuitive than 
 alias gA='git add --all'
 
 alias gc='git commit'
+alias gcm='towles-tool git-commit' # commit with message
 #alias gcm='git commit -m'
 #alias gca='git commit --amend --no-edit' # --no-edit is important, otherwise it will ask you to edit the commit message.
 alias gcam='git add --all && git commit -m'
@@ -482,43 +493,6 @@ fpath+=~/.zfunc; autoload -Uz compinit; compinit
 
 #alias claude="/home/ctowles/.claude/local/claude"
 
-unalias gcm #
-
-gcm() {
-  if [[ -n "$1" ]]; then
-    message="$1"
-  else
-    message=$(claude -p "generate a commit message with no body for the current git changes" --output-format json | jq -r '.result')
-  fi
-  
-  echo "----"
-  echo "Commit message: $message"
-  echo "----"
-  echo -n "Edit this commit message? (N/y) "
-  read -q REPLY 
-  echo
-  echo "----" 
-  
-  if [[ "$REPLY" == "n" || "$REPLY" == "N" ]]; then
-      git commit -m "$message"
-      git push
-  else
-    echo "Please enter the commit message:"
-    read message
-    git commit -m "$message"
-    git push
-  fi
-}
-
-unalias gca
-gca() {
-  
-  echo "adding all changes to commit"
-  git add --all
-  echo "Generating commit message..."
-  gcm
-
-}
 
 # shorthand alias to run claude prompt
 
