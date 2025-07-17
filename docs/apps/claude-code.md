@@ -8,12 +8,11 @@ Run claude in the root of this repository to get started.
 
 then `/doctor` command, if it says to run `migrate-installer` do it. 
 
-
-
 ```bash
 code ~/.claude/settings.json
 ```
-contents something like this, note that 
+
+contents something like this, note that.
 
 ```json
 
@@ -22,9 +21,44 @@ contents something like this, note that
 
     "permissions": {
         "allow": ["bash(*)", "read(*)", "write(*)", "edit(*)", "glob(*)", "grep(*)", "task(*)", "websearch(*)"]
-    }
+    },
+   "env": {
+    "CLAUDE_CODE_ENABLE_TELEMETRY": "0",
+  }
 }
 ```
+If using bedrock
+
+```json
+{
+    "includeCoAuthoredBy": false,
+    "env": {
+        "CLAUDE_CODE_ENABLE_TELEMETRY": "0",
+        "CLAUDE_CODE_USE_BEDROCK": "1",
+        "AWS_PROFILE": "PROFILE_NAME",
+    },
+}
+```
+
+Issues update 
+https://github.com/anthropics/claude-code/issues/40
+
+```bash
+export NODE_EXTRA_CA_CERTS="/etc/ssl/certs/ca-certificates.crt"
+
+
+# Enable Bedrock integration
+export CLAUDE_CODE_USE_BEDROCK=1
+export AWS_REGION=us-east-1  # or your preferred region
+
+# Optional: Override the region for the small/fast model (Haiku)
+export ANTHROPIC_SMALL_FAST_MODEL_AWS_REGION=us-west-2
+```
+
+
+# https://github.com/upstash/context7
+
+
 ## Setup OS level dictation 
 
 This turned out way more complicated than i thought it would be.
@@ -43,18 +77,20 @@ This turned out way more complicated than i thought it would be.
 
 git clone https://github.com/ideasman42/nerd-dictation.git
 cd nerd-dictation
+# change to PR https://github.com/ideasman42/nerd-dictation/pull/147 to get the hotkey logic
+gco 147
 
 ## Since we are not on mobile, using the bigger en-us model 
 rm -rf ./model
 rm -rf ~/.config/nerd-dictation/model
-
+https://alphacephei.com/vosk/models/vosk-model-en-us-0.42-gigaspeech.zip
 model_name="vosk-model-en-us-0.42-gigaspeech" # using the best model i can run locally. 
-wget https://alphacephei.com/vosk/models/$model_name.zip
+curl -O https://alphacephei.com/vosk/models/$model_name.zip
 unzip $model_name.zip
 mv $model_name model
 
 ## setup python virtual environment
-uv venv --python 3.11
+uv venv --python 3.12 --native-tls
 source .venv/bin/activate
 
 # isntall single dependencies
@@ -88,7 +124,19 @@ means its always listening, but i can just say "dictation start" or "nerd dictat
 cp ./config/nerd-dictation.py ~/.config/nerd-dictation/nerd-dictation.py 
 ```
 
+input
+
 then using the 'dict-start' and 'dict-stop' commands to control it locateed in the `.zshrc` file.
+
+## MAC Setup
+
+- work machine has diction from keyboard disabled
+- `brew install sox`
+- ~~`brew install xdotool`~~
+
+```bash
+./nerd-dictation begin --input SOX &
+```
 
 ## LanguageTool Docker Image for local grammar checking
 
@@ -101,7 +149,7 @@ https://hub.docker.com/r/erikvl87/languagetool
 
 ```bash
 docker pull erikvl87/languagetool
-# Start it with 512MB of initial memory and 2GB of maximum memory
+# Start it with 1g of initial memory and 2GB of maximum memory
 docker run --rm -it -p 8010:8010 -e langtool_pipelinePrewarming=true -e Java_Xms=1g -e Java_Xmx=2g erikvl87/languagetool
 
 # Now you can access LanguageTool at http://localhost:8010
@@ -139,6 +187,9 @@ claude mcp add github-server --transport sse https://api.github.com/mcp
 
 ```
 
+Keith brought up - https://github.com/upstash/context7 as a great MCP server for various APIs, including Postgres, Redis, and more.
+
+```bash
 
 ## remove MCP Servers
 

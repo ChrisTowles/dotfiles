@@ -443,6 +443,8 @@ png-compress() {
 ## uv - install uv
 # https://docs.astral.sh/uv/getting-started/installation/
 # curl -LsSf https://astral.sh/uv/install.sh | sh
+alias pys="source .venv/bin/activate"
+
 
 # load addintional scripts local to this machine...
 source $HOME/.zshrc_local.sh
@@ -478,7 +480,7 @@ fi
  
 fpath+=~/.zfunc; autoload -Uz compinit; compinit
 
-alias claude="/home/ctowles/.claude/local/claude"
+#alias claude="/home/ctowles/.claude/local/claude"
 
 unalias gcm #
 
