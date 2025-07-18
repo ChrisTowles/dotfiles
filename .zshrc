@@ -298,8 +298,12 @@ alias gA='git add --all'
 
 alias gc='git commit'
 alias gcm='towles-tool git-commit' # commit with message
-#alias gcm='git commit -m'
+alias gcm='git commit -m'
 #alias gca='git commit --amend --no-edit' # --no-edit is important, otherwise it will ask you to edit the commit message.
+
+alias br='node /home/ctowles/code/p/dotfiles/cli/dist/cli.mjs branch' # show branches with last commit
+
+
 alias gcam='git add --all && git commit -m'
 alias gfrb='git fetch origin && git rebase origin/master'
 
@@ -493,6 +497,9 @@ fpath+=~/.zfunc; autoload -Uz compinit; compinit
 
 #alias claude="/home/ctowles/.claude/local/claude"
 
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+    PATH+=":$HOME/.claude/local/"
+fi
 
 # shorthand alias to run claude prompt
 
