@@ -87,6 +87,9 @@ SAVEHIST=50000
 
 source $ZSH/oh-my-zsh.sh
 
+# yes i know this doesn't save many keystrokes, but trying to autocomplete faster
+alias source-zsh="source ~/.zshrc"
+
 # -------------------------------- #
 # System level Changes Package Manager
 # -------------------------------- #
@@ -298,10 +301,15 @@ alias gA='git add --all'
 
 alias gc='git commit'
 alias gcm='towles-tool git-commit' # commit with message
-alias gcm='git commit -m'
-#alias gca='git commit --amend --no-edit' # --no-edit is important, otherwise it will ask you to edit the commit message.
+alias gca='towles-tool git-commit --ammend' # not yet implemented
 
-alias br='node /home/ctowles/code/p/dotfiles/cli/dist/cli.mjs branch' # show branches with last commit
+# crreate issue in web interface
+alias gicm='gh issue create --web --title' # create issue in web interface
+
+
+# temporary commit untill i move it into `@towles/tool` - https://www.npmjs.com/package/@towles/tool
+alias bra='node /home/ctowles/code/p/dotfiles/cli/dist/cli.mjs branch' # use my cli tool to create a branch from an issue
+alias br='node /home/ctowles/code/p/dotfiles/cli/dist/cli.mjs branch --unassigned'
 
 
 alias gcam='git add --all && git commit -m'
@@ -458,7 +466,8 @@ png-compress() {
 ## uv - install uv
 # https://docs.astral.sh/uv/getting-started/installation/
 # curl -LsSf https://astral.sh/uv/install.sh | sh
-alias pys="source .venv/bin/activate"
+alias spy="source .venv/bin/activate"
+alias source-py="source .venv/bin/activate"
 
 
 # load addintional scripts local to this machine...
