@@ -10,6 +10,7 @@ import { createBranch } from '../utils/git-wrapper'
 
 export interface BranchCommandOptions {
   cwd: string
+  unassigned?: boolean
 }
 
 const checkPreqrequisites = async () => {
@@ -40,12 +41,16 @@ export const SetupBranchCommand = (program: Command): void => {
   program.command('branch')
     .description('create branch from github ticket')
     .addOption(new Option('-C, --cwd <cwd>', 'specify the current working directory'))
+    .addOption(new Option('--unassigned', 'only show issues unassigned to me'))
     .action(async (args: BranchCommandOptions) => {
       await checkPreqrequisites()
 
-      const currentIssues = await getIssues({ assignedToMe: true })
+      const assignedToMe = !args.unassigned ? true : false
+      console.log('Assigned to me:', assignedToMe)
+
+      const currentIssues = await getIssues({ assignedToMe })
       if (currentIssues.length === 0) {
-        console.log(c.yellow('No issues found'))
+        console.log(c.yellow('No issues found, check assignments'))
         process.exit(1)
       }
       else {

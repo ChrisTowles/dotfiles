@@ -34,6 +34,8 @@ export const getIssues = async ({ assignedToMe = false }: { assignedToMe: boolea
     flags.push('--assignee')
     flags.push('@me')
   }
+  const cwd = await $`pwd`
+  //console.log('Current working directory:', cwd.stdout.trim())
 
   const result = await $`gh issue list ${flags}`
   // Setting NO_COLOR=1 didn't remove colors so had to use stripAnsi
