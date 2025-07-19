@@ -303,8 +303,8 @@ alias gc='git commit'
 alias gcm='towles-tool git-commit' # commit with message
 alias gca='towles-tool git-commit --ammend' # not yet implemented
 
-# crreate issue in web interface
-alias gicm='gh issue create --web --title' # create issue in web interface
+# create issue in web interface
+alias gic='gh issue create --web --title' # create issue in web interface
 
 
 # temporary commit untill i move it into `@towles/tool` - https://www.npmjs.com/package/@towles/tool
