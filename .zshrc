@@ -87,7 +87,8 @@ SAVEHIST=50000
 
 source $ZSH/oh-my-zsh.sh
 
-# yes i know this doesn't save many keystrokes, but trying to autocomplete faster
+# yes i know this doesn't save many keystrokes, but trying to autocomplete faster, as i run it alot.
+alias s-zsh="source ~/.zshrc"
 alias source-zsh="source ~/.zshrc"
 
 # -------------------------------- #
@@ -466,7 +467,7 @@ png-compress() {
 ## uv - install uv
 # https://docs.astral.sh/uv/getting-started/installation/
 # curl -LsSf https://astral.sh/uv/install.sh | sh
-alias spy="source .venv/bin/activate"
+alias s-py="source .venv/bin/activate"
 alias source-py="source .venv/bin/activate"
 
 
