@@ -174,6 +174,8 @@ curl --data "language=en-US&text=a simple test" http://localhost:8010/v2/check
 
 ## Additonal MCP Servers
 
+
+
 https://docs.anthropic.com/en/docs/claude-code/mcp
 
 
@@ -181,13 +183,62 @@ Setup Brave Search, GitHub, and Postgres servers using the Model Context Protoco
 
 
 ### Add MCP Servers
+
+# https://github.com/modelcontextprotocol/servers/tree/main?tab=readme-ov-file
+
 ```bash
-claude mcp add filesystem -- npx -y @modelcontextprotocol/server-filesystem "${pwd}"
-claude mcp add github-server --transport sse https://api.github.com/mcp
+FILESYSTEM_PATH="$(pwd)"
+echo ${FILESYSTEM_PATH}
+claude mcp add -s project filesystem -- npx -y @modelcontextprotocol/server-filesystem "${FILESYSTEM_PATH}"
+claude mcp remove  -s project filesystem
+```
+
+
+### GitHub MCP Server
+
+https://github.com/github/github-mcp-server/blob/main/docs/installation-guides/install-claude.md
+
+
+With the GitHub MCP server the access token is required to access the GitHub API. 
+
+[Install Guide](https://github.com/github/github-mcp-server/blob/main/docs/installation-guides/install-claude.md#installation-1)
+
+
+```bash
+claude mcp add -s user github -- docker run -i --rm -e GITHUB_PERSONAL_ACCESS_TOKEN ghcr.io/github/github-mcp-server
+YOUR_GITHUB_PERSONAL_ACCESS_TOKEN=your_token_here
+
+# now update its environment variable
+claude mcp update -s user  github -e GITHUB_PERSONAL_ACCESS_TOKEN=$YOUR_GITHUB_PERSONAL_ACCESS_TOKEN
+
+claude mcp remove -s user github
 
 ```
 
-Keith brought up - https://github.com/upstash/context7 as a great MCP server for various APIs, including Postgres, Redis, and more.
+### Context7 MCP Server
+
+- https://github.com/upstash/context7 as a great MCP server for various APIs, including Postgres, 
+Keith called this one out for me and now i've seen it everywhere!  Redis, and more.
+
+```bash
+claude mcp add -s user context7 -- npx -y @upstash/context7-mcp
+claude mcp remove -s user context7
+```
+
+### Brave Search MCP Server
+```bash
+
+claude mcp add -s user brave-search -- npx -y @modelcontextprotocol/server-brave-search -e BRAVE_API_KEY=$BRAVE_API_KEY
+claude mcp remove -s user brave-search
+```
+
+### Server Sequential Thinking MCP Server
+```bash
+
+claude mcp add -s user server-sequential-thinking -- npx -y @modelcontextprotocol/server-sequential-thinking 
+claude mcp remove -s user server-sequential-thinking
+```
+
 
 ```bash
 
