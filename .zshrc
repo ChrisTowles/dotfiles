@@ -168,7 +168,10 @@ alias release="nr release"
 # -------------------------------- #
 # install @towles/tool
 # npm i -g @towles/tool
-
+alias tt="towles-tool"
+alias today="tt journal today"
+alias meeting="tt journal meeting"
+alias note="tt journal note"
 
 # -------------------------------- #
 # Github CLI
@@ -499,6 +502,7 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
 fi
 
 
+###### Claude Code 
 
 
 ###### Claude Code 
