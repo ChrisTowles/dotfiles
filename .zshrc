@@ -304,7 +304,7 @@ alias gai='git add --patch' # asks for each chuck, it feels more intuitive than 
 alias gA='git add --all'
 
 alias gc='git commit'
-alias gcm='git commit -m' # commit with message, 
+alias gcm='git status && git commit -m' # commit with message, 
 alias gcmnv='git commit --no-verify -m ' #
 
 #alias gcm='towles-tool git-commit' # commit with message
