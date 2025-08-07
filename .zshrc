@@ -13,7 +13,8 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
   # eval "$(~/.linuxbrew/bin/brew shellenv)"
   #eval $($(brew --prefix)/bin/brew shellenv)
   #echo "Linux, using vscode-insiders"
-  alias code="code-insiders"
+  #alias code="code-insiders"
+  
 else
   eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
@@ -315,8 +316,8 @@ alias gic='gh issue create --web --title' # create issue in web interface
 
 
 # temporary commit untill i move it into `@towles/tool` - https://www.npmjs.com/package/@towles/tool
-alias bra='node /home/ctowles/code/p/dotfiles/cli/dist/cli.mjs branch' # use my cli tool to create a branch from an issue
-alias br='node /home/ctowles/code/p/dotfiles/cli/dist/cli.mjs branch --unassigned'
+alias branch='towles-tool gh-branch' # use my cli tool to create a branch from an issue
+alias branch-me='towles-tool gh-branch --assigned-to-me'
 
 
 alias gcam='git add --all && git commit -m'
@@ -520,9 +521,7 @@ fi
 
 # shorthand alias to run claude prompt
 
-c() {
- claude -p "$@"
-}
+alias c="claude"
 
 alias ccusage="pnpm dlx ccusage blocks --live"
 
