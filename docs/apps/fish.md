@@ -2,6 +2,12 @@
 
 A comprehensive guide to setting up Fish shell with modern plugins and themes, similar to Oh My Zsh.
 
+
+## Why Fish?
+
+Looking for master shell experience. Zsh is great, but each new shell takes between 5-15 seconds to start, which is a lot of time wasted. Fish shell is designed to be user-friendly, with features like syntax highlighting, autosuggestions, and a powerful plugin ecosystem. and so far much faster to start a new shell window.
+
+
 ## Installation
 
 ### Ubuntu/Debian
