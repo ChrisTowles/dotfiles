@@ -259,16 +259,10 @@ alias gco='git stash && gmain && gh pr checkout '
 alias grt='cd "$(git rev-parse --show-toplevel)"'
 
 ## Most get aliases are from https://github.com/antfu/dotfiles/blob/main/.zshrc and i'm still working on which i like.
-
 alias gs='git status'
 alias gp='git push'
 alias gpf='git push --force'
-alias gpft='git push --follow-tags'
-#alias gpl='git pull --rebase'
-#alias gcl='git clone'
 alias gst='git stash'
-alias grm='git rm'
-alias gmv='git mv'
 
 gmain() {
 

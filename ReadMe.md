@@ -32,6 +32,20 @@ cd dotfiles
 cd ~/
 mv .zshrc .zshrc.old
 ln -s $HOME/code/p/dotfiles/.zshrc $HOME/.zshrc
+```
+
+
+
+# make symbolic links for fish
+
+
+
+```bash
+mkdir -p ~/.config/fish/
+
+ln -s $HOME/code/p/dotfiles/.config/fish/config.fish $HOME/.config/fish/config.fish
+ln -s $HOME/code/p/dotfiles/.config/fish/fish_plugins $HOME/.config/fish/fish_plugins
+ln -s $HOME/code/p/dotfiles/.config/fish/custom_functions $HOME/.config/fish/custom_functions
 
 ```
 
@@ -47,14 +61,22 @@ mv ~/.zshrc.old ~/.zshrc
 
 ```
 
-## Terminal shell - ZSH
+## Terminal shell - ZSH / Fish
 
+### ZSH Configuration
 - [.zshrc](.zshrc)
 - [oh my zsh](https://ohmyz.sh/)
 - [spaceship-prompt](https://github.com/spaceship-prompt/spaceship-prompt)
 - [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions)
 - [zsh-syntax-highlighting](https://github.com/zsh-users/zsh-syntax-highlighting)
 - [zsh-z](https://github.com/agkozak/zsh-z) - each switch common directories
+
+### Fish Shell Configuration
+- [.config/fish/](.config/fish/) - Fish shell configuration with custom key bindings
+- [Starship prompt](https://starship.rs/) - Cross-shell prompt
+- Custom Ctrl+C/Ctrl+V copy/paste bindings
+
+### Common Tools
 - [nvm](https://github.com/nvm-sh/nvm) - use multiple versions of node
 - [pnpm](https://pnpm.io/) - fast node manager with monorepos support.
 - [antfu/ni](https://github.com/antfu/ni) - use the right package manager
