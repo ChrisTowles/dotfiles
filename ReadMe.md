@@ -36,16 +36,32 @@ ln -s $HOME/code/p/dotfiles/.zshrc $HOME/.zshrc
 
 
 
-# make symbolic links for fish
+# Setup Fish shell
+
+I'm exploring Fish shell as an alternative to Zsh for two key reasons:
+
+- **Copy/paste keybindings** - I use macOS at work and have rebound `Ctrl+C` and `Ctrl+V` for copy/paste in terminal. On Linux, implementing this in Zsh and Bash never works reliably. Fish is the first shell with built-in support for custom copy/paste bindings to override the default `Ctrl+C`(SIGINT) behavior.
+- **Terminal startup performance** - [Oh My Zsh](https://ohmyz.sh/) was excellent but significantly slowed terminal startup time. Fish with Starship offers similar functionality with much faster startup performance.
 
 
 
 ```bash
-mkdir -p ~/.config/fish/
+mkdir -p ~/.config/fish
 
 ln -s $HOME/code/p/dotfiles/.config/fish/config.fish $HOME/.config/fish/config.fish
-ln -s $HOME/code/p/dotfiles/.config/fish/fish_plugins $HOME/.config/fish/fish_plugins
 ln -s $HOME/code/p/dotfiles/.config/fish/custom_functions $HOME/.config/fish/custom_functions
+
+fish
+
+# install fisher to manage plugins
+curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher
+
+# remove new plugins file
+rm -rf ~/.config/fish/fish_plugins
+
+# link fish plugins file from dotfiles repo
+ln -s $HOME/code/p/dotfiles/.config/fish/fish_plugins $HOME/.config/fish/fish_plugins
+
 
 ```
 

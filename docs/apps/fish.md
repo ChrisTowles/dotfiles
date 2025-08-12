@@ -5,16 +5,23 @@ A comprehensive guide to setting up Fish shell with modern plugins and themes, s
 
 ## Why Fish?
 
-Looking for master shell experience. Zsh is great, but each new shell takes between 5-15 seconds to start, which is a lot of time wasted. Fish shell is designed to be user-friendly, with features like syntax highlighting, autosuggestions, and a powerful plugin ecosystem. and so far much faster to start a new shell window.
+I'm looking for an optimal shell experience. While Zsh is excellent, each new shell session takes 5-15 seconds to start, which adds up to significant time wasted throughout the day. Fish shell is designed to be user-friendly with built-in features like syntax highlighting, intelligent autosuggestions, and a powerful plugin ecosystem. Most importantly, Fish starts up much faster than Zsh with Oh My Zsh.
 
 
 ## Installation
 
 ### Ubuntu/Debian
 ```bash
-sudo apt-add-repository ppa:fish-shell/release-3
+sudo apt-add-repository ppa:fish-shell/release-4
 sudo apt update
 sudo apt install fish
+```
+
+#### Remove Repository (if needed)
+```bash
+# Remove the fish-shell PPA repository
+sudo apt-add-repository --remove ppa:fish-shell/release-4
+sudo apt update
 ```
 
 ### macOS
@@ -39,9 +46,6 @@ Fisher is the most popular and actively maintained plugin manager for Fish.
 ```bash
 # Install Fisher
 curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher
-
-# Or using Fish
-curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | fish && fisher install jorgebucaran/fisher
 ```
 
 ## Essential Plugins
@@ -209,3 +213,22 @@ help
 - [Fisher Plugin Manager](https://github.com/jorgebucaran/fisher)
 - [Awesome Fish](https://github.com/jorgebucaran/awsm.fish)
 - [Fish Cookbook](https://github.com/jorgebucaran/cookbook.fish)
+
+
+
+## autocomplete generations
+
+https://github.com/adaszko/complgen?tab=readme-ov-file
+
+```bash
+cargo install --git https://github.com/adaszko/complgen --tag v0.4.0 complgen
+```
+
+Command 'cargo' not found, but can be installed with:
+```bash
+sudo apt  install cargo  
+
+```
+
+
+

@@ -68,4 +68,3 @@ starship init fish | source
 # Custom functions directory
 set -gx fish_function_path ~/.config/fish/custom_functions/ $fish_function_path
 
-source ~/.config/fish/custom_functions/gmain.fish
