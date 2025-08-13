@@ -8,6 +8,26 @@
 # push the current branch and set the remote as upstream automatically every time you push
 # git config --global push.default current
 
+### Debug timing
+# you can't measure what you don't track, so enable to debug slow starts
+zsh_start_time_total=$(date +%s.%N)
+
+# Debug timing: To enable debug timing, run: export ZSH_DEBUG_TIMING=1 && source ~/.zshrc
+# Debug timing functions
+if [[ -n "$ZSH_DEBUG_TIMING" ]]; then
+    zsh_debug_start_time=$(date +%s.%N)
+    zsh_debug_section() {
+        local current_time=$(date +%s.%N)
+        local elapsed=$(echo "$current_time - $zsh_debug_start_time" | bc -l)
+        printf "DEBUG: %s took %.3f seconds\n" "$1" "$elapsed"
+        zsh_debug_start_time=$current_time
+    }
+else
+    zsh_debug_section() { : }
+fi
+
+zsh_debug_section "Initial setup"
+
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
   # note: give up on brew for linux, every time its been a mistake
   # eval "$(~/.linuxbrew/bin/brew shellenv)"
@@ -18,6 +38,8 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
 else
   eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
+
+zsh_debug_section "Brew setup"
 
 # https://www.nerdfonts.com/font-downloads
 # "FiraMono Nerd Font"
@@ -33,6 +55,8 @@ else
   source "/opt/homebrew/opt/spaceship/spaceship.zsh" "$ZSH_CUSTOM/themes/spaceship-prompt"
 fi
 
+zsh_debug_section "Theme setup"
+
 # git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 # git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 # git clone https://github.com/agkozak/zsh-z $ZSH_CUSTOM/plugins/zsh-z
@@ -46,9 +70,11 @@ plugins=(
   # kubectl # auto complete for kubectl
   zsh-autosuggestions # suggests commands as you type based on history and completions.
   zsh-syntax-highlighting
-  #zsh-system-clipboard # copy and paste commands in zsh with the buffer from os clipboard, use  zle -al to see all key bindings actions
+  zsh-system-clipboard # copy and paste commands in zsh with the buffer from os clipboard, use  zle -al to see all key bindings actions
   zsh-z #  jump quickly to directories that you have visited frequently
 )
+
+zsh_debug_section "Plugin configuration"
 
 
 # enable option-stacking for docker autocomplete - https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/docker
@@ -87,6 +113,8 @@ SAVEHIST=50000
 #ENABLE_CORRECTION="true"
 
 source $ZSH/oh-my-zsh.sh
+
+zsh_debug_section "Oh-my-zsh loading"
 
 # yes i know this doesn't save many keystrokes, but trying to autocomplete faster, as i run it alot.
 alias s-zsh="source ~/.zshrc"
@@ -133,14 +161,19 @@ echo-yellow() {
 
 echo-green "Chris's ZSH Profile"
 
+zsh_debug_section "System aliases and functions"
+
 # -------------------------------- #
 # Node Package Manager
 # -------------------------------- #
 # mkdir ~/.nvm
 # Install NVM - https://github.com/nvm-sh/nvm#installing-and-updating
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+#
+  # moved to a one of function, i don't use it all the time and was slow.
+  export NVM_DIR="$HOME/.nvm"
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+  # [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+#}
 
 # pnpm
 export PNPM_HOME="/home/ctowles/.local/share/pnpm"
@@ -165,15 +198,19 @@ alias lint="nr lint"
 alias lintf="nr lint --fix"
 alias release="nr release"
 
+zsh_debug_section "Node/pnpm setup"
+
 # -------------------------------- #
 # @towles/tool
 # -------------------------------- #
 # install @towles/tool
 # npm i -g @towles/tool
 alias tt="towles-tool"
-alias today="tt journal today"
-alias meeting="tt journal meeting"
-alias note="tt journal note"
+alias today="towles-tool journal today"
+alias meeting="towles-tool journal meeting"
+alias note="towles-tool journal note"
+
+zsh_debug_section "Towles tool setup"
 
 # -------------------------------- #
 # Github CLI
@@ -192,9 +229,9 @@ alias note="tt journal note"
 # then generate # GH autocompletion # https://cli.github.com/manual/gh_completion
 # "gh completion -s zsh > /usr/local/share/zsh/site-functions/_gh"
 
-# load the autocompletions
-autoload -U compinit
-compinit -i
+# # load the autocompletions
+# autoload -U compinit
+# compinit -i
 
 # then login "gh auth login"
 
@@ -247,6 +284,8 @@ alias gw="gh browse"
 
 # stash current changes and checkout a PR by number
 alias gco='git stash && gmain && gh pr checkout '
+
+zsh_debug_section "GitHub CLI setup"
 
 # -------------------------------- #
 # Git
@@ -368,6 +407,8 @@ gh-pr() {
 alias pr="gh-pr"
 alias gi="gh issue create --web"
 
+zsh_debug_section "Git aliases and functions"
+
 git-ingored() {
   echo "Showing all files not included in Git"
 
@@ -382,6 +423,8 @@ git-ingored() {
 ##
 # pnpm i http-server -g
 alias host="http-server -P http://localhost:8080? dist" # proxy to self for vue routing https://stackoverflow.com/a/69143401/484543
+
+zsh_debug_section "Docker and http-server aliases"
 
 # -------------------------------- #
 # Gitkraken CLI
@@ -408,6 +451,8 @@ alias dkill='docker kill $(docker ps -q)'      # kill all running containers
 alias ddel='docker rm $(docker ps -a -q)'      # delete all stopped containers with
 alias dimgdel='docker rmi $(docker images -q)' # delete all images
 alias dreset='docker-compose down; docker volume prune'
+
+zsh_debug_section "Gitkraken and Docker setup"
 
 # -------------------------------- #
 # Directories
@@ -438,6 +483,8 @@ function serve() {
     live-server $1
   fi
 }
+
+zsh_debug_section "Directory functions"
 
 ###
 
@@ -472,9 +519,13 @@ png-compress() {
 alias s-py="source .venv/bin/activate"
 alias source-py="source .venv/bin/activate"
 
+zsh_debug_section "Python and PNG compression setup"
+
 
 # load addintional scripts local to this machine...
 source $HOME/.zshrc_local.sh
+
+zsh_debug_section "Local scripts loading"
 
 ############## KeyBindings
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
@@ -497,6 +548,7 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
 
 fi
 
+zsh_debug_section "Key bindings setup"
 
 ###### Claude Code 
 
@@ -506,7 +558,7 @@ fi
 # install claude code ![claude-app-setup](/docs/apps/claude-code.md)
 
  
-fpath+=~/.zfunc; autoload -Uz compinit; compinit
+# fpath+=~/.zfunc; autoload -Uz compinit; compinit
 
 #alias claude="/home/ctowles/.claude/local/claude"
 
@@ -520,42 +572,12 @@ alias c="claude"
 
 alias ccusage="pnpm dlx ccusage blocks --live"
 
+zsh_debug_section "Claude Code setup"
 
-### Nerd Dictation
-dict-start() {
-  # start the nerd-dictation service
-  echo "Starting nerd-dictation service..."
-  
-  # Check if LanguageTool Docker container is already running
-  if docker ps --format "table {{.Names}}" | grep -q "languagetool"; then
-    echo "LanguageTool Docker container is already running"
-  else
-    echo "Starting LanguageTool Docker container..."
-    docker run --detach --rm -it -p 8010:8010 -e langtool_pipelinePrewarming=true -e Java_Xms=1g -e Java_Xmx=2g erikvl87/languagetool 
-    
-    # Wait for LanguageTool to be ready on port 8010
-    echo "Waiting for LanguageTool to be ready on port 8010..."
-    timeout=30
-    elapsed=0
-    while ! nc -z localhost 8010; do
-      if [ $elapsed -ge $timeout ]; then
-        echo "Timeout: LanguageTool did not start within $timeout seconds"
-        echo "Aborting..."
-        return 1
-      fi
-      sleep 1
-      elapsed=$((elapsed + 1))
-    done
-    echo "LanguageTool is ready!"
-  fi
-  
-  cd $HOME/code/f/nerd-dictation && source .venv/bin/activate && uv run hotkey.py
-}
-
-dict-stop() {
-  # stop the nerd-dictation service
-  echo "Stopping nerd-dictation service..."
-  cd $HOME/code/f/nerd-dictation && source .venv/bin/activate && ./nerd-dictation end
-}
+if [[ -n "$ZSH_DEBUG_TIMING" ]]; then
+  local current_time=$(date +%s.%N)
+  local elapsed=$(echo "$current_time - $zsh_start_time_total" | bc -l)
+  printf "DEBUG: Total time %s took %.3f seconds\n" "$1" "$elapsed"
+fi
 
 ############### Anything after this auto added ################
