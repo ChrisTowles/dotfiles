@@ -53,6 +53,8 @@ fi
 
 zsh_debug_section "Initial setup"
 
+alias co="code"
+
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
   # note: give up on brew for linux, every time its been a mistake
   # eval "$(~/.linuxbrew/bin/brew shellenv)"
@@ -270,17 +272,11 @@ gh-alias-setup() {
 }
 
 # alias to github cli with the dash so both work.
-gh-iv() {
-  gh iv $1
-}
+alias gh-iv='gh iv'
 
-gh-m() {
-  gh m
-}
+alias gh-m='gh m'
 
-gh-mv() {
-  gh mv
-}
+alias gh-mv='gh mv'
 
 alias gpr="gh pr-ls"
 
@@ -309,14 +305,14 @@ alias grt='cd "$(git rev-parse --show-toplevel)"'
 
 ## Most get aliases are from https://github.com/antfu/dotfiles/blob/main/.zshrc and i'm still working on which i like.
 alias gs='git status'
-alias gp='git push'
-alias gpf='git push --force'
+# https://stackoverflow.com/questions/6089294/why-do-i-need-to-do-set-upstream-all-the-time
+alias gp='git push -u origin HEAD'
+alias gpf='git push -u origin HEAD --force'
 alias gst='git stash'
 
 gmain() {
 
   git stash
-
   main_branch=$(git branch -l main)
   if [ -z "${main_branch}" ]; then
     print_step "checking out master"
@@ -326,16 +322,12 @@ gmain() {
     git checkout main
   fi
   git pull
-
 }
 
 #alias gco='git checkout'
 alias gcb='git checkout -b'
-
 alias gb='git branch'
-
 alias grb='git rebase'
-alias grbom='git rebase origin/main'
 alias grbc='git rebase --continue'
 
 alias gl='git log --graph --pretty="%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%ar) %C(bold blue)<%an>%Creset" --all --date=short'
@@ -351,9 +343,6 @@ alias gc='git commit'
 alias gcm='git status && git commit -m' # commit with message, 
 alias gcmnv='git commit --no-verify -m ' #
 
-#alias gcm='towles-tool git-commit' # commit with message
-#alias gca='towles-tool git-commit --ammend' # not yet implemented
-
 # create issue in web interface
 alias gic='gh issue create --web --title' # create issue in web interface
 
@@ -366,9 +355,6 @@ alias branch-me='towles-tool gh-branch --assigned-to-me'
 alias gcam='git add --all && git commit -m'
 alias gfrb='git fetch origin && git rebase origin/master'
 
-alias gxn='git clean -dn'
-alias gx='git clean -df'
-
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
   # Only for linux
   # sudo apt install xclip xsel
@@ -378,23 +364,12 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
   alias pbpaste='xclip -selection clipboard -o'
 fi
 
-alias gsha='git rev-parse HEAD | pbcopy'
 
-git-p() {
-  # https://stackoverflow.com/questions/6089294/why-do-i-need-to-do-set-upstream-all-the-time
-  git push -u origin HEAD
-}
-
-git-mp() {
-  git checkout master && git pull && git fetch --all
-}
-
-gh-pr() {
+function pr() {
 
   # Pushes to origin and opens a github compare view of it to speed up PR
   # creation.
   #
-
   remote=origin
   branch=$(git symbolic-ref --short HEAD)
 
@@ -402,7 +377,7 @@ gh-pr() {
     print_error "In master branch, can't do a PR."
   else
     # https://github.com/foo/bar.git -> foo/bar
-    repo=$(git ls-remote --get-url ${remote} |
+  repo=$(git ls-remote --get-url ${remote} |
       sed 's|^.*.com[:/]\(.*\)$|\1|' |
       sed 's|\(.*\)/$|\1|' |
       sed 's|\(.*\)\(\.git\)|\1|')
@@ -413,7 +388,6 @@ gh-pr() {
   fi
 
 }
-alias pr="gh-pr"
 alias gi="gh issue create --web"
 
 zsh_debug_section "Git aliases and functions"
@@ -472,17 +446,12 @@ zsh_debug_section "Gitkraken and Docker setup"
 # mkdir -p ~/code/r # for reproductions
 # -------------------------------- #
 
-function i() {
-  # useful for quick directory change
-  # type "i p" to go to my personal repositories folder
-  # type "i f" to go to my forked repositories folder
+# useful for quick directory change
+# type "i p" to go to my personal repositories folder  
+# type "i f" to go to my forked repositories folder
+i() { cd ~/code/$1; }
 
-  cd ~/code/$1
-}
-
-function pr-list() {
-  gh pr list
-}
+alias pr-list='gh pr list'
 
 # pnpm i -g live-server
 function serve() {
@@ -557,11 +526,13 @@ zsh_debug_section "Key bindings setup"
 
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
     PATH+=":$HOME/.claude/local/"
+    alias c="claude --dangerously-skip-permissions"
+    alias cr="claude --dangerously-skip-permissions --resume"
+else
+  # shorthand alias to run claude prompt
+  alias c="claude"
+  alias cr="claude --resume"
 fi
-
-# shorthand alias to run claude prompt
-
-alias c="claude"
 
 alias ccusage="pnpm dlx ccusage blocks --live"
 
