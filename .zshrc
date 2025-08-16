@@ -53,6 +53,8 @@ else
     zsh_debug_section() { : }
 fi
 
+alias zsh-load='export ZSH_DEBUG_TIMING=1 && source ~/.zshrc && export ZSH_DEBUG_TIMING=0'
+
 zsh_debug_section "Initial setup"
 
 alias co="code"
@@ -212,7 +214,7 @@ export PATH="$HOME/.npm-global/bin:$PATH"
 
 # Fd-find configuration
 export FZF_DEFAULT_OPTS="--ansi"
-export FZF_DEFAULT_COMMAND='fd --type file --strip-cwd-prefix --hidden --follow --exclude .git --preview "cat {}"'
+export FZF_DEFAULT_COMMAND='fd --type file --strip-cwd-prefix --hidden --follow --exclude .git'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
 
@@ -225,18 +227,24 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
+# grep alternative - ripgrep 
+# https://github.com/BurntSushi/ripgrep
+# sudo apt-get install ripgrep
+alias rg='rg -i'
 
-alias s="nr start"
-alias d="nr dev"
-alias b="nr build"
-alias bw="nr build --watch"
-alias t="nr test"
-alias tw="nr test --watch"
-alias w="nr watch"
 
-alias lint="nr lint"
-alias lintf="nr lint --fix"
-alias release="nr release"
+
+# alias s="nr start"
+# alias d="nr dev"
+# alias b="nr build"
+# alias bw="nr build --watch"
+# alias t="nr test"
+# alias tw="nr test --watch"
+# alias w="nr watch"
+
+# alias lint="nr lint"
+# alias lintf="nr lint --fix"
+# alias release="nr release"
 
 zsh_debug_section "Node/pnpm setup"
 
@@ -376,7 +384,7 @@ alias gcmnv='git commit --no-verify -m ' #
 alias gic='gh issue create --web --title' # create issue in web interface
 
 
-# temporary commit untill i move it into `@towles/tool` - https://www.npmjs.com/package/@towles/tool
+# temporary commit until i move it into `@towles/tool` - https://www.npmjs.com/package/@towles/tool
 alias branch='towles-tool gh-branch' # use my cli tool to create a branch from an issue
 alias branch-me='towles-tool gh-branch --assigned-to-me'
 
