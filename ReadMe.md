@@ -87,11 +87,6 @@ mv ~/.zshrc.old ~/.zshrc
 - [zsh-syntax-highlighting](https://github.com/zsh-users/zsh-syntax-highlighting)
 - [zsh-z](https://github.com/agkozak/zsh-z) - each switch common directories
 
-### Fish Shell Configuration
-- [.config/fish/](.config/fish/) - Fish shell configuration with custom key bindings
-- [Starship prompt](https://starship.rs/) - Cross-shell prompt
-- Custom Ctrl+C/Ctrl+V copy/paste bindings
-
 ### Common Tools
 - [nvm](https://github.com/nvm-sh/nvm) - use multiple versions of node
 - [pnpm](https://pnpm.io/) - fast node manager with monorepos support.

@@ -26,6 +26,8 @@ print_error() {
 }
 
 
+
+
 # configure git
 # git config --global user.email "you@example.com"
 # git config --global user.name "Your Name"
@@ -194,8 +196,35 @@ case ":$PATH:" in
 esac
 # pnpm end
 
-# install @antfu/ni
-# pnpm i -g @antfu/ni
+
+
+function npm-install-global() {
+npm install --global  pnpm
+npm install --global @antfu/ni
+#https://github.com/sharkdp/fd 
+npm install --global fd-find
+npm install --global @towles/tool
+
+
+}
+
+export PATH="$HOME/.npm-global/bin:$PATH"
+
+# Fd-find configuration
+export FZF_DEFAULT_OPTS="--ansi"
+export FZF_DEFAULT_COMMAND='fd --type file --strip-cwd-prefix --hidden --follow --exclude .git --preview "cat {}"'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+
+
+
+# FZF - https://github.com/junegunn/fzf
+# sudo apt remove fzf 
+# most of the package managers are way out of date
+# git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+# ~/.fzf/install
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
 
 alias s="nr start"
 alias d="nr dev"
@@ -403,9 +432,6 @@ git-ingored() {
 
 }
 
-##
-# pnpm i http-server -g
-alias host="http-server -P http://localhost:8080? dist" # proxy to self for vue routing https://stackoverflow.com/a/69143401/484543
 
 zsh_debug_section "Docker and http-server aliases"
 
@@ -545,4 +571,3 @@ if [[ -n "$ZSH_DEBUG_TIMING" ]]; then
 fi
 
 ############### Anything after this auto added ################
-export PATH="$HOME/.npm-global/bin:$PATH"
