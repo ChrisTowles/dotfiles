@@ -20,6 +20,18 @@ See https://github.com/mbailey/voicemode
 
 ### Local TTS
 
+```bash
+
+cd ~/.voicemode/services/kokoro
+ # linux
+ ./start-gpu.sh
+
+
+# macOS
+./start-gpu_mac.sh
+```
+
+
 Setting the Kokoro service with web interface
 
 Visit http://0.0.0.0:8880/web/
@@ -49,6 +61,11 @@ Careful, if you cancel the download halfway through, I had to manually delete th
 cmake -B build
 cmake --build build -j --config Release
 
+```
+
+
+```bash
+cd ~/.voicemode/whisper.cpp
 # transcribe an audio file
 ./build/bin/whisper-cli -m ~/.voicemode/whisper.cpp/models/ggml-base.en.bin -f samples/jfk.wav
 # output: And so my fellow Americans, ask not what your country can do for you, ask what you can do for your country.
