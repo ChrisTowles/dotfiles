@@ -41,13 +41,21 @@ sh ./models/download-ggml-model.sh base.en
 
 ## Larger
 sh ./models/download-ggml-model.sh large-v2 
+```
+Careful, if you cancel the download halfway through, I had to manually delete the file and redownload it. Due to it not validating the file had completed.
 
+```bash
 # build the project
 cmake -B build
 cmake --build build -j --config Release
 
 # transcribe an audio file
-./build/bin/whisper-cli -f samples/jfk.wav
+./build/bin/whisper-cli -m ~/.voicemode/whisper.cpp/models/ggml-base.en.bin -f samples/jfk.wav
+# output: And so my fellow Americans, ask not what your country can do for you, ask what you can do for your country.
+
+# transcribe a with larger model
+./build/bin/whisper-cli -m ~/.voicemode/whisper.cpp/models/ggml-large-v2.bin -f samples/jfk.wav
+# output: And so, my fellow Americans, ask not what your country can do for you, ask what you can do for your country.
 
 ```
 
@@ -63,18 +71,6 @@ The system will:
 2. **Listen** for your response via microphone  
 3. **Transcribe** your speech to text
 4. **Continue** the conversation naturally
-
-## 🛠️ Service Management
-
-All service management is done through Claude Code's voice-mode tools:
-
-| Action | Tool Usage |
-|--------|------------|
-| **Check Status** | Use `service` tool with `action="status"` |
-| **Start Service** | Use `service` tool with `action="start"` |
-| **Stop Service** | Use `service` tool with `action="stop"` |
-| **View Logs** | Use `service` tool with `action="logs"` |
-| **Download Models** | Use `download_model` tool |
 
 ## 🐛 Common Issues & Solutions
 
