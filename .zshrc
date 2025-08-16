@@ -1,6 +1,31 @@
 # install oh my zsh
 # install brew on mac
 
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+print_step() {
+  echo -e "${BLUE}🔧 $1${NC}"
+}
+
+print_success() {
+  echo -e "${GREEN}✅ $1${NC}"
+}
+
+print_warning() {
+  echo -e "${YELLOW}⚠️  $1${NC}"
+}
+
+print_error() {
+  echo -e "${RED}❌ $1${NC}"
+  exit 1
+}
+
+
 # configure git
 # git config --global user.email "you@example.com"
 # git config --global user.name "Your Name"
@@ -19,7 +44,7 @@ if [[ -n "$ZSH_DEBUG_TIMING" ]]; then
     zsh_debug_section() {
         local current_time=$(date +%s.%N)
         local elapsed=$(echo "$current_time - $zsh_debug_start_time" | bc -l)
-        printf "DEBUG: %s took %.3f seconds\n" "$1" "$elapsed"
+        print_warning "$(printf "DEBUG: %s took %.3f seconds" "$1" "$elapsed")"
         zsh_debug_start_time=$current_time
     }
 else
@@ -141,25 +166,9 @@ export CLICOLOR=1
 export CLICOLOR_FORCE=1
 
 
-echo-red() {
-  RED='\033[0;31m'
-  NC='\033[0m' # No Color
-  echo "${RED} $1 ${NC}"
-}
 
-echo-green() {
-  GREEN='\033[0;32m'
-  NC='\033[0m' # No Color
-  echo "${GREEN} $1 ${NC}"
-}
 
-echo-yellow() {
-  YELLOW='\033[1;33m'
-  NC='\033[0m' # No Color
-  echo "${YELLOW} $1 ${NC}"
-}
-
-echo-green "Chris's ZSH Profile"
+print_success "Chris's ZSH Profile"
 
 zsh_debug_section "System aliases and functions"
 
@@ -310,10 +319,10 @@ gmain() {
 
   main_branch=$(git branch -l main)
   if [ -z "${main_branch}" ]; then
-    echo-yellow "checking out master"
+    print_step "checking out master"
     git checkout master
   else
-    echo-yellow "checking out main"
+    print_step "checking out main"
     git checkout main
   fi
   git pull
@@ -390,7 +399,7 @@ gh-pr() {
   branch=$(git symbolic-ref --short HEAD)
 
   if [[ $branch == "master" ]]; then
-    echo-red "In master branch, can't do a PR."
+    print_error "In master branch, can't do a PR."
   else
     # https://github.com/foo/bar.git -> foo/bar
     repo=$(git ls-remote --get-url ${remote} |
@@ -410,12 +419,12 @@ alias gi="gh issue create --web"
 zsh_debug_section "Git aliases and functions"
 
 git-ingored() {
-  echo "Showing all files not included in Git"
+  print_step "Showing all files not included in Git"
 
   git ls-files . --ignored --exclude-standard --others | grep -v node_modules
 
   echo ""
-  echo "Example: you can remove some folders with the following using grep -v (inverse)"
+  print_step "Example: you can remove some folders with the following using grep -v (inverse)"
   echo "git ls-files . --ignored --exclude-standard --others | grep -v node_modules"gw
 
 }
@@ -435,7 +444,7 @@ gitk() {
     cd "$(dirname "$1")"
     pwd -P
   )/$(basename "$1")"
-  echo "open gitkraken to '$dir'"
+  print_step "open gitkraken to '$dir'"
   open "gitkraken://repo/$dir"
 }
 
@@ -494,23 +503,7 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
   printf "\e[?2004l"
 fi
 
-## DBeavers
-# brew install --cask dbeaver-community
 
-## PNG Compression
-
-## Compress all PNG files in repo not yet checked in
-png-compress() {
-  # Get all PNG files not yet committed
-  LIST=($(git status -s | cut -c4- | grep .png))
-  for file in $LIST
-  do
-    echo "-- Processing $file..."
-    du -h "$file"
-    pngquant "$file" --ext .png --force
-    du -h "$file"
-  done
-}
 
 ## Python Env
 ## uv - install uv
@@ -577,7 +570,8 @@ zsh_debug_section "Claude Code setup"
 if [[ -n "$ZSH_DEBUG_TIMING" ]]; then
   local current_time=$(date +%s.%N)
   local elapsed=$(echo "$current_time - $zsh_start_time_total" | bc -l)
-  printf "DEBUG: Total time %s took %.3f seconds\n" "$1" "$elapsed"
+  print_success "$(printf "Finished: Total time %s took %.3f seconds" "$1" "$elapsed")"
 fi
 
 ############### Anything after this auto added ################
+export PATH="$HOME/.npm-global/bin:$PATH"

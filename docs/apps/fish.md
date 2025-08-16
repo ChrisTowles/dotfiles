@@ -1,6 +1,10 @@
+
+# 2025-08-15 - IMPORTANT I stopped Using fish after a week, to many issues with plugins and compatibility!
+
 # Fish Shell Setup Guide
 
 A comprehensive guide to setting up Fish shell with modern plugins and themes, similar to Oh My Zsh.
+
 
 
 ## Why Fish?
