@@ -4,14 +4,14 @@
 
 Opinionated setup I use on my machine for things like terminal and dotfiles like `.zshrc`.
 
+![](/docs/images/example-for-my-shell.png)
+
+
 ## Prerequisites
 
 - [Git](https://git-scm.com/)
 - [VS Code](https://code.visualstudio.com/)
 - [Set zsh as your default shell](https://github.com/ohmyzsh/ohmyzsh/wiki/Installing-ZSH#how-to-install-zsh-on-many-platforms)
-### Linux
-
-[Linux Setup Notes](./linux-setup-notes.md)
 
 ## Quick Setup
 
@@ -61,12 +61,12 @@ git config --global core.editor "code --wait"
 git config --global push.default current
 ```
 
-## Terminal Shell - ZSH / Fish
 
-### ZSH Configuration
+## Terminal Shell - ZSH Configuration
+
+
 
 **Modular Design**: The configuration is split into focused modules in `additional_scripts/`:
-
 - **Core**: [.zshrc](.zshrc) - Main loader with smart conditional sourcing
 - **Oh My Zsh**: Theme, plugins, and core functionality  
 - **Git Tools**: Aliases, helper functions, and GitHub CLI integration
@@ -95,6 +95,12 @@ git config --global push.default current
 ## [VS Code](https://code.visualstudio.com/) Extensions
 
 [Full List of Used Extensions](./vscode-extensions.md)
+
+- 
+## Linux
+
+- [Linux Setup Notes](./linux-setup-notes.md)
+- [CopyQ](https://hluk.github.io/CopyQ/) - Advanced clipboard manager
 
 ## Mac - [Xcode](https://developer.apple.com/xcode/)
 
@@ -144,9 +150,7 @@ brew update
 - [VS Code Insiders](https://code.visualstudio.com/insiders/) - See [setup guide](docs/apps/code-insiders.md)
 - [Spaceship](https://github.com/spaceship-prompt/spaceship-prompt). Currently using Spaceship and loving it. 
 
-## Linux Apps
 
-- [CopyQ](https://hluk.github.io/CopyQ/) - Advanced clipboard manager
 
 ## Windows
 
