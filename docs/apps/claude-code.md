@@ -40,6 +40,8 @@ If using bedrock
 }
 ```
 
+
+
 Issues update 
 https://github.com/anthropics/claude-code/issues/40
 
@@ -54,58 +56,45 @@ export AWS_REGION=us-east-1  # or your preferred region
 # Optional: Override the region for the small/fast model (Haiku)
 export ANTHROPIC_SMALL_FAST_MODEL_AWS_REGION=us-west-2
 ```
+## Hook to play music when done
 
+Audio hook for Claude code
 
-# https://github.com/upstash/context7
+```jsonc
+{
+// Add hook to play music when its ready for more input
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/code/p/dotfiles/config/claude/notify.sh"
+          }
+        ]
+      }
+    ]
+  }
 
-
-## Setup OS level dictation 
-
-This turned out way more complicated than i thought it would be.
-
-
-- https://github.com/arunk140/gnome-command-menu
-- https://www.youtube.com/watch?v=Cw1SESc8sdA
-- leading to https://github.com/ggml-org/whisper.cpp
-- after lots of research, I found that the best way to get dictation working on Linux is to use the `whisper.cpp` project, which provides a command line interface for Whisper models.
-- in the PopOS store, the last placed i looked, i found, https://github.com/chidiwilliams/buzz
-- finally back to just using the `nerd-dictation` project. Then 
-
-
-```bash 
-
-
-git clone https://github.com/ideasman42/nerd-dictation.git
-cd nerd-dictation
-# change to PR https://github.com/ideasman42/nerd-dictation/pull/147 to get the hotkey logic
-gco 147
-
-## Since we are not on mobile, using the bigger en-us model 
-rm -rf ./model
-rm -rf ~/.config/nerd-dictation/model
-https://alphacephei.com/vosk/models/vosk-model-en-us-0.42-gigaspeech.zip
-model_name="vosk-model-en-us-0.42-gigaspeech" # using the best model i can run locally. 
-curl -O https://alphacephei.com/vosk/models/$model_name.zip
-unzip $model_name.zip
-mv $model_name model
-
-## setup python virtual environment
-uv venv --python 3.12 --native-tls
-source .venv/bin/activate
-
-# isntall single dependencies
-uv pip install vosk pynput
-
-## move model so we don't have to specify it every time
-mkdir -p ~/.config/nerd-dictation
-mv ./model ~/.config/nerd-dictation
+}
 ```
 
+## Add Status Line
 
+Add status line to include the model and branch, etc.
 
-## Additonal MCP Servers
+```json
+{
 
+  "statusLine": {
+    "type": "command",
+    "command": "$HOME/code/p/dotfiles/config/claude/status-line.sh"
+  },
+}
 
+```
+
+## Additional MCP Servers
 
 https://docs.anthropic.com/en/docs/claude-code/mcp
 
@@ -157,15 +146,15 @@ claude mcp remove -s user context7
 ```
 
 ### Brave Search MCP Server
-```bash
 
+```bash
 claude mcp add -s user brave-search -- npx -y @modelcontextprotocol/server-brave-search -e BRAVE_API_KEY=$BRAVE_API_KEY
 claude mcp remove -s user brave-search
 ```
 
 ### Server Sequential Thinking MCP Server
-```bash
 
+```bash
 claude mcp add -s user server-sequential-thinking -- npx -y @modelcontextprotocol/server-sequential-thinking 
 claude mcp remove -s user server-sequential-thinking
 ```
@@ -208,9 +197,15 @@ export CLAUDE_FILESYSTEM_PATH="${pwd}"
 uv sync
 source .venv/bin/activate
 
-export CLAUDE_FILESYSTEM_PATH="${pwd}
+export CLAUDE_FILESYSTEM_PATH="${pwd}"
 
-# installable js/ts servers
+
+```
+
+installable js/ts servers
+
+```bash
+
 claude mcp add --transport sse github-server https://api.github.com/mcp
 
 claude mcp add filesystem -- npx -y @modelcontextprotocol/server-filesystem "${pwd}"
