@@ -11,72 +11,38 @@ This is a personal dotfiles repository containing:
 
 ## Development Commands
 
-### CLI Tool Development (in `/cli/` directory)
+### Dotfiles Setup Commands
 
 ```bash
-# Install dependencies
-pnpm i
+# Complete setup process (recommended)
+zsh-setup
 
-# Development mode with debugging
-pnpm dev
+# Install dependencies only
+zsh-install-deps
 
-# Build the CLI tool
-pnpm build
-
-# Run tests
-pnpm test
-
-# Run specific test file
-pnpm test branchCommand.spec.ts
-
-# Type checking
-pnpm typecheck
-
-# Linting
-pnpm lint
-
-# Install globally for testing
-pnpm install --global .
+# Check which dependencies are missing
+zsh-check-deps
 ```
 
-### CLI Tool Usage
+### Dotfiles Architecture
+- **Modular Design**: Configuration split into focused modules in `additional_scripts/`
+- **Smart Loading**: Only loads modules for installed tools using `command -v` checks
+- **Auto-Installation**: Built-in dependency installer with interactive menu
+- **Cross-Platform**: Works on Linux and macOS with OS-specific handling
+- **Debug Support**: Timing debug with `ZSH_DEBUG_TIMING` environment variable
 
-The CLI tool is available as both `towles-cli` and `tt` commands and includes:
-- `branch` - Create Git branches from GitHub issues
-- `branch-cleanup` - Clean up old branches
-- `aws-console-login` - AWS console login utilities
-- `today` - Daily utility commands
+### Key Zsh Modules
+- `zsh-00-init.zsh` - Initialization and utility functions
+- `zsh-01-oh-my-zsh.zsh` - Oh My Zsh configuration and plugins
+- `zsh-02-basic-aliases.zsh` - System aliases and modern CLI tool replacements
+- `zsh-git.zsh` - Git aliases and helper functions
+- `zsh-node.zsh` - Node.js, NVM, and pnpm configuration
+- `zsh-claude.zsh` - Claude CLI integration
+- `zsh-fzf.zsh` - FZF fuzzy finder configuration
 
-## Architecture
-
-### CLI Tool Structure
-
-- **Entry point**: `src/cli.ts` - Sets up Commander.js program with all commands
-- **Commands**: `src/commands/` - Individual command implementations
-  - Commands use Commander.js for CLI parsing
-  - Interactive prompts with `prompts` library
-  - Fuzzy finding with `fzf` library
-  - Colored output with `picocolors`
-- **Utilities**: `src/utils/` - Wrappers for external tools
-  - `gh-cli-wrapper.ts` - GitHub CLI integration
-  - `git-wrapper.ts` - Git operations
-- **Configuration**: Uses TypeScript with ESLint (@antfu/eslint-config)
-- **Testing**: Vitest with globals enabled
-- **Build**: Unbuild for compilation
-
-### Key Dependencies
-
-- **Commander.js** - CLI framework
-- **GitHub CLI** - Required for branch command (checks installation)
-- **Prompts** - Interactive CLI prompts
-- **Lodash** - Utility functions
-- **zx** - Shell command execution
-
-## Development Notes
-
-- The CLI tool requires GitHub CLI to be installed for branch management features
-- Uses pnpm for package management
-- Follows @antfu eslint configuration
-- Debug mode available with `DEBUG=towles-cli:*` environment variable
+### Modern CLI Tool Support
+- Conditional aliases for ripgrep (rg), eza, and bat
+- Automatic fallback to traditional tools if modern ones aren't installed
+- Platform-specific configurations (Linux vs macOS)
 
 
