@@ -1,17 +1,17 @@
-# Chris's DotFiles
+# Chris's Dotfiles
 
 ## Description
 
-Opinionated setup I use on my machine for things like terminal and  dot files like `.zshrc`.
+Opinionated setup I use on my machine for things like terminal and dotfiles like `.zshrc`.
 
-## Install core tools
+## Prerequisites
 
 - [Git](https://git-scm.com/)
 - [VS Code](https://code.visualstudio.com/)
-  
+- [Set zsh as your default shell](https://github.com/ohmyzsh/ohmyzsh/wiki/Installing-ZSH#how-to-install-zsh-on-many-platforms)
 ### Linux
 
-[Linux setup Notes](./linux-setup-notes.md)
+[Linux Setup Notes](./linux-setup-notes.md)
 
 ## Quick Setup
 
@@ -38,10 +38,10 @@ Once set up, you'll have these convenient commands:
 - `zsh-check-deps` - Check which dependencies are missing
 
 
-## local only scripts
+## Local Only Scripts
 
 ```bash
-# create a per machine only file, Also I also use this to load additional scripts from a private repo.
+# Create a per-machine only file. I also use this to load additional scripts from a private repo.
 touch $HOME/.zshrc_local
 
 ```
@@ -54,14 +54,14 @@ After setup, configure Git with your details:
 git config --global user.email "you@example.com"
 git config --global user.name "Your Name"
 
-# set code as the default editor
+# Set VS Code as the default editor
 git config --global core.editor "code --wait"
 
-# push the current branch and set the remote as upstream automatically every time you push
+# Push the current branch and set the remote as upstream automatically every time you push
 git config --global push.default current
 ```
 
-## Terminal shell - ZSH / Fish
+## Terminal Shell - ZSH / Fish
 
 ### ZSH Configuration
 
@@ -88,30 +88,28 @@ git config --global push.default current
 - [zsh-system-clipboard](https://github.com/kutsan/zsh-system-clipboard) - system copy/paste
 
 ### Common Tools
-- [nvm](https://github.com/nvm-sh/nvm) - use multiple versions of node
-- [pnpm](https://pnpm.io/) - fast node manager with monorepos support.
-- [antfu/ni](https://github.com/antfu/ni) - use the right package manager
+- [nvm](https://github.com/nvm-sh/nvm) - Use multiple versions of Node.js
+- [pnpm](https://pnpm.io/) - Fast Node.js package manager with monorepo support
+- [antfu/ni](https://github.com/antfu/ni) - Use the right package manager
 
 ## [VS Code](https://code.visualstudio.com/) Extensions
 
-[Full List of used Extensions](./vscode-extendsions.md)
+[Full List of Used Extensions](./vscode-extensions.md)
 
-## Mac - [xcode](https://developer.apple.com/xcode/)
+## Mac - [Xcode](https://developer.apple.com/xcode/)
 
 ```bash
-
- # If you get a path back (like /Applications/Xcode.app/Contents/Developer) then you're good to go
+# If you get a path back (like /Applications/Xcode.app/Contents/Developer) then you're good to go
 xcode-select -p
 
 # Otherwise to install
 xcode-select --install
-
 ```
 
 - [Homebrew](https://brew.sh/)
 
 ```bash
-# install brew
+# Install Homebrew
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 
 brew doctor
@@ -119,36 +117,37 @@ brew update
 ```
 
 - [iTerm2](https://iterm2.com/)
-  - ```bash
-    # install iterm2
-    brew install iterm2 --cask
-    ```
+  ```bash
+  # Install iTerm2
+  brew install iterm2 --cask
+  ```
 - [oh my zsh](https://ohmyz.sh/)
-  - ```bash
-    # install oh my zsh
-    sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-    ```
+  ```bash
+  # Install Oh My Zsh
+  sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+  ```
 - [Nerd Fonts](https://www.nerdfonts.com/)
-  - ```bash
-    # install nerd fonts
-    brew tap homebrew/cask-fonts
-    brew install --cask font-hack-nerd-font
-    ```
-  - Now in iTerm2 go to `Preferences > Profiles > Text` and set the font to `Hack Nerd Font`
+  ```bash
+  # Install Nerd Fonts
+  brew tap homebrew/cask-fonts
+  brew install --cask font-hack-nerd-font
+  ```
+  
+  Now in iTerm2 go to `Preferences > Profiles > Text` and set the font to `Hack Nerd Font`
 
 - [Monosnap](https://monosnap.com/) - Screenshot and annotation tool
-- Clipboard manager
-  - [CopyQ](https://hluk.github.io/CopyQ/) - clipboard manager (linux)
-    - setup autostart and keybinding
-  - [Maccy](https://maccy.app/) - tried as alternative to copyq after issues with it locking up when pasting.
+- Clipboard Manager
+  - [CopyQ](https://hluk.github.io/CopyQ/) - Clipboard manager (Linux)
+    - Setup autostart and keybinding
+  - [Maccy](https://maccy.app/) - Tried as alternative to CopyQ after issues with it locking up when pasting
 
-- [Magnet](https://magnet.crowdcafe.com/) - window manager
+- [Magnet](https://magnet.crowdcafe.com/) - Window manager
 
 - [VS Code Insiders](https://code.visualstudio.com/insiders/) - See [setup guide](docs/apps/code-insiders.md)
 
 ### Todo
 
-Look into [Powerlevel10k](https://github.com/romkatv/powerlevel10k#powerlevel10k) vs [Spaceship](https://github.com/spaceship-prompt/spaceship-prompt). Currently, using Spaceship and loving it. 
+Look into [Powerlevel10k](https://github.com/romkatv/powerlevel10k#powerlevel10k) vs [Spaceship](https://github.com/spaceship-prompt/spaceship-prompt). Currently using Spaceship and loving it. 
 
 ## Linux Apps
 
@@ -157,9 +156,9 @@ Look into [Powerlevel10k](https://github.com/romkatv/powerlevel10k#powerlevel10k
 ## Windows
 
 - [WSL](https://docs.microsoft.com/en-us/windows/wsl/) - Windows Subsystem for Linux
-- [Ditto](https://ditto-cp.sourceforge.io/) - clipboard manager
-- [Ninite](https://ninite.com/) - bulk software installer
+- [Ditto](https://ditto-cp.sourceforge.io/) - Clipboard manager
+- [Ninite](https://ninite.com/) - Bulk software installer
 
 ## History
 
-So I have a private repo I've been using to backup my `.zshrc` and other common scripts but recently when rebuilding my home computer I thought I copy [Anthony Fu](https://github.com/antfu) and his [dotfiles](https://github.com/antfu/dotfiles) repo and made mine public.
+I have a private repo I've been using to backup my `.zshrc` and other common scripts, but recently when rebuilding my home computer I thought I'd copy [Anthony Fu](https://github.com/antfu) and his [dotfiles](https://github.com/antfu/dotfiles) repo and make mine public.
