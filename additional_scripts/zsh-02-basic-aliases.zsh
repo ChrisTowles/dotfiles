@@ -34,6 +34,15 @@ if command -v bat &>/dev/null; then
   alias cat='bat'
 fi
 
+# jid is a JSON incremental digger, awesome to help making jq queries
+if command -v jid &>/dev/null; then
+  # default to show the filter
+  alias jid='jid -q'
+  # pretty print
+  alias jidp='jid -p'
+fi
+
+
 # Clipboard aliases for Linux
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
   # sudo apt install xclip xsel

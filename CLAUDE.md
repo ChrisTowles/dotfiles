@@ -41,7 +41,7 @@ zsh-check-deps
 - `zsh-fzf.zsh` - FZF fuzzy finder configuration
 
 ### Modern CLI Tool Support
-- Conditional aliases for ripgrep (rg), eza, and bat
+- Conditional aliases for ripgrep (rg), eza, jq, jid, and bat
 - Automatic fallback to traditional tools if modern ones aren't installed
 - Platform-specific configurations (Linux vs macOS)
 
