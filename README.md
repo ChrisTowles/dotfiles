@@ -121,6 +121,7 @@ brew update
   # Install iTerm2
   brew install iterm2 --cask
   ```
+   - Now in iTerm2 go to `Preferences > Profiles > Text` and set the font to `Hack Nerd Font`
 - [oh my zsh](https://ohmyz.sh/)
   ```bash
   # Install Oh My Zsh
@@ -133,21 +134,15 @@ brew update
   brew install --cask font-hack-nerd-font
   ```
   
-  Now in iTerm2 go to `Preferences > Profiles > Text` and set the font to `Hack Nerd Font`
 
 - [Monosnap](https://monosnap.com/) - Screenshot and annotation tool
 - Clipboard Manager
   - [CopyQ](https://hluk.github.io/CopyQ/) - Clipboard manager (Linux)
     - Setup autostart and keybinding
   - [Maccy](https://maccy.app/) - Tried as alternative to CopyQ after issues with it locking up when pasting
-
 - [Magnet](https://magnet.crowdcafe.com/) - Window manager
-
 - [VS Code Insiders](https://code.visualstudio.com/insiders/) - See [setup guide](docs/apps/code-insiders.md)
-
-### Todo
-
-Look into [Powerlevel10k](https://github.com/romkatv/powerlevel10k#powerlevel10k) vs [Spaceship](https://github.com/spaceship-prompt/spaceship-prompt). Currently using Spaceship and loving it. 
+- [Spaceship](https://github.com/spaceship-prompt/spaceship-prompt). Currently using Spaceship and loving it. 
 
 ## Linux Apps
 
