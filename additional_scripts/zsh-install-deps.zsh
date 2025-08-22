@@ -102,21 +102,14 @@ install_oh_my_zsh() {
     fi
     
     # Install spaceship theme
-    if [[ "$OS" == "linux" ]]; then
-        if [[ ! -d "$ZSH_CUSTOM/themes/spaceship-prompt" ]]; then
-            print_info "Installing Spaceship theme..."
-            git clone https://github.com/spaceship-prompt/spaceship-prompt.git "$ZSH_CUSTOM/themes/spaceship-prompt" --depth=1
-            ln -sf "$ZSH_CUSTOM/themes/spaceship-prompt/spaceship.zsh-theme" "$ZSH_CUSTOM/themes/spaceship.zsh-theme"
-            print_success "Spaceship theme installed"
-        fi
-    else
-        # macOS - install via brew
-        if ! brew list spaceship &>/dev/null; then
-            print_info "Installing Spaceship theme via Homebrew..."
-            brew install spaceship
-            print_success "Spaceship theme installed"
-        fi
+
+    if [[ ! -d "$ZSH_CUSTOM/themes/spaceship-prompt" ]]; then
+        print_info "Installing Spaceship theme..."
+        git clone https://github.com/spaceship-prompt/spaceship-prompt.git "$ZSH_CUSTOM/themes/spaceship-prompt" --depth=1
+        ln -sf "$ZSH_CUSTOM/themes/spaceship-prompt/spaceship.zsh-theme" "$ZSH_CUSTOM/themes/spaceship.zsh-theme"
+        print_success "Spaceship theme installed"
     fi
+   
 }
 
 # Install Git and GitHub CLI
@@ -161,9 +154,11 @@ install_fzf() {
     if [[ ! -f ~/.fzf.zsh ]]; then
         print_info "Setting up FZF shell integration..."
         if command -v fzf &>/dev/null; then
-            $(brew --prefix)/opt/fzf/install --no-bash --no-fish 2>/dev/null || \
-            /usr/share/doc/fzf/examples/install --no-bash --no-fish 2>/dev/null || \
+            git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+            ~/.fzf/install --all --no-bash --no-fish
             print_warning "FZF shell integration may need manual setup"
+
+
         fi
     fi
 }

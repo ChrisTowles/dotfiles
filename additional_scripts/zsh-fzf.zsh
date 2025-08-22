@@ -12,8 +12,7 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 # git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 # ~/.fzf/install
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-
+# Set up fzf key bindings and fuzzy completion
+source <(fzf --zsh)
 
 zsh_debug_section "FZF setup"
