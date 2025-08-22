@@ -53,42 +53,42 @@ check_or_install() {
 # Module-specific installers
 install_oh_my_zsh_module() {
     # Source the main installer for the function
-    source "$DOTFILES_PATH/additional_scripts/zsh-installer.zsh"
+    source "$DOTFILES_PATH/additional_scripts/zsh-install-deps.zsh"
     install_oh_my_zsh
 }
 
 install_fzf_module() {
-    source "$DOTFILES_PATH/additional_scripts/zsh-installer.zsh"
+    source "$DOTFILES_PATH/additional_scripts/zsh-install-deps.zsh"
     install_fzf
 }
 
 install_gh_module() {
-    source "$DOTFILES_PATH/additional_scripts/zsh-installer.zsh"
+    source "$DOTFILES_PATH/additional_scripts/zsh-install-deps.zsh"
     install_git_tools
 }
 
 install_node_module() {
-    source "$DOTFILES_PATH/additional_scripts/zsh-installer.zsh"
+    source "$DOTFILES_PATH/additional_scripts/zsh-install-deps.zsh"
     install_node_tools
 }
-
+    
 install_python_module() {
-    source "$DOTFILES_PATH/additional_scripts/zsh-installer.zsh"
+    source "$DOTFILES_PATH/additional_scripts/zsh-install-deps.zsh"
     install_python_tools
 }
 
 install_docker_module() {
-    source "$DOTFILES_PATH/additional_scripts/zsh-installer.zsh"
+    source "$DOTFILES_PATH/additional_scripts/zsh-install-deps.zsh"
     install_docker
 }
 
 install_claude_module() {
-    source "$DOTFILES_PATH/additional_scripts/zsh-installer.zsh"
+    source "$DOTFILES_PATH/additional_scripts/zsh-install-deps.zsh"
     install_claude
 }
 
 install_cli_tools_module() {
-    source "$DOTFILES_PATH/additional_scripts/zsh-installer.zsh"
+    source "$DOTFILES_PATH/additional_scripts/zsh-install-deps.zsh"
     install_cli_tools
 }
 

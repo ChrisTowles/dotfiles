@@ -5,6 +5,9 @@
 # git config --global user.email "you@example.com"
 # git config --global user.name "Your Name"
 
+# set code as the default editor
+# git config --global core.editor "code --wait"
+
 # push the current branch and set the remote as upstream automatically every time you push
 # git config --global push.default current
 
@@ -65,42 +68,25 @@ if command -v towles-tool &>/dev/null; then
     zsh_source_module "$DOTFILES_PATH/additional_scripts/zsh-towles-tool.zsh"
 fi
 
-# Optional modules (controlled by environment variables)
-# Set these in ~/.zshrc_local.sh to enable:
-# export ZSH_LOAD_DOCKER=1
-# export ZSH_LOAD_GITKRAKEN=1
-# export ZSH_LOAD_PYTHON=1
-# export ZSH_LOAD_SERVER=1
 
-if [[ "$ZSH_LOAD_DOCKER" == "1" ]] || command -v docker &>/dev/null; then
-    zsh_source_module "$DOTFILES_PATH/additional_scripts/zsh-docker.zsh"
+if command -v docker &>/dev/null; then
+   zsh_source_module "$DOTFILES_PATH/additional_scripts/zsh-docker.zsh"
 fi
 
 if [[ "$ZSH_LOAD_GITKRAKEN" == "1" ]]; then
     zsh_source_module "$DOTFILES_PATH/additional_scripts/zsh-gitkraken.zsh"
 fi
 
-if [[ "$ZSH_LOAD_PYTHON" == "1" ]] || command -v uv &>/dev/null; then
+if command -v uv &>/dev/null; then
     zsh_source_module "$DOTFILES_PATH/additional_scripts/zsh-python.zsh"
 fi
 
-if [[ "$ZSH_LOAD_SERVER" == "1" ]] || command -v live-server &>/dev/null; then
-    zsh_source_module "$DOTFILES_PATH/additional_scripts/zsh-server.zsh"
-fi
 
-# Key bindings (Linux only)
-zsh_source_module "$DOTFILES_PATH/additional_scripts/zsh-keybindings.zsh"
 
 # Installer aliases (always available)
 alias zsh-setup='bash "$DOTFILES_PATH/setup.sh"'
-alias zsh-install-deps='zsh "$DOTFILES_PATH/additional_scripts/zsh-install-deps.zsh"'
+alias zsh-install='zsh "$DOTFILES_PATH/additional_scripts/zsh-install-deps.zsh"'
 alias zsh-check-deps='zsh "$DOTFILES_PATH/additional_scripts/zsh-check-deps.zsh"'
-
-# Load machine-specific local configuration
-if [[ -f "$HOME/.zshrc_local.sh" ]]; then
-    source "$HOME/.zshrc_local.sh"
-    zsh_debug_section "Local scripts loading"
-fi
 
 # Final timing report
 if [[ -n "$ZSH_DEBUG_TIMING" ]]; then

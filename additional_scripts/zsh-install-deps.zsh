@@ -1,5 +1,5 @@
 #!/usr/bin/env zsh
-# zsh-installer.zsh
+# zsh-install-deps.zsh
 # Auto-installation system for all zsh modules and their dependencies
 
 # Colors for output
@@ -383,7 +383,9 @@ interactive_install() {
     echo "Next steps:"
     echo "  1. Restart your shell: exec zsh"
     echo "  2. Some tools may require logout/login (Docker)"
-    echo "  3. Configure git: git config --global user.name/user.email"
+    echo "  3. Configure git:"
+    echo -e "     ${YELLOW}git config --global user.name \"Your Name\"${NC}"
+    echo -e "     ${YELLOW}git config --global user.email \"you@example.com\"${NC}"
     echo ""
 }
 

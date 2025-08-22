@@ -17,8 +17,8 @@ This is a personal dotfiles repository containing:
 # Complete setup process (recommended)
 zsh-setup
 
-# Install dependencies only
-zsh-install-deps
+# Install dependencies
+zsh-install
 
 # Check which dependencies are missing
 zsh-check-deps

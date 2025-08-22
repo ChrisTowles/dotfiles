@@ -34,7 +34,7 @@ cd dotfiles
 Once set up, you'll have these convenient commands:
 
 - `zsh-setup` - Re-run the complete setup process (recommended)
-- `zsh-install-deps` - Run the interactive dependency installer only
+- `zsh-install` - Run the interactive dependency installer only
 - `zsh-check-deps` - Check which dependencies are missing
 
 
@@ -44,6 +44,19 @@ Once set up, you'll have these convenient commands:
 # create a per machine only file, Also I also use this to load additional scripts from a private repo.
 touch $HOME/.zshrc_local
 
+```
+
+## Git Configuration
+
+After setup, configure Git with your details:
+
+```bash
+git config --global user.email "you@example.com"
+git config --global user.name "Your Name"
+git config --global core.editor "code --wait"
+
+# push the current branch and set the remote as upstream automatically every time you push
+git config --global push.default current
 ```
 
 ## Terminal shell - ZSH / Fish

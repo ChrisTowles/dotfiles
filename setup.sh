@@ -104,12 +104,12 @@ install_dependencies() {
         fi
         
         # Run the installer
-        zsh "$SCRIPT_DIR/additional_scripts/zsh-installer.zsh"
+        zsh "$SCRIPT_DIR/additional_scripts/zsh-install-deps.zsh"
     else
         print_warning "Skipping dependency installation"
         echo ""
         print_note "You can install dependencies later by running:"
-        echo -e "  ${YELLOW}zsh $SCRIPT_DIR/additional_scripts/zsh-installer.zsh${NC}"
+        echo -e "  ${YELLOW}zsh $SCRIPT_DIR/additional_scripts/zsh-install-deps.zsh${NC}"
     fi
 }
 
@@ -138,6 +138,9 @@ main() {
     echo -e "  ${PURPLE}3.${NC} Configure git if needed:"
     echo -e "     ${YELLOW}git config --global user.name \"Your Name\"${NC}"
     echo -e "     ${YELLOW}git config --global user.email \"you@example.com\"${NC}"
+    echo -e "     ${YELLOW}git config --global core.editor \"code --wait\"${NC}"
+    echo -e "     ${YELLOW}git config --global push.default current${NC}"
+
     echo ""
     print_note "Useful commands after setup:"
     echo -e "  ${CYAN}zsh-setup${NC}        - Re-run this setup (recommended)"
