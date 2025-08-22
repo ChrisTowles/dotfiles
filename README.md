@@ -53,6 +53,8 @@ After setup, configure Git with your details:
 ```bash
 git config --global user.email "you@example.com"
 git config --global user.name "Your Name"
+
+# set code as the default editor
 git config --global core.editor "code --wait"
 
 # push the current branch and set the remote as upstream automatically every time you push

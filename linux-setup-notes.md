@@ -11,6 +11,9 @@ sudo apt install git zsh curl
 git config --global user.name "Your Name"
 git config --global user.email you@example.com
 
+# push the current branch and set the remote as upstream automatically every time you push
+git config --global push.default current
+
 # change git commit message editor to vscode
 git config --global core.editor "code --wait"
 

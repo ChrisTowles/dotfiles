@@ -386,6 +386,8 @@ interactive_install() {
     echo "  3. Configure git:"
     echo -e "     ${YELLOW}git config --global user.name \"Your Name\"${NC}"
     echo -e "     ${YELLOW}git config --global user.email \"you@example.com\"${NC}"
+    echo -e "     ${YELLOW}git config --global core.editor \"code --wait\"${NC}"
+    echo -e "     ${YELLOW}git config --global push.default current${NC}"
     echo ""
 }
 
