@@ -62,23 +62,6 @@ link_dotfiles() {
     ln -sf "$SCRIPT_DIR/.zshrc" "$HOME/.zshrc"
     print_success "Linked .zshrc"
     
-    # Link .gitconfig if exists
-    if [[ -f "$SCRIPT_DIR/.gitconfig" ]]; then
-        backup_existing ".gitconfig"
-        ln -sf "$SCRIPT_DIR/.gitconfig" "$HOME/.gitconfig"
-        print_success "Linked .gitconfig"
-    fi
-    
-    # Ensure .zshrc_local.sh exists for machine-specific config
-    if [[ ! -f "$HOME/.zshrc_local.sh" ]]; then
-        cat > "$HOME/.zshrc_local.sh" <<'EOF'
-# Machine-specific configuration
-# Add any local-only settings here
-
-
-EOF
-        print_success "Created .zshrc_local.sh for machine-specific config"
-    fi
 }
 
 # Install dependencies
