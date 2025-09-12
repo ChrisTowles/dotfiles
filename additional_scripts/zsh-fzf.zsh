@@ -13,6 +13,8 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 # ~/.fzf/install
 
 # Set up fzf key bindings and fuzzy completion
-source <(fzf --zsh)
+if [[ -f ~/.fzf.zsh ]]; then
+    source "$HOME/.fzf.zsh"
+fi
 
 zsh_debug_section "FZF setup"

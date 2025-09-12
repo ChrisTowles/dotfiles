@@ -170,4 +170,3 @@ if [[ -n "$ZSH_DEBUG_TIMING" ]]; then
 fi
 
 ############### Anything after this auto added ################
-. "$HOME/.local/bin/env"
