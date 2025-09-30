@@ -1,60 +1,18 @@
 # VSCode
 
+- Always set file save for `afterDelay`
 
 
+## Dictation
+
+Install Microsoft Speech 
+https://marketplace.visualstudio.com/items?itemName=ms-vscode.vscode-speech
 
 
-## Continue.dev - LLM autocomplete and chatgpt in vscode
+Current key bindings for dictation
 
-https://marketplace.visualstudio.com/items?itemName=Continue.continue
+![](../images/vscode-dictation-bindings.png)
 
-
-Make sure nvida gpu drivers are setup.
-
-```bash
-nvidia-smi
-```
-
-###  setup ollama
-
-https://github.com/ollama/ollama/tree/main
-
-
-```bash
-curl -fsSL https://ollama.com/install.sh | sh
-ollama run llama3:8b # for chat
-ollama run deepseek-coder:6.7b # for code completion
-
-
-
-code ~/.continue/config.json
-```
-
-Now setup in config file with the chat model and autocomplete model.
-
-> [!NOTE]
->  you can't use comments in `~/.continue/config.json`.
-
-```json
-{ 
-    
-"models": [
-    {
-      "title": "Ollama llama3:8b",
-      "provider": "ollama",
-      "model": "llama3:8b"
-    }
-    // other models...
-  ],
-
- "tabAutocompleteModel": {
-    "title": "deepseek-coder-6.7b",
-    "provider": "ollama",
-    "model": "deepseek-coder:6.7b"
-  },
-  // other settings...
-}
-```
 
 ## Testing performance tip posted by Jonson Chu
 
