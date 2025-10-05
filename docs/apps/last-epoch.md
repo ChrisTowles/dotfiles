@@ -8,17 +8,15 @@
 
 ## Save Space
 
-### Iteam already crafted
+### Item already crafted
 
-if not in god teir, likely a mistake.
+if not in god tier, likely a mistake.
 ```text
 FP0
 ```
 
-FP0
 
-
-## exalted with no 3T5+ 
+## Exalted with no 3T5+ 
 
 If we had negs, this finds anything without `2T7` ?  
 
