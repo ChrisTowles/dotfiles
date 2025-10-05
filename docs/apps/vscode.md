@@ -21,3 +21,20 @@ https://x.com/kyrylosilin/status/1849921659546812732
 ```json
 "disable-hardware-acceleration": true
 ```
+
+
+
+
+
+## Rap of Editor
+
+wrap-of-editor-settings
+
+```json
+{
+  "editor.wordWrap": "on",
+  "editor.wrappingIndent": "same",
+  "editor.wordWrapColumn": 160,
+  "editor.wordWrapMinified": true
+}
+```
