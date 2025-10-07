@@ -101,39 +101,19 @@ https://docs.anthropic.com/en/docs/claude-code/mcp
 
 Setup Brave Search, GitHub, and Postgres servers using the Model Context Protocol (MCP) with `claude`.
 
+### Github
 
-### Add MCP Servers
-
-# https://github.com/modelcontextprotocol/servers/tree/main?tab=readme-ov-file
-
-```bash
-FILESYSTEM_PATH="$(pwd)"
-echo ${FILESYSTEM_PATH}
-claude mcp add -s project filesystem -- npx -y @modelcontextprotocol/server-filesystem "${FILESYSTEM_PATH}"
-claude mcp remove  -s project filesystem
-```
+Just use the `gh` commands.
 
 
-### GitHub MCP Server
-
-https://github.com/github/github-mcp-server/blob/main/docs/installation-guides/install-claude.md
-
-
-With the GitHub MCP server the access token is required to access the GitHub API. 
-
-[Install Guide](https://github.com/github/github-mcp-server/blob/main/docs/installation-guides/install-claude.md#installation-1)
+### Playwright
 
 
 ```bash
-claude mcp add -s user github -- docker run -i --rm -e GITHUB_PERSONAL_ACCESS_TOKEN ghcr.io/github/github-mcp-server
-YOUR_GITHUB_PERSONAL_ACCESS_TOKEN=your_token_here
-
-# now update its environment variable
-claude mcp update -s user  github -e GITHUB_PERSONAL_ACCESS_TOKEN=$YOUR_GITHUB_PERSONAL_ACCESS_TOKEN
-
-claude mcp remove -s user github
-
+claude mcp add playwright npx '@playwright/mcp@latest'
 ```
+
+
 
 ### Context7 MCP Server
 
