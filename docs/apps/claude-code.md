@@ -106,7 +106,7 @@ Setup Brave Search, GitHub, and Postgres servers using the Model Context Protoco
 Just use the `gh` commands.
 
 
-### Playwrighto
+### Playwright
 
 
 ```bash
