@@ -15,10 +15,11 @@ Show good craft bases, with 2T6+ and no T8, and seal spot open.
 /belt/&2T6+&sealed0&exalted
 ```
 
-### Exalted with no 3T5+ 
+### Wasted Exalted with no 3T5+ 
 
+**Only when you are only looking for `2T7` items.**
 Items likely wasting space in our Stash. 
-If we had negs, this finds anything without `2T7` ?  
+I Wish we had negation, this finds anything without `2T7` ?  
 
 ```
 exalted&3T5-&sealed0
@@ -145,4 +146,12 @@ foot of the mountain/&/1[1-2]+ to all stats/
 
 ```
 /mad alchemist/&/[89][1-2]+ chance to shred/
+```
+
+## 2T + Shields
+
+### Strife
+
+```
+/shield/&2T6+&sealed0&exalted
 ```
