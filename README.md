@@ -96,7 +96,36 @@ git config --global push.default current
 
 [Full List of Used Extensions](./vscode-extensions.md)
 
-- 
+## Documentation
+
+Browse the complete documentation in the `docs/` directory:
+
+<!-- TOC_START -->
+  - **apps/**
+    - [2025-08-15 - IMPORTANT I stopped Using fish after a week, to many issues with plugins and compatibility!](docs/apps/fish.md)
+    - [Android Studio Install Guide Linux](docs/apps/andriod-studio.md)
+    - [Bambu Studio on Linux](docs/apps/bambu-studio.md)
+    - [Claude Code Settings for `claude`](docs/apps/claude-code.md)
+    - [Claude Voice Mode Quick Start Guide](docs/apps/voice-mode.md)
+    - [Conventional commits](docs/apps/git-conventional-commits.md)
+    - [Fusion 360 on Pop!_OS](docs/apps/fustion-360.md)
+    - [ghostty install PopOs - Linux](docs/apps/ghostty.md)
+    - [Github](docs/apps/github.md)
+    - [Jellyfin  install PopOs - Linux](docs/apps/jellyfin.md)
+    - [Last Epoch - Item Filter Examples](docs/apps/last-epoch.md)
+    - [Mullvad VPN Quick Guide](docs/apps/mullvad-vpn.md)
+    - [Open WebUi](docs/apps/open-webui.md)
+    - [Plex Setup - Linux](docs/apps/plex.md)
+    - [Pop_IOS Dual Boot](docs/apps/pop_os-dual-boot.md)
+    - [Terminl Tools](docs/apps/terminal.md)
+    - [Transmission](docs/apps/transmission.md)
+    - [VS Code Insiders Setup](docs/apps/code-insiders.md)
+    - [VSCode](docs/apps/vscode.md)
+    - [Windows VM on Linux](docs/apps/windows-on-linux.md)
+  - **tools/**
+    - [Vidsrc](docs/tools/vidsrc.md)
+<!-- TOC_END -->
+
 ## Linux
 
 - [Linux Setup Notes](./linux-setup-notes.md)

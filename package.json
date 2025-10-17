@@ -1,0 +1,24 @@
+{
+  "name": "dotfiles",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky",
+    "generate-toc": "tsx scripts/generate-toc.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.14.0",
+  "dependencies": {
+    "husky": "^9.1.7"
+  },
+  "devDependencies": {
+    "@types/node": "^24.8.1",
+    "glob": "^11.0.3",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3"
+  }
+}

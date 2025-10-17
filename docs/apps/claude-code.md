@@ -132,23 +132,6 @@ claude mcp add -s user brave-search -- npx -y @modelcontextprotocol/server-brave
 claude mcp remove -s user brave-search
 ```
 
-### Server Sequential Thinking MCP Server
-
-```bash
-claude mcp add -s user server-sequential-thinking -- npx -y @modelcontextprotocol/server-sequential-thinking 
-claude mcp remove -s user server-sequential-thinking
-```
-
-
-```bash
-
-## remove MCP Servers
-
-```bash
-claude mcp remove filesystem
-claude mcp remove github-server
-```
-
 
 ## Typescript Projects with MCP Servers
 
