@@ -11,8 +11,7 @@ https://marketplace.visualstudio.com/items?itemName=ms-vscode.vscode-speech
 
 Current key bindings for dictation
 
-![](../images/vscode-dictation-bindings.png)
-
+  ![](../images/vscode-dictation-bindings-2.png)
 
 ## Testing performance tip posted by Jonson Chu
 

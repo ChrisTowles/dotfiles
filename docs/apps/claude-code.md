@@ -1,38 +1,41 @@
 # Claude Code
+some notes on claude-code setup and configuration
 
+## Configuration
 
-Run claude in the root of this repository to get started.
-
-then `/doctor` command, if it says to run `migrate-installer` do it. 
+Edit your Claude Code settings:
 
 ```bash
 code ~/.claude/settings.json
 ```
 
+## Environment Setup
 
-
-
-Issues update 
-https://github.com/anthropics/claude-code/issues/40
+For SSL certificate issues, see [this GitHub issue](https://github.com/anthropics/claude-code/issues/40).
 
 ```bash
 export NODE_EXTRA_CA_CERTS="/etc/ssl/certs/ca-certificates.crt"
+```
 
+### AWS Bedrock Integration
 
+To use Claude Code with AWS Bedrock:
+
+```bash
 # Enable Bedrock integration
 export CLAUDE_CODE_USE_BEDROCK=1
 export AWS_REGION=us-east-1  # or your preferred region
 
-# Optional: Override the region for the small/fast model (Haiku)
-export ANTHROPIC_SMALL_FAST_MODEL_AWS_REGION=us-west-2
 ```
-## Hook to play music when done
 
-Audio hook for Claude code
+## Hooks
+
+### Audio Notification Hook
+
+Play audio when Claude is ready for more input:
 
 ```jsonc
 {
-// Add hook to play music when its ready for more input
   "hooks": {
     "Stop": [
       {
@@ -45,73 +48,58 @@ Audio hook for Claude code
       }
     ]
   }
-
 }
 ```
 
-## Add Status Line
+### Status Line Hook
 
-Add status line to include the model and branch, etc.
+Display model and git branch information in the status line:
 
 ```json
 {
-
   "statusLine": {
     "type": "command",
     "command": "$HOME/code/p/dotfiles/config/claude/status-line.sh"
-  },
+  }
 }
-
 ```
 
-## Additional MCP Servers
+## MCP Servers
 
-https://docs.anthropic.com/en/docs/claude-code/mcp
+See [Claude Code MCP documentation](https://docs.anthropic.com/en/docs/claude-code/mcp) for details.
 
+After being shocked at it token usage, the [GitHub MCP server](https://github.com/github/github-mcp-server) consumes significant tokens. I've removed most MCP servers except Playwright, which allows Claude to access local web pages.
 
-After seeing how many tokens, [github mcp](https://github.com/github/github-mcp-server) was taking. I've pretty much removed every MCP server except playwritht only because it can give claude access see to local web pages.
+### GitHub Integration
 
-### Github
+Use the built-in `gh` CLI commands instead of the GitHub MCP server.
 
-Just use the `gh` commands.
-
-
-### Playwright
-
+### Playwright MCP Server
 
 ```bash
 claude mcp add -s user playwright npx '@playwright/mcp@latest'
 ```
 
+## Python Project Setup
 
-
-
-## Python Project
-
-
+For Python projects, set up the virtual environment:
 
 ```bash
 uv sync
 source .venv/bin/activate
-
 export CLAUDE_FILESYSTEM_PATH="${pwd}"
-
-
 ```
 
+## Dictation Setup
+
+I tried a few things but currently just using the built-in VSCODE Speech feature. I have a doc on it here: [VSCode Dictation](./vscode.md)
+
+### Boris Cherny
 
 
-## Boris Cherny Resources
 
-- [Boris Cherny's LinkedIn Profile](https://www.linkedin.com/in/bcherny/)
-  - give his profile a follow, he is the author of the O'Reilly book "Programming TypeScript" and making your Typescript scale.
-- [Boris Cherny's GitHub Profile](https://github.com/bcherny)
-    - check out his projects, especially the `ts-mcp` project which is a TypeScript implementation of the Model Context Protocol (MCP).
-- [Boris Cherny's Website](https://borischerny.com/)
-    - doesn't updated it much lately, but has some good resources.
+- [LinkedIn Profile](https://www.linkedin.com/in/bcherny/)
+- [GitHub Profile](https://github.com/bcherny) - Check out `ts-mcp`, a TypeScript implementation of the Model Context Protocol (MCP)
+- [Personal Website](https://borischerny.com/) - Useful resources and articles
 - [Frontend Interview Questions](https://borischerny.com/javascript/%22functional/programming%22/2017/06/09/Frontend-Interview-Questions.html)
-    - [Frontend Interview Questions - Answers](https://github.com/bcherny/frontend-interview-questions)
-    - Comprehensive collection of frontend interview questions and answers
-- 
-
-
+  - [Answers Repository](https://github.com/bcherny/frontend-interview-questions) - Comprehensive collection of frontend interview questions and answers
