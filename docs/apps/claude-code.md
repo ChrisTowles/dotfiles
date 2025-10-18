@@ -1,7 +1,4 @@
-# Claude Code Settings for `claude`
-
-
-Come good info can come from this!!! https://claudelog.com/installation
+# Claude Code
 
 
 Run claude in the root of this repository to get started.
@@ -12,33 +9,6 @@ then `/doctor` command, if it says to run `migrate-installer` do it.
 code ~/.claude/settings.json
 ```
 
-contents something like this, note that.
-
-```json
-
-{
-    "includeCoAuthoredBy": false,
-
-    "permissions": {
-        "allow": ["bash(*)", "read(*)", "write(*)", "edit(*)", "glob(*)", "grep(*)", "task(*)", "websearch(*)"]
-    },
-   "env": {
-    "CLAUDE_CODE_ENABLE_TELEMETRY": "0",
-  }
-}
-```
-If using bedrock
-
-```json
-{
-    "includeCoAuthoredBy": false,
-    "env": {
-        "CLAUDE_CODE_ENABLE_TELEMETRY": "0",
-        "CLAUDE_CODE_USE_BEDROCK": "1",
-        "AWS_PROFILE": "PROFILE_NAME",
-    },
-}
-```
 
 
 
@@ -99,7 +69,7 @@ Add status line to include the model and branch, etc.
 https://docs.anthropic.com/en/docs/claude-code/mcp
 
 
-Setup Brave Search, GitHub, and Postgres servers using the Model Context Protocol (MCP) with `claude`.
+After seeing how many tokens, [github mcp](https://github.com/github/github-mcp-server) was taking. I've pretty much removed every MCP server except playwritht only because it can give claude access see to local web pages.
 
 ### Github
 
@@ -110,44 +80,8 @@ Just use the `gh` commands.
 
 
 ```bash
-claude mcp add playwright npx '@playwright/mcp@latest'
+claude mcp add -s user playwright npx '@playwright/mcp@latest'
 ```
-
-
-
-### Context7 MCP Server
-
-- https://github.com/upstash/context7 as a great MCP server for various APIs, including Postgres, 
-Keith called this one out for me and now i've seen it everywhere!  Redis, and more.
-
-```bash
-claude mcp add -s user context7 -- npx -y @upstash/context7-mcp
-claude mcp remove -s user context7
-```
-
-### Brave Search MCP Server
-
-```bash
-claude mcp add -s user brave-search -- npx -y @modelcontextprotocol/server-brave-search -e BRAVE_API_KEY=$BRAVE_API_KEY
-claude mcp remove -s user brave-search
-```
-
-
-## Typescript Projects with MCP Servers
-
-
-```bash
-
-ni
-
-export CLAUDE_FILESYSTEM_PATH="${pwd}"
-# mcp servers
-#claude mcp add filesystem -- npx -y @modelcontextprotocol/server-filesystem "$CLAUDE_FILESYSTEM_PATH"
-# Add an SSE or HTTP server that requires OAuth
-#claude mcp add --transport sse github-server https://api.github.com/mcp
-
-```
-
 
 
 
@@ -165,23 +99,6 @@ export CLAUDE_FILESYSTEM_PATH="${pwd}"
 
 ```
 
-installable js/ts servers
-
-```bash
-
-claude mcp add --transport sse github-server https://api.github.com/mcp
-
-claude mcp add filesystem -- npx -y @modelcontextprotocol/server-filesystem "${pwd}"
-#claude mcp add brave-search -e BRAVE_API_KEY=$BRAVE_API_KEY -- npx -y @modelcontextprotocol/server-brave-search
-#claude mcp add e2b -e E2B_API_KEY=$E2B_API_KEY -- npx -y @e2b/mcp-server 
-
-# installable python servers
-claude mcp add fetch uvx mcp-server-fetch
-
-claude --dangerously-skip-permissions
-
-
-```
 
 
 ## Boris Cherny Resources
