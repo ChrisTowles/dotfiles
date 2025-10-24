@@ -75,6 +75,12 @@ FP1+&exalted&suffixes1-&2T7&/glove/
 
 ```
 
+### Body Armour 
+
+```
+/sent/&/body/&2T7&sealed0&exalted
+```
+
 
 ### Wasted Space Exalted with no 3T5+ 
 
