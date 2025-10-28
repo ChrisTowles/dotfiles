@@ -110,6 +110,7 @@ Browse the complete documentation in the `docs/` directory:
     - [Fusion 360 on Pop!_OS](docs/apps/fustion-360.md)
     - [ghostty install PopOs - Linux](docs/apps/ghostty.md)
     - [Github](docs/apps/github.md)
+    - [install](docs/apps/aws-cli-and-sam.md)
     - [Jellyfin  install PopOs - Linux](docs/apps/jellyfin.md)
     - [Last Epoch - Item Filter Examples](docs/apps/last-epoch.md)
     - [Mullvad VPN Quick Guide](docs/apps/mullvad-vpn.md)

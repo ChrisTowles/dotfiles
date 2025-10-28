@@ -175,8 +175,7 @@ reflect idols with over 100+ damage reflect and health
 /thornshell/&/[5-8]% increased flat/
 ```
 
-## World Spliter
-
+## World Splitter
 
 
 ## Carrion of creation
