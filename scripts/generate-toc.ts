@@ -16,6 +16,7 @@ interface DirectoryTree {
 const TOC_START_MARKER = '<!-- TOC_START -->';
 const TOC_END_MARKER = '<!-- TOC_END -->';
 const DOCS_DIR = 'docs';
+const GLOB_IGNORE = ['**/node_modules/**', '**/images/**', '**/stopped-using/**'];
 const README_PATH = 'README.md';
 
 /**
@@ -60,7 +61,7 @@ async function generateTOC(): Promise<string> {
   // Find all markdown files in docs directory, excluding images
   const pattern = `${DOCS_DIR}/**/*.md`;
   const files = await glob(pattern, {
-    ignore: ['**/node_modules/**', '**/images/**']
+    ignore: GLOB_IGNORE
   });
 
   if (files.length === 0) {

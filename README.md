@@ -102,7 +102,6 @@ Browse the complete documentation in the `docs/` directory:
 
 <!-- TOC_START -->
   - **apps/**
-    - [2025-08-15 - IMPORTANT I stopped Using fish after a week, to many issues with plugins and compatibility!](docs/apps/fish.md)
     - [Android Studio Install Guide Linux](docs/apps/andriod-studio.md)
     - [Bambu Studio on Linux](docs/apps/bambu-studio.md)
     - [Claude Code](docs/apps/claude-code.md)
