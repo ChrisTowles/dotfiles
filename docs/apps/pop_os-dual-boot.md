@@ -1,4 +1,4 @@
-# Pop_IOS Dual Boot
+# Pop!_OS Dual Boot
 
 
 https://github.com/spxak1/weywot/blob/main/Pop_OS_Dual_Boot.md

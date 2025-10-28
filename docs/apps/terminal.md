@@ -1,4 +1,4 @@
-# Terminl Tools
+# Terminal Tools
 
 
 ## shell-ask
