@@ -4,11 +4,26 @@ CLI tool to convert JSON configs to Last Epoch search syntax.
 
 ## Usage
 
+### Generate from folder structure (recommended)
+
 ```bash
-t le-filter [file]
+# Output to console
+t le-filter
+
+# Output to markdown file
+t le-filter -o docs/apps/last-epoch-filters-generated.md
+
+# Custom directory
+t le-filter -d path/to/configs -o output.md
 ```
 
-Default file: `docs/apps/last-epoch.md`
+Default directory: `docs/apps/last-epoch/`
+
+### Legacy: Parse JSON blocks from markdown
+
+```bash
+t le-filter -f docs/apps/last-epoch.md
+```
 
 ## JSON Schema
 
@@ -132,11 +147,26 @@ interface FilterConfig {
 3. **Modifier Order:**
    - Item name → Conditions → FP → Sealed → Exalted → Prefixes/Suffixes → LP
 
-## Integration
+## Folder Structure
 
-Place JSON blocks in markdown files:
+Organize configs by type:
 
-\`\`\`json
+```
+docs/apps/last-epoch/
+├── uniques/
+│   ├── titan-heart.json
+│   ├── unstable-core.json
+│   └── siphon-of-anguish.json
+├── exalted/
+│   ├── boots-craft-base.json
+│   └── gloves-craft-base.json
+└── README.md
+```
+
+Each JSON file contains a single item config:
+
+**`uniques/siphon-of-anguish.json`**
+```json
 {
   "item": "siphon of anguish",
   "tiers": {
@@ -149,6 +179,6 @@ Place JSON blocks in markdown files:
     }
   }
 }
-\`\`\`
+```
 
-Run `t le-filter docs/apps/last-epoch.md` to generate all filters.
+Run `t le-filter -o filters.md` to generate all filters into a markdown file.

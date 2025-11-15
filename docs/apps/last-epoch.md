@@ -372,7 +372,7 @@ Everything not godlike
 ### Godlike
 ```
 # High 6th cast damage (330-399) AND high ele damage (140-150%)
-/unstable core/&/6th cast gains 3[3-9][0-9]/&/1[4-5][0-9]% increased elemental damage/
+/unstable core/&/6th cast gains 32[5-9]|6th cast gains 3[3-9][0-9]/&/1[4-5][0-9]% increased elemental damage|13[5-9]% increased elemental damage/
 ```
 
 ### Strife

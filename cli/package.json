@@ -31,7 +31,8 @@
     "typecheck": "tsc --noEmit",
     "prepublishOnly": "nr build",
     "release": "bumpp && pnpm publish --no-git-checks",
-    "test": "vitest"
+    "test": "vitest",
+    "le:filters": "esno ./src/cli.ts le-filter -d ../docs/apps/last-epoch -o ../docs/apps/last-epoch-filters-generated.md"
   },
   "dependencies": {
     "@antfu/ni": "^23.2.0",
@@ -47,6 +48,7 @@
     "open": "^10.1.0",
     "prompts": "^2.4.2",
     "strip-ansi": "^7.1.0",
+    "zod": "^4.1.12",
     "zx": "^8.3.0"
   },
   "devDependencies": {

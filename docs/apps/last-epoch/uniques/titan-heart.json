@@ -1,55 +1,36 @@
 {
   "item": "titan heart",
+  "conditions": [
+    {
+      "stat": "{value}% increased health",
+      "tier_range": {
+        "godlike": [36, 40],
+        "strife": [36, 40],
+        "turtle": [30, 35]
+      },
+      "operator": "AND"
+    },
+    {
+      "stat": "{value}% increased melee damage",
+      "tier_range": {
+        "godlike": [36, 40],
+        "strife": [36, 40],
+        "turtle": [30, 35]
+      }
+    }
+  ],
   "tiers": {
     "godlike-lp": {
-      "conditions": [],
       "lp": "2+"
     },
     "godlike": {
-      "conditions": [
-        {
-          "stat": "increased health",
-          "range": [36, 40],
-          "suffix": "%",
-          "operator": "AND"
-        },
-        {
-          "stat": "increased melee damage",
-          "range": [36, 40],
-          "suffix": "%"
-        }
-      ],
+      "lp": "1+"
+    },
+    "strife": {
       "lp": "1+"
     },
     "turtle": {
-      "conditions": [
-        {
-          "stat": "increased health",
-          "range": [30, 35],
-          "suffix": "%"
-        },
-        {
-          "stat": "increased melee damage",
-          "range": [30, 35],
-          "suffix": "%"
-        }
-      ],
       "lp": "1-"
-    },
-    "strife": {
-      "conditions": [
-        {
-          "stat": "increased health",
-          "range": [36, 40],
-          "suffix": "%"
-        },
-        {
-          "stat": "increased melee damage",
-          "range": [36, 40],
-          "suffix": "%"
-        }
-      ],
-      "lp": "1+"
     }
   }
 }
