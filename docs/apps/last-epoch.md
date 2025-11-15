@@ -39,7 +39,7 @@
 - `prefixes1-` OR `suffixes1-` - Open slot for targeted craft
 - `FP40+` - High forging potential (optional but ideal)
 
-### Imprint Exaulted Filter
+### Imprint Exalted Filter
 
 
 
