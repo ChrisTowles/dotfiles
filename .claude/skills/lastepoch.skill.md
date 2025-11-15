@@ -103,6 +103,9 @@ This DSL is **community-developed**, not official EHG documentation.
 
 **Key Tools:**
 - https://checkmatez.github.io/eternity/search/ - Filter builder
+  - It's got some bugs but good for learning syntax
+  - doesn't correctly generate some complex filters like percent greater than 25% logic
+- 
 - lastepochtools.com - Database with search
 - Maxroll filters - Popular presets
 

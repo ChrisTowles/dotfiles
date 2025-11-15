@@ -13,9 +13,53 @@
     - max LP helps
   - exalted for slam
     - **target 2LP** - 2T7(o1) with open suffix slot
-      - also consider you want the open slot for the affix you want open. 
+      - also consider you want the open slot for the affix you want open.
       - use `Rune of Havoc` to move the T7 to the affixs you want
     - **target 3LP** - 3T7 use `Rune of Redemption` to reroll
+
+## Why 2T7 + Open Slot is Perfect Imprint Base
+
+**The Endgame Standard:**
+- Double T7 items = endgame min-max standard
+- 2T7 + 1 filler + 1 open slot = optimal structure
+
+**Why This Works:**
+1. **Controllable crafting:** Open slot lets you add exact affix needed
+2. **Affix placement control:** Position T7s on prefix/suffix as needed
+3. **Rune of Havoc synergy:** Shuffle T7s to desired affixes if needed
+4. **Sealed affixes ignored:** Sealed affixes never transfer to legendary (seal unwanted T1/T2)
+
+**Forging Potential:**
+- FP 40-50+ recommended for quality drops from imprint
+- Nemesis items often 60+ FP (best sources)
+
+**Perfect Base Criteria:**
+- `2T7` - Two tier 7 affixes
+- `sealed0` (sealed = filler, won't transfer)
+- `prefixes1-` OR `suffixes1-` - Open slot for targeted craft
+- `FP40+` - High forging potential (optional but ideal)
+
+### Imprint Exaulted Filter
+
+
+
+```
+# open prefix
+FP10+&exalted&sealed0&2T7&1T2-&prefixes1
+
+# open suffix
+FP10+&exalted&sealed0&2T7&1T2-&suffixes1
+```
+
+Lower FP version and one 1T2 affix instead of 1T1
+
+```
+# open prefix
+FP1+&exalted&sealed0&2T7&1T2-&prefixes1
+
+# open suffix
+/FP1+&exalted&sealed0&2T7&1T2-&suffixes1
+```
 
 
 
@@ -80,7 +124,17 @@ https://www.reddit.com/r/LastEpoch/comments/1orsrks/the_bone_collector/#lightbox
 
 
 
-## Common
+## Imprinting Craft Bases
+
+## 2
+
+```
+FP1+&exalted&sealed0&2T7&1T1-&prefixes1
+
+
+FP1+&exalted&sealed0&2T7&1T1-&prefixes1
+
+```
 
 ### filter to base item to craft for imprinting
 
@@ -112,6 +166,16 @@ FP1+&exalted&prefixes1-&2T7&/glove/
 
 # open suffix
 FP1+&exalted&2T7&1T7&/glove/
+
+```
+
+#### Example - 2T7 with open slot to seal (prefix OR suffix)
+
+Perfect slam targets: 2T7, 1 low tier, no seals, and open slot for sealing.
+
+```
+# Generic - any item type with open prefix OR suffix
+
 
 ```
 
@@ -300,7 +364,7 @@ reflect idols with over 100+ damage reflect and health
 ### Strife
 Everything not godlike
 ```
-/mad alchemist/
+/mad alchemist/&LP1-
 ```
 
 ## Unstable Core
@@ -375,19 +439,31 @@ Everything not godlike
 
 ### Godlike
 ```
-/siphon of anguish/&/[2-3][0-9]% void penetration with doom/&/2[5-9]% chance to apply doom|3[0]% chance to apply doom/&LP1+
+/siphon of anguish/&/2[5-9]% chance to apply doom|3[0]% chance to apply doom/&LP1+
 ```
+
 
 ### Turtle
 ```
-/siphon of anguish/&/[2-3][0-9]% void penetration with doom/&/2[5-9]% chance to apply doom|3[0]% chance to apply doom/&LP1+
-```
+
+# bad doom chance
+/siphon of anguish/&/1[0-9]% chance to apply doom|2[0-4]% chance to apply doom/&LP2-
 
 
-### Strife
+/siphon of anguish/&LP1-
+
+
+
 ```
-/siphon of anguish/&/1[5-9]% void penetration with doom/&/1[5-9]% chance to apply doom/
+## Blossom of immortal
+
+## remove
+
 ```
+/blossom of immortal/&LP0
+
+```
+
 
 ## Warpath
 
@@ -416,10 +492,29 @@ Everything not godlike
 ```
 /idol/&/of repose/&/[6-9] mana/
 ```
+### titan heart
 
+#### Godlike
 ```
+# high LP
 /titan heart/&LP2+
+
+# Both health AND damage 35%+
+/titan heart/&/3[6-9]% increased health|40% increased health/&/3[6-9]% increased melee damage|40% increased melee damage/&LP1+
 ```
+
+#### Turtle
+```
+# Either NOT health OR damage 35%+
+/titan heart/&/3[0-5]% increased health|3[0-5]% increased melee damage/&LP1-
+```
+
+#### Strife
+```
+/titan heart/&/3[6-9]% increased health|40% increased health/&/3[6-9]% increased melee damage|40% increased melee damage/&LP1+
+```
+
+### Helm
 
 ```
 /sentinel body/&2T7
