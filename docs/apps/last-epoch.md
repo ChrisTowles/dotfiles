@@ -26,6 +26,59 @@
 - Build filters - https://checkmatez.github.io/eternity/search/?q=%2Fboots%2F%26%2F2%5B5-9%5D%7C%5B3-9%5D%5B0-9%5D+increased+movement%2F
 
 
+## Farm Loop
+
+Curruption, but what to do after 1k.
+
+
+
+## Current Build  - Reflect Pally
+
+Farming 2K no issue, but need more damage some how.
+
+Just happen to find this post with way to many bones and on the exact build i'm trying to improve!!!
+https://www.reddit.com/r/LastEpoch/comments/1orsrks/the_bone_collector/#lightbox
+
+
+
+#### Thicket
+
+```
+/Thicket of Blinding/&/401% more damage/
+```
+
+```
+/Thicket of Blinding/&/3[8-9]% more damage/
+```
+
+#### Shield
+
+```
+/thornshell/&/9% increased flat/&LP2+
+```
+
+
+#### Helm
+
+```
+/helm/&/10% movement speed/
+```
+
+
+
+#### Belt
+
+
+```
+/belt/&/10% movement speed/
+```
+
+
+```
+/belt/&2T6+&sealed0&exalted&/health/
+```
+
+
 
 ## Common
 
@@ -240,7 +293,26 @@ reflect idols with over 100+ damage reflect and health
 ### Strife
 
 ```
-/mad alchemist/&/4[0-9]% chance to shred/
+/mad alchemist/&/[1-3][0-9]% chance to shred/&/[1-3][0-9]% chance to elec/
+```
+#### Godlike
+
+```
+/mad alchemist/&/4[0-9]% chance to shred/&/4[0-9]% chance to elec/
+```
+## Unstable Core
+
+### Strife
+
+```
+/unstable core/&/6th cast gains 3[0-9][0-9]/&/1[4-5][0-9]% increased elemental damage/
+```
+
+
+### Godlike
+
+```
+/unstable core/&/6th cast gains 3[0-9][0-9]/&/1[4-5][0-9]% increased elemental damage/
 ```
 
 ## 2T + Shields
@@ -286,4 +358,42 @@ reflect idols with over 100+ damage reflect and health
 
 ```
 /monument of prot/&/[4-5][0-9]% increased block/
+```
+
+
+
+## Warpath
+
+
+### idol
+
+```
+/idol/&/[8-9][0-9]% increased melee void/
+
+
+## helm
+
+```
+/reduced channel cost/&/leonine greathelm/
+```
+
+```
+/leonine greathelm/&2T7
+```
+
+
+```
+/eternal gauntlet/&2T7
+```
+
+```
+/idol/&/of repose/&/[6-9] mana/
+```
+
+```
+/titan heart/&LP2+
+```
+
+```
+/sentinel body/&2T7
 ```

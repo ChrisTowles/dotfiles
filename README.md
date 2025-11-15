@@ -105,6 +105,7 @@ Browse the complete documentation in the `docs/` directory:
     - [Android Studio Install Guide Linux](docs/apps/andriod-studio.md)
     - [Bambu Studio on Linux](docs/apps/bambu-studio.md)
     - [Claude Code](docs/apps/claude-code.md)
+    - [Claude Desktop](docs/apps/claude-desktop.md)
     - [Conventional commits](docs/apps/git-conventional-commits.md)
     - [Fusion 360 on Pop!_OS](docs/apps/fusion-360.md)
     - [ghostty install PopOs - Linux](docs/apps/ghostty.md)

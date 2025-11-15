@@ -169,4 +169,14 @@ if [[ -n "$ZSH_DEBUG_TIMING" ]]; then
   print_success "$(printf "Finished: Total time took %.3f seconds" "$elapsed")"
 fi
 
+
+### Google cloud
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f "$HOME/google-cloud-sdk/path.zsh.inc" ]; then . "$HOME/google-cloud-sdk/path.zsh.inc"; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f "$HOME/google-cloud-sdk/completion.zsh.inc" ]; then . "$HOME/google-cloud-sdk/completion.zsh.inc"; fi
+
 ############### Anything after this auto added ################
+
