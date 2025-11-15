@@ -290,30 +290,39 @@ reflect idols with over 100+ damage reflect and health
 ## Mad Alchemist's Ladle
 
 
-### Strife
 
-```
-/mad alchemist/&/[1-3][0-9]% chance to shred/&/[1-3][0-9]% chance to elec/
-```
-#### Godlike
+### Godlike
 
 ```
 /mad alchemist/&/4[0-9]% chance to shred/&/4[0-9]% chance to elec/
 ```
-## Unstable Core
 
 ### Strife
+Everything not godlike
+```
+/mad alchemist/
+```
 
-```
-/unstable core/&/6th cast gains 3[0-9][0-9]/&/1[4-5][0-9]% increased elemental damage/
-```
+## Unstable Core
 
 
 ### Godlike
 
 ```
-/unstable core/&/6th cast gains 3[0-9][0-9]/&/1[4-5][0-9]% increased elemental damage/
+/unstable core/&/6th cast gains 3[4-9][0-9]/&/1[4-5][0-9]% increased elemental damage/
 ```
+
+
+### Strife
+
+
+```
+/unstable core/&LP-1
+```
+
+
+
+
 
 ## 2T + Shields
 
@@ -361,6 +370,24 @@ reflect idols with over 100+ damage reflect and health
 ```
 
 
+
+## Siphon of Anguish
+
+### Godlike
+```
+/siphon of anguish/&/[2-3][0-9]% void penetration with doom/&/2[5-9]% chance to apply doom|3[0]% chance to apply doom/&LP1+
+```
+
+### Turtle
+```
+/siphon of anguish/&/[2-3][0-9]% void penetration with doom/&/2[5-9]% chance to apply doom|3[0]% chance to apply doom/&LP1+
+```
+
+
+### Strife
+```
+/siphon of anguish/&/1[5-9]% void penetration with doom/&/1[5-9]% chance to apply doom/
+```
 
 ## Warpath
 
