@@ -113,7 +113,6 @@ Browse the complete documentation in the `docs/` directory:
     - [install](docs/apps/aws-cli-and-sam.md)
     - [Jellyfin  install PopOs - Linux](docs/apps/jellyfin.md)
     - [Last Epoch - Item Filter Examples](docs/apps/last-epoch.md)
-    - [Last Epoch Filter Generator](docs/apps/last-epoch-filter-generator.md)
     - [Last Epoch Filters](docs/apps/last-epoch-filters-generated.md)
     - [Mullvad VPN Quick Guide](docs/apps/mullvad-vpn.md)
     - [Open WebUi](docs/apps/open-webui.md)

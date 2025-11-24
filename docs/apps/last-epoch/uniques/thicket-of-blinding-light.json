@@ -1,0 +1,17 @@
+{
+  "item": "thicket of blinding",
+  "conditions": [
+    {
+      "stat": "{value}% more damage reflected to bosses and rare enemies",
+      "range": [80, 100]
+    }
+  ],
+  "tiers": {
+    "godlike": {
+      "lp": "1+"
+    },
+    "nemesis": {
+      "lp": "0"
+    }
+  }
+}

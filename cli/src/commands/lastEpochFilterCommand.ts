@@ -7,7 +7,7 @@ import { z } from 'zod'
 // Zod schemas
 const StatConditionSchema = z.object({
   stat: z.string().describe('Stat text with {value} placeholder'),
-  tier_range: z.record(z.string(), z.tuple([z.number(), z.number()])).describe('Ranges per tier'),
+  range: z.tuple([z.number(), z.number()]),
   operator: z.enum(['AND', 'OR']).optional(),
 })
 
@@ -42,11 +42,33 @@ const generateRangePattern = (range: [number, number], suffix: string = ''): str
   const minStr = min.toString()
   const maxStr = max.toString()
 
+  // Handle cross-digit-length ranges (e.g., 95-100, 99-101)
+  if (minStr.length !== maxStr.length) {
+    // Split at the digit boundary
+    const parts: string[] = []
+    const boundary = Math.pow(10, minStr.length)
+
+    // First part: min to boundary-1 (e.g., 95-99)
+    if (min < boundary) {
+      parts.push(generateRangePattern([min, boundary - 1], suffix))
+    }
+
+    // Second part: boundary to max (e.g., 100-100)
+    if (max >= boundary) {
+      parts.push(generateRangePattern([boundary, max], suffix))
+    }
+
+    return parts.join('|')
+  }
+
   // Same number of digits
   if (minStr.length === maxStr.length) {
     const len = minStr.length
 
-    if (len === 2) {
+    if (len === 1) {
+      // Single digit: e.g., 3-7 -> [3-7]
+      return `[${min}-${max}]${suffix}`
+    } else if (len === 2) {
       const minTens = Math.floor(min / 10)
       const maxTens = Math.floor(max / 10)
       const minOnes = min % 10
@@ -115,7 +137,7 @@ const generateRangePattern = (range: [number, number], suffix: string = ''): str
           const middleEnd = maxOnes === 0 ? maxTens : maxTens - 1
 
           // Check if we can compact multiple full tens ranges
-          if (middleStart <= middleEnd && (middleEnd - middleStart >= 0)) {
+          if (middleStart <= middleEnd) {
             if (middleEnd - middleStart >= 1) {
               // Multiple tens ranges: use compact form
               parts.push(`${minHundreds}[${middleStart}-${middleEnd}][0-9]${suffix}`)
@@ -160,14 +182,9 @@ const convertFilterToSearch = (config: FilterConfig): Record<string, string> => 
     // Add item name
     parts.push(`/${config.item}/`)
 
-    // Process conditions - get range for this tier
+    // Process conditions
     for (const condition of config.conditions) {
-      const range = condition.tier_range[tierName]
-
-      // Skip condition if no range defined for this tier
-      if (!range) continue
-
-      const pattern = generateRangePattern(range, '')
+      const pattern = generateRangePattern(condition.range, '')
 
       // Replace {value} placeholder in stat text
       // If pattern contains OR (|), split and replace {value} for each part

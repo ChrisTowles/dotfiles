@@ -3,20 +3,12 @@
   "conditions": [
     {
       "stat": "{value}% increased health",
-      "tier_range": {
-        "godlike": [36, 40],
-        "strife": [36, 40],
-        "turtle": [30, 35]
-      },
+      "range": [36, 40],
       "operator": "AND"
     },
     {
       "stat": "{value}% increased melee damage",
-      "tier_range": {
-        "godlike": [36, 40],
-        "strife": [36, 40],
-        "turtle": [30, 35]
-      }
+      "range": [36, 40]
     }
   ],
   "tiers": {
@@ -25,12 +17,6 @@
     },
     "godlike": {
       "lp": "1+"
-    },
-    "strife": {
-      "lp": "1+"
-    },
-    "turtle": {
-      "lp": "1-"
     }
   }
 }

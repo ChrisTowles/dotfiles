@@ -1,0 +1,19 @@
+{
+  "item": "mad alchemist",
+  "conditions": [
+    {
+      "stat": "{value}% chance to shred armor on spell hit",
+      "range": [40, 48],
+      "operator": "AND"
+    },
+    {
+      "stat": "{value}% chance to electrify on spell hit",
+      "range": [40, 48]
+    }
+  ],
+  "tiers": {
+    "godlike": {
+      "lp": "1+"
+    }
+  }
+}

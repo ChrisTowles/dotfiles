@@ -2,32 +2,20 @@
   "item": "unstable core",
   "conditions": [
     {
-      "stat": "6th cast gains {value}",
-      "tier_range": {
-        "godlike": [325, 350],
-        "strife": [275, 324],
-        "turtle": [200, 274]
-      },
-      "operator": "AND"
-    },
-    {
       "stat": "{value}% increased elemental damage",
-      "tier_range": {
-        "godlike": [135, 150],
-        "strife": [100, 134],
-        "turtle": [80, 99]
-      }
+      "range": [135, 150]
+    },  
+    {
+      "stat": "+{value} mana",
+      "range": [100, 120]
     }
   ],
   "tiers": {
     "godlike": {
       "lp": "1+"
     },
-    "strife": {
+    "nemesis": {
       "lp": "0"
-    },
-    "turtle": {
-      "lp": "1+"
     }
   }
 }

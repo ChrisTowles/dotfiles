@@ -12,11 +12,33 @@ function generateRangePattern(range: [number, number], suffix: string = ''): str
   const minStr = min.toString()
   const maxStr = max.toString()
 
+  // Handle cross-digit-length ranges (e.g., 95-100, 99-101)
+  if (minStr.length !== maxStr.length) {
+    // Split at the digit boundary
+    const parts: string[] = []
+    const boundary = Math.pow(10, minStr.length)
+
+    // First part: min to boundary-1 (e.g., 95-99)
+    if (min < boundary) {
+      parts.push(generateRangePattern([min, boundary - 1], suffix))
+    }
+
+    // Second part: boundary to max (e.g., 100-100)
+    if (max >= boundary) {
+      parts.push(generateRangePattern([boundary, max], suffix))
+    }
+
+    return parts.join('|')
+  }
+
   // Same number of digits
   if (minStr.length === maxStr.length) {
     const len = minStr.length
 
-    if (len === 2) {
+    if (len === 1) {
+      // Single digit: e.g., 3-7 -> [3-7]
+      return `[${min}-${max}]${suffix}`
+    } else if (len === 2) {
       const minTens = Math.floor(min / 10)
       const maxTens = Math.floor(max / 10)
       const minOnes = min % 10
@@ -85,7 +107,7 @@ function generateRangePattern(range: [number, number], suffix: string = ''): str
           const middleEnd = maxOnes === 0 ? maxTens : maxTens - 1
 
           // Check if we can compact multiple full tens ranges
-          if (middleStart <= middleEnd && (middleEnd - middleStart >= 0)) {
+          if (middleStart <= middleEnd) {
             if (middleEnd - middleStart >= 1) {
               // Multiple tens ranges: use compact form
               parts.push(`${minHundreds}[${middleStart}-${middleEnd}][0-9]${suffix}`)
@@ -177,9 +199,27 @@ describe('generateRangePattern', () => {
     })
   })
 
+  describe('cross-digit-length ranges', () => {
+    it('95-100 (2 to 3 digits)', () => {
+      expect(generateRangePattern([95, 100])).toBe('9[5-9]|100')
+    })
+
+    it('99-101 (2 to 3 digits)', () => {
+      expect(generateRangePattern([99, 101])).toBe('99|10[0-1]')
+    })
+
+    it('8-12 (1 to 2 digits)', () => {
+      expect(generateRangePattern([8, 12])).toBe('[8-9]|1[0-2]')
+    })
+  })
+
   describe('real world examples', () => {
     it('titan heart health range 36-40', () => {
       expect(generateRangePattern([36, 40], '%')).toBe('3[6-9]%|4[0-0]%')
+    })
+
+    it('unstable core spell damage 95-100', () => {
+      expect(generateRangePattern([95, 100])).toBe('9[5-9]|100')
     })
 
     it('unstable core 6th cast 325-350', () => {

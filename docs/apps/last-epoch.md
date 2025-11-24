@@ -41,27 +41,24 @@
 
 ### Imprint Exalted Filter
 
+Best Imprint Bases for Exalted Crafting
+```
+# open prefix
+FP30+&exalted&sealed0&2T7&1T1-&prefixes1
 
+# open suffix
+FP30+&exalted&sealed0&2T7&1T1-&suffixes1
+```
+
+Next best with lower FP and one T2 affix instead of T1
 
 ```
 # open prefix
-FP10+&exalted&sealed0&2T7&1T2-&prefixes1
+FP20+&exalted&sealed0&2T7&1T2-&prefixes1
 
 # open suffix
-FP10+&exalted&sealed0&2T7&1T2-&suffixes1
+FP20+&exalted&sealed0&2T7&1T2-&suffixes1
 ```
-
-Lower FP version and one 1T2 affix instead of 1T1
-
-```
-# open prefix
-FP1+&exalted&sealed0&2T7&1T2-&prefixes1
-
-# open suffix
-/FP1+&exalted&sealed0&2T7&1T2-&suffixes1
-```
-
-
 
 
 ## Filters for Stash
@@ -88,7 +85,7 @@ https://www.reddit.com/r/LastEpoch/comments/1orsrks/the_bone_collector/#lightbox
 #### Thicket
 
 ```
-/Thicket of Blinding/&/401% more damage/
+/Thicket of Blinding/&/3[49]01% more damage|4001% more damage/
 ```
 
 ```
@@ -372,7 +369,7 @@ Everything not godlike
 ### Godlike
 ```
 # High 6th cast damage (330-399) AND high ele damage (140-150%)
-/unstable core/&/6th cast gains 32[5-9]|6th cast gains 3[3-9][0-9]/&/1[4-5][0-9]% increased elemental damage|13[5-9]% increased elemental damage/
+/unstable core/&/9[5-9] spell damage|100 spell damage/&/1[4-5][0-9]% increased elemental damage|150% increased elemental damage/&LP1+
 ```
 
 ### Strife
