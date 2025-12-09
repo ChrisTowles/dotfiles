@@ -6,18 +6,15 @@
       "range": [40, 48],
       "operator": "AND"
     },
+   
     {
-      "stat": "{value}% chance to electrify on spell hit",
-      "range": [40, 48]
-    },
-        {
       "stat": "{value}% chance to slow on spell hit",
-      "range": [40, 48]
+      "range": [25, 48]
     }
   ],
   "tiers": {
     "godlike": {
-      "lp": "1+"
+    
     }
   }
 }

@@ -2,25 +2,44 @@
 
 _Auto-generated from JSON configs_
 
-## exalted
+## mage body
 
-### godlike
+### 2T7-with-prefix
 ```
-/exalted/&/4[6-9]% increased cast speed|5[0-2]% increased cast speed/&/4[0-8]% chance to shred armor on spell hit/&/4[0-8]% chance to electrify on spell hit/&exalted
+/mage body/&FP1+&sealed0&exalted&2T7&prefixes1
+```
+
+### 2T7-with-suffix
+```
+/mage body/&FP1+&sealed0&exalted&2T7&suffixes1
+```
+
+## mage helmet
+
+### 2T7-with-prefix
+```
+/mage helmet/&FP1+&sealed0&exalted&2T7&prefixes1
+```
+
+## idol
+
+### capacitive
+```
+/idol/&/5[0-9]% Increased Lightning Damage|6[0-0]% Increased Lightning Damage/
 ```
 
 ## mad alchemist
 
 ### godlike
 ```
-/mad alchemist/&/4[0-8]% chance to shred armor on spell hit/&/4[0-8]% chance to electrify on spell hit/&/4[0-8]% chance to slow on spell hit/&LP1+
+/mad alchemist/&/4[0-8]% chance to shred armor on spell hit/&/2[5-9]% chance to slow on spell hit|3[0-9]% chance to slow on spell hit|4[0-8]% chance to slow on spell hit/
 ```
 
 ## mad alchemist
 
 ### godlike
 ```
-/mad alchemist/&/4[0-8]% chance to shred armor on spell hit/&/4[0-8]% chance to electrify on spell hit/&LP1+
+/mad alchemist/&/3[5-9]% chance to shred armor on spell hit|4[0-9]% chance to shred armor on spell hit|5[0-0]% chance to shred armor on spell hit/&/3[5-9]% chance to electrify on spell hit|4[0-9]% chance to electrify on spell hit|5[0-0]% chance to electrify on spell hit/
 ```
 
 ## thicket of blinding

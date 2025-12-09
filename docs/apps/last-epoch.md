@@ -67,9 +67,44 @@ FP20+&exalted&sealed0&2T7&1T2-&suffixes1
 - Build filters - https://checkmatez.github.io/eternity/search/?q=%2Fboots%2F%26%2F2%5B5-9%5D%7C%5B3-9%5D%5B0-9%5D+increased+movement%2F
 
 
+## Cleanup Stash
+
+Take to Farsight Turtle
+```
+lp1&LVL70-
+
+```
+
+low level items, take to farsight turtle
+
+```
+lp2-&LVL10-
+```
+
+lower WW items, vendor
+```
+WW1+&WW15-&!1T1
+```
+
+legendary items that don't have a 1T6+ (keep any items you to use in strife to reroll later)
+```
+!1T6+&Legendary
+```
+
+
+exalted items that don't have a 2T7+ (keep any items you to use in strife to reroll later)
+```
+!1T7+&Exalted
+```
+
+Exalted without 2T6+
+
+```
+!2T6+&Exalted
+```
 ## Farm Loop
 
-Curruption, but what to do after 1k.
+- Curruption as fast as you can, never above 1K unless, Crazy good build.
 
 
 

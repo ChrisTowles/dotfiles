@@ -1,0 +1,13 @@
+{
+  "item": "idol",
+  "conditions": [
+    {
+      "stat": "{value}% Increased Lightning Damage",
+      "range": [40, 60]
+    }
+  ],
+  "tiers": {
+    "capacitive": {
+    }
+  }
+}

@@ -3,17 +3,16 @@
   "conditions": [
     {
       "stat": "{value}% chance to shred armor on spell hit",
-      "range": [40, 48],
+      "range": [35, 50],
       "operator": "AND"
     },
     {
       "stat": "{value}% chance to electrify on spell hit",
-      "range": [40, 48]
+      "range": [35, 50]
     }
   ],
   "tiers": {
     "godlike": {
-      "lp": "1+"
     }
   }
 }

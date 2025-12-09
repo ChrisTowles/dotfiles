@@ -18,6 +18,7 @@ const TierConfigSchema = z.object({
   prefixes: z.string().optional(),
   suffixes: z.string().optional(),
   exalted: z.boolean().optional(),
+  tierFilter: z.string().optional(),
 })
 
 const FilterConfigSchema = z.object({
@@ -200,6 +201,7 @@ const convertFilterToSearch = (config: FilterConfig): Record<string, string> => 
     if (tierConfig.fp) parts.push(`FP${tierConfig.fp}`)
     if (tierConfig.sealed !== undefined) parts.push(`sealed${tierConfig.sealed}`)
     if (tierConfig.exalted) parts.push('exalted')
+    if (tierConfig.tierFilter) parts.push(tierConfig.tierFilter)
     if (tierConfig.prefixes) parts.push(`prefixes${tierConfig.prefixes}`)
     if (tierConfig.suffixes) parts.push(`suffixes${tierConfig.suffixes}`)
     if (tierConfig.lp) parts.push(`LP${tierConfig.lp}`)

@@ -1,0 +1,16 @@
+{
+  "item": "mage helmet",
+  "conditions": [
+
+  ],
+  "tiers": {
+    "2T7-with-prefix": {
+      "sealed": "0",
+      "exalted": true,
+      "prefixes": "1",
+      "tierFilter": "2T7",
+      "fp": "1+"
+    }
+   
+  }
+}

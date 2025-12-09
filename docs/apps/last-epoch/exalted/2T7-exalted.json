@@ -1,0 +1,22 @@
+{
+  "item": "mage body",
+  "conditions": [
+
+  ],
+  "tiers": {
+    "2T7-with-prefix": {
+      "sealed": "0",
+      "exalted": true,
+      "prefixes": "1",
+      "tierFilter": "2T7",
+      "fp": "1+"
+    },
+     "2T7-with-suffix": {
+      "sealed": "0",
+      "exalted": true,
+      "suffixes": "1",
+      "tierFilter": "2T7",
+      "fp": "1+"
+    }
+  }
+}
