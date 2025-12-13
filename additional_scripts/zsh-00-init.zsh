@@ -45,7 +45,6 @@ fi
 alias zsh-load='export ZSH_DEBUG_TIMING=1 && source ~/.zshrc && export ZSH_DEBUG_TIMING=0'
 
 # Basic environment setup
-export ZSH="$HOME/.oh-my-zsh"
 HISTSIZE=50000
 SAVEHIST=50000
 

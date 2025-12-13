@@ -21,13 +21,13 @@ fi
 
 # Helper function to source modules with error handling
 zsh_source_module() {
-    local module_path="$1"
-    local module_name=$(basename "$module_path" .zsh)
-    
-    if [[ -f "$module_path" ]]; then
-        source "$module_path"
+    local _zsh_mod_path="$1"
+    local _zsh_mod_name=$(basename "$_zsh_mod_path" .zsh)
+
+    if [[ -f "$_zsh_mod_path" ]]; then
+        source "$_zsh_mod_path"
     else
-        echo "Warning: Module $module_name not found at $module_path"
+        echo "Warning: Module $_zsh_mod_name not found at $_zsh_mod_path"
     fi
 }
 
@@ -41,20 +41,10 @@ zsh_source_module "$DOTFILES_PATH/additional_scripts/zsh-00-init.zsh"
 
 
 ###############################
-# zsh setup of oh-my-zsh
-############################################
-# Oh-my-zsh configuration, themes, and plugins
+# Antidote Plugin Manager
+###############################
 
-# Fix module path corruption that occurs during sourcing
-# This is a workaround for a zsh module path issue when sourcing scripts
-if [[ "$module_path" == *"/additional_scripts/"* ]]; then
-    # Module path got corrupted, restore to system default
-    if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-        module_path=(/usr/lib/$(uname -m)-linux-gnu/zsh/$(zsh --version | awk '{print $2}'))
-    fi
-fi
-
-# Brew setup
+# Brew setup (keep before plugins)
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
   # Note: give up on brew for linux, every time its been a mistake
   # eval "$(~/.linuxbrew/bin/brew shellenv)"
@@ -64,53 +54,44 @@ fi
 
 zsh_debug_section "Brew setup"
 
+# Completion system init (MUST be before plugins that use compdef)
+autoload -Uz compinit && compinit
 
+# Bootstrap antidote
+ANTIDOTE_HOME="${ZDOTDIR:-$HOME}/.antidote"
+if [[ -d "$ANTIDOTE_HOME" ]]; then
+    source "$ANTIDOTE_HOME/antidote.zsh"
 
-#git clone https://github.com/spaceship-prompt/spaceship-prompt.git "$ZSH_CUSTOM/themes/spaceship-prompt" --depth=1
-#ln -s "$ZSH_CUSTOM/themes/spaceship-prompt/spaceship.zsh-theme" "$ZSH_CUSTOM/themes/spaceship.zsh-theme"
+    # Static plugin file for fast loading
+    zsh_plugins="${ZDOTDIR:-$HOME}/.zsh_plugins"
+    if [[ ! ${zsh_plugins}.zsh -nt ${zsh_plugins}.txt ]]; then
+        antidote bundle < "${zsh_plugins}.txt" > "${zsh_plugins}.zsh"
+    fi
+    source "${zsh_plugins}.zsh"
+else
+    print_warning "Antidote not found. Run 'zsh-install' to install."
+fi
 
-ZSH_THEME="spaceship"
+zsh_debug_section "Antidote plugins"
 
-# Plugins configuration
-# git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
-# git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
-# git clone https://github.com/agkozak/zsh-z $ZSH_CUSTOM/plugins/zsh-z
-# git clone https://github.com/kutsan/zsh-system-clipboard $ZSH_CUSTOM/plugins/zsh-system-clipboard
+# AWS CLI v2 completion (replaces OMZ aws plugin)
+if command -v aws &>/dev/null; then
+    autoload -Uz bashcompinit && bashcompinit
+    complete -C "$(which aws_completer)" aws
+fi
 
-plugins=(
-  git
-  aws # auto complete for aws CLIv2
-  #docker # https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/docker
-  #docker-compose # https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/docker-compose
-  # kubectl # auto complete for kubectl
-  zsh-autosuggestions # suggests commands as you type based on history and completions.
-  # zsh-syntax-highlighting
-  zsh-system-clipboard # copy and paste commands in zsh with the buffer from os clipboard, use  zle -al to see all key bindings actions
-  zsh-z #  jump quickly to directories that you have visited frequently
-)
-
-zsh_debug_section "Plugin configuration"
-# Load oh-my-zsh
-# NOTE: ON mac if i ever tried to loaded this from any file but `.zshrc` all kinds of issues, mainily tons of `failed to load module` spamming the console
-source $ZSH/oh-my-zsh.sh
-
-zsh_debug_section "Oh My Zsh Setup"
-
-
-# # Enable option-stacking for docker autocomplete
+# Enable option-stacking for docker autocomplete
 zstyle ':completion:*:*:docker:*' option-stacking yes
 zstyle ':completion:*:*:docker-*:*' option-stacking yes
 
-# # Fix slowness of pastes with zsh-syntax-highlighting.zsh
+# Fix slowness of pastes with zsh-syntax-highlighting.zsh
 zstyle ':bracketed-paste-magic' active-widgets '.self-*'
 
-
-
-# Ensure modules are still available after Oh My Zsh loads
+# Ensure modules are still available
 zmodload zsh/zle 2>/dev/null
 zmodload zsh/parameter 2>/dev/null
 
-zsh_debug_section "Oh-my-zsh loading"
+zsh_debug_section "Plugin configuration complete"
 
 zsh_source_module "$DOTFILES_PATH/additional_scripts/zsh-02-basic-aliases.zsh"
 

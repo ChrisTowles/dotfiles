@@ -61,7 +61,16 @@ link_dotfiles() {
     backup_existing ".zshrc"
     ln -sf "$SCRIPT_DIR/.zshrc" "$HOME/.zshrc"
     print_success "Linked .zshrc"
-    
+
+    # Link plugin manifest for Antidote
+    backup_existing ".zsh_plugins.txt"
+    ln -sf "$SCRIPT_DIR/.zsh_plugins.txt" "$HOME/.zsh_plugins.txt"
+    print_success "Linked .zsh_plugins.txt"
+
+    # Link fzf config
+    backup_existing ".fzf.zsh"
+    ln -sf "$SCRIPT_DIR/.fzf.zsh" "$HOME/.fzf.zsh"
+    print_success "Linked .fzf.zsh"
 }
 
 # Install dependencies

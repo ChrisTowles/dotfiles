@@ -31,14 +31,17 @@ zsh-check-deps
 - **Cross-Platform**: Works on Linux and macOS with OS-specific handling
 - **Debug Support**: Timing debug with `ZSH_DEBUG_TIMING` environment variable
 
-### Key Zsh Modules
+### Key Zsh Files
+- `.zsh_plugins.txt` - Antidote plugin manifest (plugins loaded by Antidote)
 - `zsh-00-init.zsh` - Initialization and utility functions
-- `zsh-01-oh-my-zsh.zsh` - Oh My Zsh configuration and plugins
 - `zsh-02-basic-aliases.zsh` - System aliases and modern CLI tool replacements
 - `zsh-git.zsh` - Git aliases and helper functions
 - `zsh-node.zsh` - Node.js, NVM, and pnpm configuration
 - `zsh-claude.zsh` - Claude CLI integration
 - `zsh-fzf.zsh` - FZF fuzzy finder configuration
+
+### Plugin Manager
+Uses [Antidote](https://github.com/mattmc3/antidote) for plugin management. Plugins are defined in `.zsh_plugins.txt` and bundled into a static `.zsh_plugins.zsh` file for fast loading.
 
 ### Modern CLI Tool Support
 - Conditional aliases for ripgrep (rg), eza, jq, jid, and bat

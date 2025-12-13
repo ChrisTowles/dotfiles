@@ -60,56 +60,32 @@ install_homebrew() {
     fi
 }
 
-# Install oh-my-zsh
-install_oh_my_zsh() {
-    if [[ ! -d "$HOME/.oh-my-zsh" ]]; then
-        print_info "Installing Oh My Zsh..."
-        sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
-        print_success "Oh My Zsh installed"
-    else
-        print_info "Oh My Zsh already installed"
-    fi
-    
-    # Install oh-my-zsh plugins
-    local ZSH_CUSTOM="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
-    
-    # zsh-autosuggestions
-    if [[ ! -d "$ZSH_CUSTOM/plugins/zsh-autosuggestions" ]]; then
-        print_info "Installing zsh-autosuggestions..."
-        git clone https://github.com/zsh-users/zsh-autosuggestions "$ZSH_CUSTOM/plugins/zsh-autosuggestions"
-        print_success "zsh-autosuggestions installed"
-    fi
-    
-    # zsh-syntax-highlighting
-    if [[ ! -d "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting" ]]; then
-        print_info "Installing zsh-syntax-highlighting..."
-        git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting"
-        print_success "zsh-syntax-highlighting installed"
-    fi
-    
-    # zsh-z
-    if [[ ! -d "$ZSH_CUSTOM/plugins/zsh-z" ]]; then
-        print_info "Installing zsh-z..."
-        git clone https://github.com/agkozak/zsh-z "$ZSH_CUSTOM/plugins/zsh-z"
-        print_success "zsh-z installed"
-    fi
-    
-    # zsh-system-clipboard
-    if [[ ! -d "$ZSH_CUSTOM/plugins/zsh-system-clipboard" ]]; then
-        print_info "Installing zsh-system-clipboard..."
-        git clone https://github.com/kutsan/zsh-system-clipboard "$ZSH_CUSTOM/plugins/zsh-system-clipboard"
-        print_success "zsh-system-clipboard installed"
-    fi
-    
-    # Install spaceship theme
+# Install antidote plugin manager
+install_antidote() {
+    local ANTIDOTE_HOME="${ZDOTDIR:-$HOME}/.antidote"
+    local DOTFILES_PATH="${DOTFILES_PATH:-$HOME/code/p/dotfiles}"
 
-    if [[ ! -d "$ZSH_CUSTOM/themes/spaceship-prompt" ]]; then
-        print_info "Installing Spaceship theme..."
-        git clone https://github.com/spaceship-prompt/spaceship-prompt.git "$ZSH_CUSTOM/themes/spaceship-prompt" --depth=1
-        ln -sf "$ZSH_CUSTOM/themes/spaceship-prompt/spaceship.zsh-theme" "$ZSH_CUSTOM/themes/spaceship.zsh-theme"
-        print_success "Spaceship theme installed"
+    if [[ ! -d "$ANTIDOTE_HOME" ]]; then
+        print_info "Installing Antidote..."
+        git clone --depth=1 https://github.com/mattmc3/antidote.git "$ANTIDOTE_HOME"
+        print_success "Antidote installed"
+    else
+        print_info "Antidote already installed"
     fi
-   
+
+    # Link plugin manifest
+    local plugins_file="${ZDOTDIR:-$HOME}/.zsh_plugins.txt"
+    if [[ ! -f "$plugins_file" ]] || [[ ! -L "$plugins_file" ]]; then
+        print_info "Linking plugin manifest..."
+        ln -sf "$DOTFILES_PATH/.zsh_plugins.txt" "$plugins_file"
+        print_success "Plugin manifest linked"
+    fi
+
+    # Generate static plugin file
+    print_info "Bundling plugins (this may take a moment on first run)..."
+    source "$ANTIDOTE_HOME/antidote.zsh"
+    antidote bundle < "$plugins_file" > "${plugins_file%.txt}.zsh"
+    print_success "Plugins bundled"
 }
 
 # Install Git and GitHub CLI
@@ -340,7 +316,7 @@ interactive_install() {
     echo ""
     echo "Select components to install:"
     echo ""
-    echo "  1) Core (Oh My Zsh, plugins, theme)"
+    echo "  1) Core (Antidote, plugins, theme)"
     echo "  2) Git tools (GitHub CLI)"
     echo "  3) FZF (fuzzy finder)"
     echo "  4) Node.js tools (NVM, pnpm, global packages)"
@@ -358,7 +334,7 @@ interactive_install() {
     read -r "choice?Enter your choice: "
     
     case $choice in
-        1) install_oh_my_zsh ;;
+        1) install_antidote ;;
         2) install_git_tools ;;
         3) install_fzf ;;
         4) install_node_tools ;;
@@ -368,7 +344,7 @@ interactive_install() {
         8) install_cli_tools ;;
         9) install_server_tools ;;
         a)
-            install_oh_my_zsh
+            install_antidote
             install_git_tools
             install_fzf
             install_node_tools
@@ -379,7 +355,7 @@ interactive_install() {
             install_server_tools
             ;;
         c)
-            install_oh_my_zsh
+            install_antidote
             install_git_tools
             install_fzf
             install_node_tools

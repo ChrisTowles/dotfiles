@@ -1,0 +1,13 @@
+# Antidote plugin manifest
+# Regenerate static file: antidote bundle < ~/.zsh_plugins.txt > ~/.zsh_plugins.zsh
+
+# Third-party plugins
+zsh-users/zsh-autosuggestions
+kutsan/zsh-system-clipboard
+agkozak/zsh-z
+
+# Completions (replaces OMZ completion lib)
+zsh-users/zsh-completions
+
+# Theme - Spaceship Prompt
+spaceship-prompt/spaceship-prompt
