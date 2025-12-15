@@ -1,18 +1,22 @@
-# zsh-02-basic-aliases.zsh
-# Essential aliases used frequently
+#!/bin/zsh
+# conf.d/10-aliases.zsh - Essential system aliases
 
-# Basic system aliases
+# Editor
 alias co="code"
 
+# Directory listing (platform-specific)
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
   alias ls='ls -al --color=always'
 else
   alias ls='ls -al'
 fi
 
-alias rmd='rm -rf'   # remove directory
-alias rmdir='rm -rf' # remove directory
-alias hg='history | rg ' # search history
+# Directory removal
+alias rmd='rm -rf'
+alias rmdir='rm -rf'
+
+# History search
+alias hg='history | rg '
 
 # ZSH source shortcuts
 alias s-zsh="source ~/.zshrc"
@@ -34,26 +38,16 @@ if command -v bat &>/dev/null; then
   alias cat='bat'
 fi
 
-# jid is a JSON incremental digger, awesome to help making jq queries
+# jid - JSON incremental digger for building jq queries
 if command -v jid &>/dev/null; then
-  # default to show the filter
   alias jid='jid -q'
-  # pretty print
   alias jidp='jid -p'
 fi
 
-
 # Clipboard aliases for Linux
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-  # sudo apt install xclip xsel
   alias pbcopy='xclip -selection clipboard'
   alias pbpaste='xclip -selection clipboard -o'
 fi
 
-# Directory navigation
-# useful for quick directory change
-# type "i p" to go to my personal repositories folder  
-# type "i f" to go to my forked repositories folder
-i() { cd ~/code/$1; }
-
-zsh_debug_section "System aliases and functions"
+zsh_debug_section "System aliases"

@@ -1,149 +1,97 @@
-# Modular .zshrc
-# A clean, fast-loading configuration that sources modules as needed
+#!/bin/zsh
+# .zshrc - Interactive shell configuration
+# Minimal orchestrator following mattmc3/zdotdir pattern
 
-# configure git
-# git config --global user.email "you@example.com"
-# git config --global user.name "Your Name"
-
-# set code as the default editor
-# git config --global core.editor "code --wait"
-
-# push the current branch and set the remote as upstream automatically every time you push
-# git config --global push.default current
-
-# Path to dotfiles
-DOTFILES_PATH="$HOME/code/p/dotfiles"
-
-# Load install helpers if in install mode
-if [[ "$ZSH_INSTALL_MODE" == "1" ]]; then
-    source "$DOTFILES_PATH/additional_scripts/zsh-install-helpers.zsh"
-fi
-
-# Helper function to source modules with error handling
-zsh_source_module() {
-    local _zsh_mod_path="$1"
-    local _zsh_mod_name=$(basename "$_zsh_mod_path" .zsh)
-
-    if [[ -f "$_zsh_mod_path" ]]; then
-        source "$_zsh_mod_path"
-    else
-        echo "Warning: Module $_zsh_mod_name not found at $_zsh_mod_path"
-    fi
-}
-
-# Core modules (always loaded)
-print_success() { echo -e "\033[0;32m✅ $1\033[0m"; }
-print_success "Loading Chris's Modular ZSH Profile"
-
-# Load core modules in order
-zsh_source_module "$DOTFILES_PATH/additional_scripts/zsh-00-init.zsh"
-
-
+# Profiling support (use: zprofrc)
+[[ "$ZPROFRC" -ne 1 ]] || zmodload zsh/zprof
+alias zprofrc="ZPROFRC=1 zsh"
 
 ###############################
-# Antidote Plugin Manager
+# Directory Setup
 ###############################
 
-# Brew setup (keep before plugins)
-if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-  # Note: give up on brew for linux, every time its been a mistake
-  # eval "$(~/.linuxbrew/bin/brew shellenv)"
+# Set directory variables (use ZDOTDIR from bootstrap)
+ZSH_CONFIG_DIR="${ZDOTDIR:-$HOME/code/p/dotfiles}"
+ZSH_DATA_DIR="${__zsh_user_data_dir:-${XDG_DATA_HOME:-$HOME/.local/share}/zsh}"
+ZSH_CACHE_DIR="${__zsh_cache_dir:-${XDG_CACHE_HOME:-$HOME/.cache}/zsh}"
+
+# Ensure directories exist
+mkdir -p "$ZSH_DATA_DIR" "$ZSH_CACHE_DIR"
+
+# Essential options
+setopt EXTENDED_GLOB INTERACTIVE_COMMENTS
+
+# History configuration (XDG-compliant location)
+HISTFILE="${ZSH_DATA_DIR}/history"
+
+###############################
+# Debug Timing (must be early)
+###############################
+
+zsh_start_time_total=$(date +%s.%N)
+if [[ -n "$ZSH_DEBUG_TIMING" ]]; then
+  zsh_debug_start_time=$(date +%s.%N)
+  zsh_debug_section() {
+    local current_time=$(date +%s.%N)
+    local elapsed=$(echo "$current_time - $zsh_debug_start_time" | bc -l)
+    echo -e "\033[1;33m⚠️  $(printf "DEBUG: %s took %.3f seconds" "$1" "$elapsed")\033[0m"
+    zsh_debug_start_time=$current_time
+  }
 else
-  eval "$(/opt/homebrew/bin/brew shellenv)"
+  zsh_debug_section() { : }
 fi
 
-zsh_debug_section "Brew setup"
+###############################
+# Load zstyles
+###############################
 
-# Completion system init (MUST be before plugins that use compdef)
-autoload -Uz compinit && compinit
+[[ -r "$ZSH_CONFIG_DIR/.zstyles" ]] && source "$ZSH_CONFIG_DIR/.zstyles"
 
-# Bootstrap antidote
-ANTIDOTE_HOME="${ZDOTDIR:-$HOME}/.antidote"
-if [[ -d "$ANTIDOTE_HOME" ]]; then
-    source "$ANTIDOTE_HOME/antidote.zsh"
+###############################
+# Autoload Functions
+###############################
 
-    # Static plugin file for fast loading
-    zsh_plugins="${ZDOTDIR:-$HOME}/.zsh_plugins"
-    if [[ ! ${zsh_plugins}.zsh -nt ${zsh_plugins}.txt ]]; then
-        antidote bundle < "${zsh_plugins}.txt" > "${zsh_plugins}.zsh"
-    fi
-    source "${zsh_plugins}.zsh"
-else
-    print_warning "Antidote not found. Run 'zsh-install' to install."
+# Add custom functions to fpath and autoload
+if [[ -d "$ZSH_CONFIG_DIR/functions" ]]; then
+  fpath=("$ZSH_CONFIG_DIR/functions" $fpath)
+  autoload -Uz $ZSH_CONFIG_DIR/functions/*(:t)
 fi
 
-zsh_debug_section "Antidote plugins"
-
-# AWS CLI v2 completion (replaces OMZ aws plugin)
-if command -v aws &>/dev/null; then
-    autoload -Uz bashcompinit && bashcompinit
-    complete -C "$(which aws_completer)" aws
+# Add custom completions to fpath
+if [[ -d "$ZSH_CONFIG_DIR/completions" ]]; then
+  fpath=("$ZSH_CONFIG_DIR/completions" $fpath)
 fi
 
-# Enable option-stacking for docker autocomplete
-zstyle ':completion:*:*:docker:*' option-stacking yes
-zstyle ':completion:*:*:docker-*:*' option-stacking yes
+###############################
+# Bootstrap Antidote
+###############################
 
-# Fix slowness of pastes with zsh-syntax-highlighting.zsh
-zstyle ':bracketed-paste-magic' active-widgets '.self-*'
+source "$ZSH_CONFIG_DIR/lib/antidote.zsh"
 
-# Ensure modules are still available
-zmodload zsh/zle 2>/dev/null
-zmodload zsh/parameter 2>/dev/null
+###############################
+# Source conf.d Modules
+###############################
 
-zsh_debug_section "Plugin configuration complete"
+# Source all conf.d modules alphabetically
+# Files prefixed with ~ are skipped (disabled)
+for _rc in "$ZSH_CONFIG_DIR"/conf.d/*.zsh(N); do
+  [[ "${_rc:t}" != '~'* ]] || continue
+  source "$_rc"
+done
+unset _rc
 
-zsh_source_module "$DOTFILES_PATH/additional_scripts/zsh-02-basic-aliases.zsh"
+###############################
+# Installer Aliases
+###############################
 
-# Essential tools (loaded based on availability)
-zsh_source_module "$DOTFILES_PATH/additional_scripts/zsh-git.zsh"
+alias zsh-setup='bash "$ZSH_CONFIG_DIR/setup.sh"'
+alias zsh-install='zsh "$ZSH_CONFIG_DIR/install/install-deps.zsh"'
+alias zsh-check-deps='zsh "$ZSH_CONFIG_DIR/install/check-deps.zsh"'
 
-# FZF (if installed)
-if [[ -f ~/.fzf.zsh ]] || command -v fzf &>/dev/null; then
-    zsh_source_module "$DOTFILES_PATH/additional_scripts/zsh-fzf.zsh"
-fi
+###############################
+# Final Timing Report
+###############################
 
-# GitHub CLI (if installed)
-if command -v gh &>/dev/null; then
-    zsh_source_module "$DOTFILES_PATH/additional_scripts/zsh-github-cli.zsh"
-fi
-
-# Node.js tools (if any node tool is available)
-if command -v node &>/dev/null || command -v pnpm &>/dev/null || [[ -d "$HOME/.nvm" ]]; then
-    zsh_source_module "$DOTFILES_PATH/additional_scripts/zsh-node.zsh"
-fi
-
-# Claude Code (if installed)
-if command -v claude &>/dev/null || [[ -f "$HOME/.claude/local/claude" ]]; then
-    zsh_source_module "$DOTFILES_PATH/additional_scripts/zsh-claude.zsh"
-fi
-
-# Towles Tool (if installed)
-if command -v towles-tool &>/dev/null; then
-    zsh_source_module "$DOTFILES_PATH/additional_scripts/zsh-towles-tool.zsh"
-fi
-
-
-if command -v docker &>/dev/null; then
-   zsh_source_module "$DOTFILES_PATH/additional_scripts/zsh-docker.zsh"
-fi
-
-#if command -v docker &>/dev/null; then
-    zsh_source_module "$DOTFILES_PATH/additional_scripts/zsh-gitkraken.zsh"
-#fi
-
-if command -v uv &>/dev/null; then
-    zsh_source_module "$DOTFILES_PATH/additional_scripts/zsh-python.zsh"
-fi
-
-
-
-# Installer aliases (always available)
-alias zsh-setup='bash "$DOTFILES_PATH/setup.sh"'
-alias zsh-install='zsh "$DOTFILES_PATH/additional_scripts/zsh-install-deps.zsh"'
-alias zsh-check-deps='zsh "$DOTFILES_PATH/additional_scripts/zsh-check-deps.zsh"'
-
-# Final timing report
 if [[ -n "$ZSH_DEBUG_TIMING" ]]; then
   local current_time=$(date +%s.%N)
   local elapsed=$(echo "$current_time - $zsh_start_time_total" | bc -l)
@@ -151,13 +99,23 @@ if [[ -n "$ZSH_DEBUG_TIMING" ]]; then
 fi
 
 
-### Google cloud
 
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f "$HOME/google-cloud-sdk/path.zsh.inc" ]; then . "$HOME/google-cloud-sdk/path.zsh.inc"; fi
+###############################
+# direnv Integration
+###############################
+eval "$(direnv hook zsh)"  # or bash
 
-# The next line enables shell command completion for gcloud.
-if [ -f "$HOME/google-cloud-sdk/completion.zsh.inc" ]; then . "$HOME/google-cloud-sdk/completion.zsh.inc"; fi
 
+###############################
+# Profiling Output
+###############################
+
+[[ "$ZPROFRC" -eq 1 ]] && zprof
+[[ -v ZPROFRC ]] && unset ZPROFRC
+
+# Never start in root filesystem
+[[ "$PWD" != "/" ]] || cd
+
+# Always return success
+true
 ############### Anything after this auto added ################
-

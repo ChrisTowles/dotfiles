@@ -4,48 +4,76 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Repository Structure
 
-This is a personal dotfiles repository containing:
-- **CLI tool** (`/cli/`) - A TypeScript CLI application called "towles-tool" with commands for branch management, AWS console login, and daily utilities
-- **Dotfiles** (root) - Shell configuration files (`.zshrc`) and setup scripts
-- **Documentation** (`/docs/`) - Setup guides for various applications and tools
+This is a personal dotfiles repository following the [mattmc3/zdotdir](https://github.com/mattmc3/zdotdir) pattern:
+
+```
+~/code/p/dotfiles/              # ZDOTDIR - repository root
+├── .zshenv                     # XDG setup, environment variables
+├── .zshrc                      # Minimal orchestrator
+├── .zstyles                    # Centralized zstyle configuration
+├── .zsh_plugins.txt            # Antidote plugin manifest
+├── conf.d/                     # Modular configuration (loaded alphabetically)
+│   ├── 00-init.zsh            # Core init, colors, debug timing
+│   ├── 10-aliases.zsh         # System aliases
+│   ├── 20-git.zsh             # Git aliases
+│   ├── 30-fzf.zsh             # FZF configuration
+│   ├── 40-node.zsh            # Node.js/NVM/pnpm
+│   ├── 50-*.zsh               # Tool-specific modules
+│   └── 80-gcloud.zsh          # Google Cloud SDK
+├── functions/                  # Autoloaded functions
+├── lib/                        # Core libraries
+│   └── antidote.zsh           # Plugin manager bootstrap
+├── install/                    # Installation scripts
+├── completions/                # Custom completions
+├── cli/                        # TypeScript CLI tool (@towles/tool)
+└── docs/                       # Setup guides
+```
 
 ## Development Commands
 
-### Dotfiles Setup Commands
-
 ```bash
-# Complete setup process (recommended)
+# Setup (creates ~/.zshenv bootstrap pointing to ZDOTDIR)
 zsh-setup
 
 # Install dependencies
 zsh-install
 
-# Check which dependencies are missing
+# Check missing dependencies
 zsh-check-deps
+
+# Profile startup time
+zprofrc
+
+# Reload with timing debug
+zsh-load
 ```
 
-### Dotfiles Architecture
-- **Modular Design**: Configuration split into focused modules in `additional_scripts/`
-- **Smart Loading**: Only loads modules for installed tools using `command -v` checks
-- **Auto-Installation**: Built-in dependency installer with interactive menu
-- **Cross-Platform**: Works on Linux and macOS with OS-specific handling
-- **Debug Support**: Timing debug with `ZSH_DEBUG_TIMING` environment variable
+## Architecture
 
-### Key Zsh Files
-- `.zsh_plugins.txt` - Antidote plugin manifest (plugins loaded by Antidote)
-- `zsh-00-init.zsh` - Initialization and utility functions
-- `zsh-02-basic-aliases.zsh` - System aliases and modern CLI tool replacements
-- `zsh-git.zsh` - Git aliases and helper functions
-- `zsh-node.zsh` - Node.js, NVM, and pnpm configuration
-- `zsh-claude.zsh` - Claude CLI integration
-- `zsh-fzf.zsh` - FZF fuzzy finder configuration
+### ZDOTDIR Pattern
+- `~/.zshenv` is a minimal bootstrap that sets `ZDOTDIR` to this repo
+- All configuration lives in the repo, not scattered in `$HOME`
+- XDG Base Directory compliant (`~/.config`, `~/.cache`, `~/.local/share`)
+
+### conf.d/ Modules
+- Loaded alphabetically by `.zshrc`
+- Prefix with `~` to disable (e.g., `~50-docker.zsh`)
+- Each module checks if its tool exists before loading (`command -v` or `return 0`)
+
+### functions/ Directory
+- Functions are autoloaded on-demand (not sourced at startup)
+- Each file = one function (filename = function name)
+- Key functions: `gmain`, `gcmc`, `pr`, `git-ignored`, `serve`, `i`
 
 ### Plugin Manager
-Uses [Antidote](https://github.com/mattmc3/antidote) for plugin management. Plugins are defined in `.zsh_plugins.txt` and bundled into a static `.zsh_plugins.zsh` file for fast loading.
+Uses [Antidote](https://github.com/mattmc3/antidote) with static bundling for fast loading.
 
-### Modern CLI Tool Support
-- Conditional aliases for ripgrep (rg), eza, jq, jid, and bat
-- Automatic fallback to traditional tools if modern ones aren't installed
-- Platform-specific configurations (Linux vs macOS)
+**Plugins:**
+- `zsh-users/zsh-autosuggestions` - Fish-like autosuggestions
+- `zsh-users/zsh-completions` - Additional completions
+- `kutsan/zsh-system-clipboard` - System clipboard integration
+- `agkozak/zsh-z` - Jump to frequent directories
+- `spaceship-prompt/spaceship-prompt` - Prompt theme
 
-
+### Modern CLI Tools
+Conditional aliases for: ripgrep (rg), eza, bat, jq, jid, fd

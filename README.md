@@ -11,7 +11,7 @@ Opinionated setup I use on my machine for things like terminal and dotfiles like
 
 - [Git](https://git-scm.com/)
 - [VS Code](https://code.visualstudio.com/)
-- [Set zsh as your default shell](https://github.com/ohmyzsh/ohmyzsh/wiki/Installing-ZSH#how-to-install-zsh-on-many-platforms)
+- [Zsh](https://zsh.sourceforge.io/) as your default shell
 
 ## Quick Setup
 
@@ -64,28 +64,36 @@ git config --global push.default current
 
 ## Terminal Shell - ZSH Configuration
 
+Architecture follows the [mattmc3/zdotdir](https://github.com/mattmc3/zdotdir) pattern:
 
-
-**Modular Design**: The configuration is split into focused modules in `additional_scripts/`:
-- **Core**: [.zshrc](.zshrc) - Main loader with smart conditional sourcing
-- **Oh My Zsh**: Theme, plugins, and core functionality  
-- **Git Tools**: Aliases, helper functions, and GitHub CLI integration
-- **Node.js**: NVM, pnpm, and development tools
-- **Optional**: Docker, Python, Claude CLI, and more
+```
+~/code/p/dotfiles/              # ZDOTDIR
+├── .zshenv                     # XDG setup, environment vars
+├── .zshrc                      # Minimal orchestrator
+├── conf.d/                     # Modular config (loaded alphabetically)
+│   ├── 00-init.zsh            # Core initialization
+│   ├── 10-aliases.zsh         # System aliases
+│   ├── 20-git.zsh             # Git aliases
+│   ├── 50-*.zsh               # Tool-specific modules
+│   └── ...
+├── functions/                  # Autoloaded functions
+├── lib/                        # Core libraries (antidote)
+└── install/                    # Installation scripts
+```
 
 **Key Features**:
-- **Smart Loading**: Only loads modules for installed tools
-- **Auto-Installation**: Built-in dependency installer
-- **Cross-Platform**: Works on Linux and macOS
-- **Fast Startup**: Optimized loading with timing debug support
+- **ZDOTDIR Pattern**: Only `~/.zshenv` needed in home, everything else in repo
+- **XDG Compliant**: Uses `~/.config`, `~/.cache`, `~/.local/share`
+- **Smart Loading**: Modules check if tools exist before loading
+- **Function Autoloading**: Functions load on-demand for faster startup
+- **Fast Startup**: Static plugin bundling via Antidote
 
-**Included Tools**:
-- [oh my zsh](https://ohmyz.sh/) with plugins
-- [spaceship-prompt](https://github.com/spaceship-prompt/spaceship-prompt)
-- [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions)
-- [zsh-syntax-highlighting](https://github.com/zsh-users/zsh-syntax-highlighting)
-- [zsh-z](https://github.com/agkozak/zsh-z) - jump to frequent directories
-- [zsh-system-clipboard](https://github.com/kutsan/zsh-system-clipboard) - system copy/paste
+**Plugins** (via Antidote):
+- [spaceship-prompt](https://github.com/spaceship-prompt/spaceship-prompt) - Theme
+- [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions) - Fish-like suggestions
+- [zsh-completions](https://github.com/zsh-users/zsh-completions) - Additional completions
+- [zsh-z](https://github.com/agkozak/zsh-z) - Jump to frequent directories
+- [zsh-system-clipboard](https://github.com/kutsan/zsh-system-clipboard) - System copy/paste
 
 ### Common Tools
 - [nvm](https://github.com/nvm-sh/nvm) - Use multiple versions of Node.js
@@ -101,6 +109,7 @@ git config --global push.default current
 Browse the complete documentation in the `docs/` directory:
 
 <!-- TOC_START -->
+- [mattmc3/zdotdir Design Patterns Analysis](docs/mattmc3-zdotdir-patterns.md)
   - **apps/**
     - [Android Studio Install Guide Linux](docs/apps/andriod-studio.md)
     - [Bambu Studio on Linux](docs/apps/bambu-studio.md)
@@ -158,11 +167,6 @@ brew update
   brew install iterm2 --cask
   ```
    - Now in iTerm2 go to `Preferences > Profiles > Text` and set the font to `Hack Nerd Font`
-- [oh my zsh](https://ohmyz.sh/)
-  ```bash
-  # Install Oh My Zsh
-  sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-  ```
 - [Nerd Fonts](https://www.nerdfonts.com/)
   ```bash
   # Install Nerd Fonts

@@ -3,6 +3,7 @@
 
 # Third-party plugins
 zsh-users/zsh-autosuggestions
+zsh-users/zsh-history-substring-search
 kutsan/zsh-system-clipboard
 agkozak/zsh-z
 

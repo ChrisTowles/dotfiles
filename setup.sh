@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # setup.sh
-# One-command setup for dotfiles with dependency installation
+# One-command setup for dotfiles using ZDOTDIR pattern (mattmc3/zdotdir style)
 
 set -e  # Exit on error
 
@@ -26,12 +26,12 @@ print_subheader() { echo -e "${BOLD}${BLUE}$1${NC}"; }
 print_note() { echo -e "${GRAY}💡 $1${NC}"; }
 
 echo ""
-print_header "🚀 Dotfiles Setup Script"
-print_header "========================"
+print_header "🚀 Dotfiles Setup Script (ZDOTDIR Pattern)"
+print_header "==========================================="
 echo ""
 print_subheader "This script will:"
-echo -e "  ${PURPLE}1.${NC} Back up existing dotfiles"
-echo -e "  ${PURPLE}2.${NC} Link new dotfiles" 
+echo -e "  ${PURPLE}1.${NC} Create ~/.zshenv bootstrap file"
+echo -e "  ${PURPLE}2.${NC} Link plugin manifest"
 echo -e "  ${PURPLE}3.${NC} Install dependencies (optional)"
 echo ""
 
@@ -52,25 +52,36 @@ backup_existing() {
     fi
 }
 
-# Link dotfiles
-link_dotfiles() {
-    print_step "Linking dotfiles..."
+# Create bootstrap .zshenv
+create_bootstrap() {
+    print_step "Setting up ZDOTDIR bootstrap..."
     echo ""
-    
-    # Link .zshrc
-    backup_existing ".zshrc"
-    ln -sf "$SCRIPT_DIR/.zshrc" "$HOME/.zshrc"
-    print_success "Linked .zshrc"
 
-    # Link plugin manifest for Antidote
+    # Backup and create ~/.zshenv bootstrap
+    backup_existing ".zshenv"
+
+    cat > "$HOME/.zshenv" << EOF
+#!/bin/zsh
+# ~/.zshenv - Bootstrap file (only zsh file needed in \$HOME)
+# Sets ZDOTDIR and sources the real .zshenv from dotfiles
+
+export ZDOTDIR="\${ZDOTDIR:-$SCRIPT_DIR}"
+[[ -f "\$ZDOTDIR/.zshenv" ]] && source "\$ZDOTDIR/.zshenv"
+EOF
+
+    print_success "Created ~/.zshenv bootstrap (ZDOTDIR=$SCRIPT_DIR)"
+
+    # Link plugin manifest to home (needed for antidote)
     backup_existing ".zsh_plugins.txt"
     ln -sf "$SCRIPT_DIR/.zsh_plugins.txt" "$HOME/.zsh_plugins.txt"
     print_success "Linked .zsh_plugins.txt"
 
-    # Link fzf config
-    backup_existing ".fzf.zsh"
-    ln -sf "$SCRIPT_DIR/.fzf.zsh" "$HOME/.fzf.zsh"
-    print_success "Linked .fzf.zsh"
+    # Link fzf config if exists
+    if [[ -f "$SCRIPT_DIR/.fzf.zsh" ]]; then
+        backup_existing ".fzf.zsh"
+        ln -sf "$SCRIPT_DIR/.fzf.zsh" "$HOME/.fzf.zsh"
+        print_success "Linked .fzf.zsh"
+    fi
 }
 
 # Install dependencies
@@ -79,11 +90,11 @@ install_dependencies() {
     print_step "Dependency Installation"
     echo -e "${CYAN}❓${NC} Install dependencies? ${GRAY}(y/n)${NC}: \c"
     read -r choice
-    
+
     if [[ "$choice" == "y" ]]; then
         echo ""
         print_info "Starting dependency installation..."
-        
+
         # Check if zsh is installed
         if ! command -v zsh &>/dev/null; then
             print_error "Zsh is not installed. Please install zsh first:"
@@ -94,14 +105,14 @@ install_dependencies() {
             fi
             exit 1
         fi
-        
-        # Run the installer
-        zsh "$SCRIPT_DIR/additional_scripts/zsh-install-deps.zsh"
+
+        # Run the installer from new location
+        zsh "$SCRIPT_DIR/install/install-deps.zsh"
     else
         print_warning "Skipping dependency installation"
         echo ""
         print_note "You can install dependencies later by running:"
-        echo -e "  ${YELLOW}zsh $SCRIPT_DIR/additional_scripts/zsh-install-deps.zsh${NC}"
+        echo -e "  ${YELLOW}zsh-install${NC}"
     fi
 }
 
@@ -112,17 +123,24 @@ main() {
         print_error "This script must be run from the dotfiles directory"
         exit 1
     fi
-    
-    # Link dotfiles
-    link_dotfiles
-    
+
+    # Create bootstrap
+    create_bootstrap
+
     echo ""
-    
+
     # Install dependencies
     install_dependencies
-    
+
     echo ""
     print_header "🎉 Setup Complete!"
+    echo ""
+    print_subheader "Architecture:"
+    echo -e "  ${CYAN}~/.zshenv${NC}          → Bootstrap (sets ZDOTDIR)"
+    echo -e "  ${CYAN}ZDOTDIR${NC}            → $SCRIPT_DIR"
+    echo -e "  ${CYAN}conf.d/${NC}            → Modular configuration"
+    echo -e "  ${CYAN}functions/${NC}         → Autoloaded functions"
+    echo -e "  ${CYAN}lib/${NC}               → Core libraries (antidote)"
     echo ""
     print_subheader "Next steps:"
     echo -e "  ${PURPLE}1.${NC} Set zsh as your default shell: ${YELLOW}chsh -s \$(which zsh)${NC}"
@@ -132,14 +150,14 @@ main() {
     echo -e "     ${YELLOW}git config --global user.email \"you@example.com\"${NC}"
     echo -e "     ${YELLOW}git config --global core.editor \"code --wait\"${NC}"
     echo -e "     ${YELLOW}git config --global push.default current${NC}"
-
     echo ""
-    print_note "Useful commands after setup:"
-    echo -e "  ${CYAN}zsh-setup${NC}        - Re-run this setup (recommended)"
-    echo -e "  ${CYAN}zsh-install${NC}      - Install missing dependencies only"
+    print_note "Useful commands:"
+    echo -e "  ${CYAN}zsh-setup${NC}        - Re-run this setup"
+    echo -e "  ${CYAN}zsh-install${NC}      - Install missing dependencies"
     echo -e "  ${CYAN}zsh-check-deps${NC}   - Check what's missing"
+    echo -e "  ${CYAN}zprofrc${NC}          - Profile zsh startup time"
     echo ""
-    print_note "To enable optional modules, edit ${YELLOW}~/.zshrc_local.sh${NC}"
+    print_note "To disable a module: rename ${YELLOW}conf.d/foo.zsh${NC} → ${YELLOW}conf.d/~foo.zsh${NC}"
     echo ""
 }
 
