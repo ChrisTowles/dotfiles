@@ -61,8 +61,8 @@ zsh-load
 - Each module checks if its tool exists before loading (`command -v` or `return 0`)
 
 ### functions/ Directory
-- Functions are autoloaded on-demand (not sourced at startup)
-- Each file = one function (filename = function name)
+- Functions are sourced at startup (files use .sh extension)
+- Each file = one function (e.g., `gmain.sh` defines `gmain`)
 - Key functions: `gmain`, `gcmc`, `pr`, `git-ignored`, `serve`, `i`
 
 ### Plugin Manager

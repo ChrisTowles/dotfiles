@@ -51,11 +51,11 @@ fi
 # Autoload Functions
 ###############################
 
-# Add custom functions to fpath and autoload
-if [[ -d "$ZSH_CONFIG_DIR/functions" ]]; then
-  fpath=("$ZSH_CONFIG_DIR/functions" $fpath)
-  autoload -Uz $ZSH_CONFIG_DIR/functions/*(:t)
-fi
+# Source custom functions
+for _fn in "$ZSH_CONFIG_DIR"/functions/*.sh(N); do
+  source "$_fn"
+done
+unset _fn
 
 # Add custom completions to fpath
 if [[ -d "$ZSH_CONFIG_DIR/completions" ]]; then

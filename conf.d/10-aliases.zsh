@@ -23,10 +23,6 @@ alias s-zsh="source ~/.zshrc"
 alias source-zsh="source ~/.zshrc"
 
 # Modern CLI tool aliases (only if installed)
-if command -v rg &>/dev/null; then
-  alias grep='rg'
-fi
-
 if command -v eza &>/dev/null; then
   alias ls='eza -la --color=always'
   alias ll='eza -l --color=always'
