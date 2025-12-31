@@ -1,0 +1,41 @@
+// Zellij configuration
+// Docs: https://zellij.dev/documentation/configuration
+
+// General settings
+//          pane_frames false
+//          default_layout "compact"
+//          default_mode "normal"
+//          mouse_mode true
+//          copy_on_select true
+//          scrollback_lines 10000
+//          
+//          // Theme
+//          theme "catppuccin-mocha"
+//          
+//          // Simplified UI
+//          simplified_ui true
+//          session_name "main"
+//          
+//          // Keybindings - Ctrl+a as prefix (tmux-like)
+//          keybinds clear-defaults=false {
+//              shared_except "locked" {
+//                  bind "Ctrl a" { SwitchToMode "tmux"; }
+//              }
+//              tmux {
+//                  bind "Ctrl a" { Write 1; SwitchToMode "Normal"; }
+//                  bind "|" { NewPane "Right"; SwitchToMode "Normal"; }
+//                  bind "-" { NewPane "Down"; SwitchToMode "Normal"; }
+//                  bind "z" { ToggleFocusFullscreen; SwitchToMode "Normal"; }
+//                  bind "c" { NewTab; SwitchToMode "Normal"; }
+//                  bind "," { SwitchToMode "RenameTab"; }
+//                  bind "p" { GoToPreviousTab; SwitchToMode "Normal"; }
+//                  bind "n" { GoToNextTab; SwitchToMode "Normal"; }
+//                  bind "h" { MoveFocus "Left"; SwitchToMode "Normal"; }
+//                  bind "j" { MoveFocus "Down"; SwitchToMode "Normal"; }
+//                  bind "k" { MoveFocus "Up"; SwitchToMode "Normal"; }
+//                  bind "l" { MoveFocus "Right"; SwitchToMode "Normal"; }
+//                  bind "d" { Detach; }
+//                  bind "x" { CloseFocus; SwitchToMode "Normal"; }
+//                  bind "[" { SwitchToMode "Scroll"; }
+//              }
+//          }

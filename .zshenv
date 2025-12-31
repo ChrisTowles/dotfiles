@@ -26,3 +26,6 @@ export XDG_STATE_HOME=${XDG_STATE_HOME:-$HOME/.local/state}
 
 # Dotfiles path (for backward compatibility with existing scripts)
 export DOTFILES_PATH="${ZDOTDIR:-$HOME/code/p/dotfiles}"
+
+# Rust/Cargo
+[[ -d "$HOME/.cargo/bin" ]] && path=("$HOME/.cargo/bin" $path)

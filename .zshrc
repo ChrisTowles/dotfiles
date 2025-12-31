@@ -76,6 +76,7 @@ source "$ZSH_CONFIG_DIR/lib/antidote.zsh"
 # Files prefixed with ~ are skipped (disabled)
 for _rc in "$ZSH_CONFIG_DIR"/conf.d/*.zsh(N); do
   [[ "${_rc:t}" != '~'* ]] || continue
+  [[ -n "$ZSH_DEBUG_TIMING" ]] && echo -e "\033[0;36m  ↳ ${_rc:t}\033[0m"
   source "$_rc"
 done
 unset _rc

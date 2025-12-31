@@ -132,6 +132,7 @@ Browse the complete documentation in the `docs/` directory:
     - [VS Code Insiders Setup](docs/apps/code-insiders.md)
     - [VSCode](docs/apps/vscode.md)
     - [Windows VM on Linux](docs/apps/windows-on-linux.md)
+    - [Zellij Tutorial for Beginners](docs/apps/zellij.md)
   - **tools/**
     - [Vidsrc](docs/tools/vidsrc.md)
 <!-- TOC_END -->
