@@ -72,11 +72,16 @@ Architecture follows the [mattmc3/zdotdir](https://github.com/mattmc3/zdotdir) p
 ├── .zshrc                      # Minimal orchestrator
 ├── conf.d/                     # Modular config (loaded alphabetically)
 │   ├── 00-init.zsh            # Core initialization
+│   ├── 05-keybindings.zsh     # Keyboard shortcuts
 │   ├── 10-aliases.zsh         # System aliases
 │   ├── 20-git.zsh             # Git aliases
-│   ├── 50-*.zsh               # Tool-specific modules
-│   └── ...
-├── functions/                  # Autoloaded functions
+│   ├── 30-fzf.zsh             # FZF fuzzy finder
+│   ├── 40-node.zsh            # Node.js/NVM/pnpm
+│   ├── 50-*.zsh               # Tool-specific (claude, docker, github-cli, zellij, etc)
+│   └── 80-gcloud.zsh          # Google Cloud SDK
+├── functions/                  # Sourced functions (.sh files)
+├── bin/                        # Executable scripts (zp)
+├── config/                     # App configs (claude, zellij)
 ├── lib/                        # Core libraries (antidote)
 └── install/                    # Installation scripts
 ```
@@ -85,7 +90,7 @@ Architecture follows the [mattmc3/zdotdir](https://github.com/mattmc3/zdotdir) p
 - **ZDOTDIR Pattern**: Only `~/.zshenv` needed in home, everything else in repo
 - **XDG Compliant**: Uses `~/.config`, `~/.cache`, `~/.local/share`
 - **Smart Loading**: Modules check if tools exist before loading
-- **Function Autoloading**: Functions load on-demand for faster startup
+- **Sourced Functions**: Functions in `functions/*.sh` sourced at startup
 - **Fast Startup**: Static plugin bundling via Antidote
 
 **Plugins** (via Antidote):
@@ -99,6 +104,10 @@ Architecture follows the [mattmc3/zdotdir](https://github.com/mattmc3/zdotdir) p
 - [nvm](https://github.com/nvm-sh/nvm) - Use multiple versions of Node.js
 - [pnpm](https://pnpm.io/) - Fast Node.js package manager with monorepo support
 - [antfu/ni](https://github.com/antfu/ni) - Use the right package manager
+- [zellij](https://zellij.dev/) - Terminal multiplexer (see [docs/apps/zellij.md](docs/apps/zellij.md))
+  - Custom `claude-dev.kdl` layout for AI-assisted development
+  - `zp` command: Run Claude prompts in stacked panes with auto-focus return
+- [Claude Code](https://claude.ai/code) - AI coding assistant (see [docs/apps/claude-code.md](docs/apps/claude-code.md))
 
 ## [VS Code](https://code.visualstudio.com/) Extensions
 

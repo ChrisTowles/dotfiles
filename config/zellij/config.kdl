@@ -1,9 +1,48 @@
 // Zellij configuration
 // Docs: https://zellij.dev/documentation/configuration
+//
+// NOTE: ~/.config/zellij/ is symlinked to this directory (dotfiles/config/zellij/)
+// Edit this file directly - do NOT create symlinks for individual files
+
+// Remap Ctrl+g to Alt+g (Ctrl+g conflicts with Claude Code)
+keybinds {
+    shared_except "locked" {
+        unbind "Ctrl g"
+        unbind "Ctrl p"  // Conflicts with VSCode quick open
+        bind "Alt g" { SwitchToMode "Locked"; }
+        bind "Alt p" { SwitchToMode "Pane"; }  // Remap pane mode to Alt+p
+    }
+    // Windows-style copy/paste (Ctrl+Shift+C/V - Linux terminal standard)
+    normal {
+        bind "Ctrl Shift c" { Copy; }
+    }
+    shared {
+        unbind "Ctrl v"  // Remove default (visual mode or similar)
+       // bind "Ctrl v" { Paste; }  // Windows-style paste
+    }
+    locked {
+        unbind "Ctrl g"
+        bind "Alt g" { SwitchToMode "Normal"; }
+    }
+}
+
+// Clipboard (Linux) - Zellij doesn't auto-detect clipboard on Linux
+// X11: xclip -selection clipboard
+// Wayland: wl-copy
+copy_command "xclip -selection clipboard"
+copy_on_select true
 
 // General settings
-//          pane_frames false
-//          default_layout "compact"
+pane_frames true
+simplified_ui true
+default_layout "compact"
+
+ui {
+    pane_frames {
+        hide_session_name true
+        rounded_corners true
+    }
+}
 //          default_mode "normal"
 //          mouse_mode true
 //          copy_on_select true
