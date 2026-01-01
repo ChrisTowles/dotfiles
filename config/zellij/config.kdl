@@ -7,22 +7,18 @@
 // Remap Ctrl+g to Alt+g (Ctrl+g conflicts with Claude Code)
 keybinds {
     shared_except "locked" {
+        // chaning "ctrl g" to "alt g" because Conflicts with VSCode quick open
         unbind "Ctrl g"
-        unbind "Ctrl p"  // Conflicts with VSCode quick open
         bind "Alt g" { SwitchToMode "Locked"; }
-        bind "Alt p" { SwitchToMode "Pane"; }  // Remap pane mode to Alt+p
+
     }
     // Windows-style copy/paste (Ctrl+Shift+C/V - Linux terminal standard)
-    normal {
-        bind "Ctrl Shift c" { Copy; }
-    }
     shared {
-        unbind "Ctrl v"  // Remove default (visual mode or similar)
-       // bind "Ctrl v" { Paste; }  // Windows-style paste
     }
     locked {
-        unbind "Ctrl g"
-        bind "Alt g" { SwitchToMode "Normal"; }
+     // chaning "ctrl g" to "alt g" because Conflicts with VSCode quick open
+     // unbind "Ctrl g" 
+     // bind "Alt g" { SwitchToMode "Normal"; }
     }
 }
 
@@ -37,46 +33,11 @@ pane_frames true
 simplified_ui true
 default_layout "compact"
 auto_layout true  // Auto-arrange panes in stacked layout
-new_pane_split_direction "horizontal"  // New panes open below (not right)
+// new_pane_split_direction "horizontal"  // New panes open below (not right)
 
 ui {
     pane_frames {
-        hide_session_name true
+   //     hide_session_name true
         rounded_corners true
     }
 }
-//          default_mode "normal"
-//          mouse_mode true
-//          copy_on_select true
-//          scrollback_lines 10000
-//          
-//          // Theme
-//          theme "catppuccin-mocha"
-//          
-//          // Simplified UI
-//          simplified_ui true
-//          session_name "main"
-//          
-//          // Keybindings - Ctrl+a as prefix (tmux-like)
-//          keybinds clear-defaults=false {
-//              shared_except "locked" {
-//                  bind "Ctrl a" { SwitchToMode "tmux"; }
-//              }
-//              tmux {
-//                  bind "Ctrl a" { Write 1; SwitchToMode "Normal"; }
-//                  bind "|" { NewPane "Right"; SwitchToMode "Normal"; }
-//                  bind "-" { NewPane "Down"; SwitchToMode "Normal"; }
-//                  bind "z" { ToggleFocusFullscreen; SwitchToMode "Normal"; }
-//                  bind "c" { NewTab; SwitchToMode "Normal"; }
-//                  bind "," { SwitchToMode "RenameTab"; }
-//                  bind "p" { GoToPreviousTab; SwitchToMode "Normal"; }
-//                  bind "n" { GoToNextTab; SwitchToMode "Normal"; }
-//                  bind "h" { MoveFocus "Left"; SwitchToMode "Normal"; }
-//                  bind "j" { MoveFocus "Down"; SwitchToMode "Normal"; }
-//                  bind "k" { MoveFocus "Up"; SwitchToMode "Normal"; }
-//                  bind "l" { MoveFocus "Right"; SwitchToMode "Normal"; }
-//                  bind "d" { Detach; }
-//                  bind "x" { CloseFocus; SwitchToMode "Normal"; }
-//                  bind "[" { SwitchToMode "Scroll"; }
-//              }
-//          }
