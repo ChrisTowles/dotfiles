@@ -6,10 +6,12 @@ This script integrates with a zellij layout that has stacked panes (like claude-
 It navigates to the rightmost pane, spawns a new claude session there, and returns focus
 to your original pane so you can keep working.
 
-Usage: zp <prompt>
+Usage: zp [-v|--verbose] <prompt>
 Example: zp "fix the type errors in auth.ts"
+         zp -v "debug this issue"
 """
 
+import argparse
 import subprocess
 import sys
 
@@ -19,63 +21,46 @@ def run(cmd: list[str]) -> str:
     return subprocess.run(cmd, capture_output=True, text=True).stdout
 
 
-def zellij(*args: str) -> str:
+def zellij_action(*args: str) -> str:
     """Run a zellij action command. Wraps: zellij action <args>"""
     return run(["zellij", "action", *args])
 
 
-def get_current_pane_id() -> str | None:
-    """
-    Get the pane ID we're currently in.
-
-    Uses 'zellij action list-clients' which outputs:
-      CLIENT_ID  ZELLIJ_PANE_ID  RUNNING_COMMAND
-      12345      terminal_0      zsh
-
-    Returns the pane ID (e.g., "terminal_0") or None if not found.
-    """
-    output = zellij("list-clients")
-    for line in output.strip().split("\n")[1:]:  # skip header row
-        parts = line.split()
-        if len(parts) >= 2:
-            return parts[1]
-    return None
+def dump_layout() -> str:
+    """Get current pane layout info."""
+    return run(["zellij", "action", "dump-layout"])
 
 
 def main():
-    # Require a prompt argument
-    if not sys.argv[1:]:
-        print("Usage: zp <prompt>")
-        sys.exit(1)
+    parser = argparse.ArgumentParser(description="Run claude in rightmost stack pane")
+    parser.add_argument("-v", "--verbose", action="store_true", help="Show pane layout before/after")
+    parser.add_argument("prompt", nargs="+", help="Prompt to send to claude")
+    args = parser.parse_args()
 
-    prompt = " ".join(sys.argv[1:])
+    prompt = " ".join(args.prompt)
     pane_name = prompt[:30]  # truncate for pane title
+    verbose = args.verbose
 
-    # Save current position so we can return after spawning claude
-    original_pane = get_current_pane_id()
+    if verbose:
+        print("=== BEFORE ===")
+        print(dump_layout())
 
-    # Move to rightmost pane (keep moving until we stop changing panes)
-    moves = 0
-    while True:
-        before = get_current_pane_id()
-        zellij("move-focus", "right")
-        moves += 1
-        if get_current_pane_id() == before or moves > 20:
-            break
-
-    # Spawn claude in the stack (--stacked adds to existing stack instead of splitting)
+    # Spawn claude in the stack
     subprocess.run([
         "zellij", "run", "--stacked",
         "--", "claude", prompt
     ])
 
-    # Give the pane a meaningful name (prompt summary)
-    # Done separately because --name flag doesn't persist well
-    zellij("rename-pane", pane_name)
+    # Give the pane a meaningful name
+    zellij_action("rename-pane", pane_name)
 
-    # Return focus to where we started
-    if original_pane:
-        zellij("focus-pane-with-id", original_pane)
+    if verbose:
+        print("=== AFTER ===")
+        print(dump_layout())
+
+    # TODO: this currently doesn't work at all. Need a way to track original pane.
+    # Return focus to previous pane
+    #zellij_action("focus-previous-pane")
 
 
 if __name__ == "__main__":
