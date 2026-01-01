@@ -36,6 +36,8 @@ copy_on_select true
 pane_frames true
 simplified_ui true
 default_layout "compact"
+auto_layout true  // Auto-arrange panes in stacked layout
+new_pane_split_direction "horizontal"  // New panes open below (not right)
 
 ui {
     pane_frames {

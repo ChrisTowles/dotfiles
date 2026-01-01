@@ -120,3 +120,13 @@ eval "$(direnv hook zsh)"  # or bash
 # Always return success
 true
 ############### Anything after this auto added ################
+# bun completions
+[ -s "/home/ctowles/.bun/_bun" ] && source "/home/ctowles/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
