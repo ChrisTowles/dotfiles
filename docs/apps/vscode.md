@@ -1,6 +1,6 @@
 # VSCode
 
-- Always set file save for `afterDelay`
+- Always set saveOnEdit for `afterDelay`!!!
 
 ## Dictation
 

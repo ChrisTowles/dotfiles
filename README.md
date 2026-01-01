@@ -136,7 +136,6 @@ Browse the complete documentation in the `docs/` directory:
     - [Open WebUi](docs/apps/open-webui.md)
     - [Plex Setup - Linux](docs/apps/plex.md)
     - [Pop!_OS Dual Boot](docs/apps/pop_os-dual-boot.md)
-    - [Terminal Tools](docs/apps/terminal.md)
     - [Transmission](docs/apps/transmission.md)
     - [VS Code Insiders Setup](docs/apps/code-insiders.md)
     - [VSCode](docs/apps/vscode.md)
