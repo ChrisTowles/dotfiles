@@ -36,13 +36,6 @@ After the symlink setup above, you can:
 - Use `code filename.txt` to open specific files
 - Other applications that rely on the `code` command will now use Insiders
 
-## Benefits
-
-- **Latest Features**: Access to the newest VS Code features before stable release
-- **Extension Testing**: Test extensions with cutting-edge VS Code APIs
-- **Feedback**: Help improve VS Code by using pre-release versions
-- **Seamless Integration**: Other tools continue to work with the `code` command
-
 ## Notes
 
 - VS Code Insiders updates daily with the latest changes

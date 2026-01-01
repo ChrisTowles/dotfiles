@@ -137,7 +137,7 @@ Browse the complete documentation in the `docs/` directory:
     - [Plex Setup - Linux](docs/apps/plex.md)
     - [Pop!_OS Dual Boot](docs/apps/pop_os-dual-boot.md)
     - [Transmission](docs/apps/transmission.md)
-    - [VS Code Insiders Setup](docs/apps/code-insiders.md)
+    - [VS Code Insiders Setup](docs/apps/vscode-insiders.md)
     - [VSCode](docs/apps/vscode.md)
     - [Windows VM on Linux](docs/apps/windows-on-linux.md)
     - [Zellij Tutorial for Beginners](docs/apps/zellij.md)
