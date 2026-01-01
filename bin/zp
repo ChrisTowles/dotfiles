@@ -1,26 +1,17 @@
 #!/usr/bin/env python3
 """
-zp - Zellij Prompt: Run claude in the tasks stack pane, return focus to original pane.
+zp - Zellij Prompt: Run claude in rightmost stack, return focus to original pane.
 
 This script integrates with a zellij layout that has stacked panes (like claude-dev.kdl).
-It finds the "tasks" stack, spawns a new claude session there, and returns focus
+It navigates to the rightmost pane, spawns a new claude session there, and returns focus
 to your original pane so you can keep working.
 
 Usage: zp <prompt>
 Example: zp "fix the type errors in auth.ts"
-
-Layout assumption:
-  ┌─────────────┬──────────┬──────────┐
-  │             │  stack1  │  tasks   │  <-- tasks is a stacked section
-  │    main     │  (logs)  │  claude1 │      with multiple claude instances
-  │    pane     │          │  claude2 │
-  │             │          │  claude3 │
-  └─────────────┴──────────┴──────────┘
 """
 
 import subprocess
 import sys
-import re
 
 
 def run(cmd: list[str]) -> str:
@@ -51,114 +42,6 @@ def get_current_pane_id() -> str | None:
     return None
 
 
-def parse_layout_panes(layout: str) -> list[dict]:
-    """
-    Parse zellij's KDL layout dump to extract pane information.
-
-    KDL format looks like:
-      layout {
-        pane size=50% name="main"
-        pane stacked=true {
-          pane name="tasks" expanded=true
-          pane name="claude1"
-        }
-      }
-
-    Returns list of pane dicts with: name, stacked, focused, expanded flags.
-    """
-    panes = []
-    depth = 0
-    in_stacked = False
-    stacked_panes = []
-
-    for line in layout.split("\n"):
-        stripped = line.strip()
-
-        # Track brace nesting depth to understand structure
-        depth += line.count("{") - line.count("}")
-
-        # Detect when we enter a stacked pane section
-        if "stacked=true" in stripped:
-            in_stacked = True
-            stacked_panes = []
-
-        # Parse individual pane definitions
-        if stripped.startswith("pane"):
-            pane_info = {"line": stripped, "stacked": in_stacked}
-
-            # Extract pane name from: name="something"
-            name_match = re.search(r'name="([^"]+)"', stripped)
-            if name_match:
-                pane_info["name"] = name_match.group(1)
-
-            # Check focus/expanded states
-            if "focus=true" in stripped:
-                pane_info["focused"] = True
-            if "expanded=true" in stripped:
-                pane_info["expanded"] = True
-
-            panes.append(pane_info)
-            if in_stacked:
-                stacked_panes.append(pane_info)
-
-        # Detect when we exit a stacked section (depth returns to pre-stack level)
-        if in_stacked and "}" in stripped and depth < 3:
-            in_stacked = False
-
-    return panes
-
-
-def find_tasks_stack_info(layout: str) -> tuple[int, int]:
-    """
-    Find the tasks stack and count its panes.
-
-    Returns tuple of:
-      - stack_index: 0-based index of the stack (0 = first stacked section, etc.)
-      - pane_count: number of panes currently in that stack
-
-    Returns (-1, 0) if no tasks pane found.
-    """
-    stack_idx = -1
-    in_stacked = False
-    in_tasks_stack = False
-    depth = 0
-    base_depth = 0
-    pane_count = 0
-
-    for line in layout.split("\n"):
-        stripped = line.strip()
-        prev_depth = depth
-        depth += line.count("{") - line.count("}")
-
-        # Each stacked=true we encounter increments our stack counter
-        if "stacked=true" in stripped:
-            stack_idx += 1
-            in_stacked = True
-            base_depth = depth
-            pane_count = 0  # reset count for new stack
-
-        # Count panes in current stack
-        if in_stacked and stripped.startswith("pane") and "stacked=true" not in stripped:
-            pane_count += 1
-
-        # Check if this is the tasks stack
-        if in_stacked and 'name="tasks"' in stripped:
-            in_tasks_stack = True
-
-        # Exiting current stacked section
-        if in_stacked and depth <= base_depth and prev_depth > base_depth:
-            if in_tasks_stack:
-                return (stack_idx, pane_count)
-            in_stacked = False
-            in_tasks_stack = False
-
-    # Handle case where tasks stack is the last section (no closing brace yet)
-    if in_tasks_stack:
-        return (stack_idx, pane_count)
-
-    return (-1, 0)
-
-
 def main():
     # Require a prompt argument
     if not sys.argv[1:]:
@@ -171,22 +54,14 @@ def main():
     # Save current position so we can return after spawning claude
     original_pane = get_current_pane_id()
 
-    # Dump current layout to find where tasks stack is
-    layout = zellij("dump-layout")
-
-    # Find which stacked section has the tasks pane
-    # Layout is typically: main | stack0 | stack1(tasks)
-    tasks_stack_idx = find_tasks_stack_index(layout)
-    if tasks_stack_idx < 0:
-        print("Could not find tasks pane in layout")
-        sys.exit(1)
-
-    # Navigate from main pane to tasks stack
-    # +1 because main pane is at position 0, first stack is at 1, etc.
-    moves_right = tasks_stack_idx + 1
-
-    for _ in range(moves_right):
+    # Move to rightmost pane (keep moving until we stop changing panes)
+    moves = 0
+    while True:
+        before = get_current_pane_id()
         zellij("move-focus", "right")
+        moves += 1
+        if get_current_pane_id() == before or moves > 20:
+            break
 
     # Spawn claude in the stack (--stacked adds to existing stack instead of splitting)
     subprocess.run([
@@ -199,8 +74,8 @@ def main():
     zellij("rename-pane", pane_name)
 
     # Return focus to where we started
-    for _ in range(moves_right):
-        zellij("move-focus", "left")
+    if original_pane:
+        zellij("focus-pane-with-id", original_pane)
 
 
 if __name__ == "__main__":
