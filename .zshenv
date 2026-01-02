@@ -32,3 +32,6 @@ export DOTFILES_PATH="${ZDOTDIR:-$HOME/code/p/dotfiles}"
 
 # Dotfiles bin
 [[ -d "$DOTFILES_PATH/bin" ]] && path=("$DOTFILES_PATH/bin" $path)
+
+# Local bin (pip, pipx, lazygit, etc.)
+[[ -d "$HOME/.local/bin" ]] && path=("$HOME/.local/bin" $path)

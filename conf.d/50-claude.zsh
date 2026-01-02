@@ -3,15 +3,19 @@
 
 command -v claude &>/dev/null || [[ -f "$HOME/.claude/local/claude" ]] || return 0
 
+# Fix IDE detection in zellij by clearing conflicting env vars
+# See: https://github.com/zellij-org/zellij/issues/4390
+_claude_cmd="VSCODE_PID= VSCODE_CWD= TERM_PROGRAM= ~/.claude/local/claude"
+
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
   PATH+=":$HOME/.claude/local/"
-  alias claude="~/.claude/local/claude"
-  alias c="claude --dangerously-skip-permissions"
-  alias cr="claude --dangerously-skip-permissions --resume"
+  alias claude="$_claude_cmd"
+  alias c="$_claude_cmd --dangerously-skip-permissions"
+  alias cr="$_claude_cmd --dangerously-skip-permissions --resume"
 else
-  alias claude="~/.claude/local/claude"
-  alias c="claude"
-  alias cr="claude --resume"
+  alias claude="$_claude_cmd"
+  alias c="$_claude_cmd"
+  alias cr="$_claude_cmd --resume"
 fi
 
 # Claude usage monitoring

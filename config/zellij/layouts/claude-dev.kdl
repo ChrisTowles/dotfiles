@@ -5,13 +5,23 @@ layout {
     pane size=1 borderless=true {
         plugin location="zellij:tab-bar"
     }
-    pane split_direction="vertical" size="60%" {
-        name "main";
+    pane split_direction="horizontal"  size="60%"  stacked=true {
+         pane  focus=true {
+            name "main";
+         }
+         pane {
+            name "git";
+            command "lazygit";
+        }
     }
     pane split_direction="horizontal" size="40%" stacked=true {
         pane {
+            name "dev";
+        }
+        pane {
             name "tasks";
         }
+       
 
     }
 
