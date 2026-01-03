@@ -3,7 +3,6 @@
 // Features: progress bar, cache efficiency, cost estimate, git status, thinking indicator
 
 // Updated from Claude vCode 2.0.76
-
 interface StatusLineInput {
     session_id: string
     transcript_path: string
@@ -190,7 +189,7 @@ async function main() {
         version,
         c(pctColor, `${bar} ${contextPct}%`),
         // c('cyan', `⏱~${durationStr}`),
-        cacheRatio > 0 ? c('green', `⚡${cacheRatio}%`) : '',
+        cacheRatio > 0 ? c('green', `cr ${cacheRatio}%`) : '',
     ].filter(Boolean)
 
     console.log(parts.join(' '))
