@@ -34,6 +34,7 @@ interface StatusLineInput {
     session?: {
         id: string
     }
+    version?: string
 }
 
 
@@ -166,14 +167,16 @@ async function main() {
     const bar = progressBar(contextPct)
     const pctColor = contextColor(contextPct)
 
+    // Version
+    const version = input.version ? c('dim', `v${input.version}`) : ''
+
     // Build output
     const parts = [
         c('blue', displayDir),
         gitPart,
         c('magenta', `[${model}]`),
-
+        version,
         c(pctColor, `${bar} ${contextPct}%`),
-        // cachePart,
     ].filter(Boolean)
 
     console.log(parts.join(' '))

@@ -1,11 +1,18 @@
 // Place your key bindings in this file to override the defaults
 [
-    // {
-    //     "key": "ctrl+p",
-    //     "command": "-workbench.action.quickOpen"
-    // },
+  // {
+  //     "key": "ctrl+p",
+  //     "command": "-workbench.action.quickOpen"
+  // },
 
 
+  // Claude Code: shift+enter sends newline in terminal
+  {
+    "key": "shift+enter",
+    "command": "workbench.action.terminal.sendSequence",
+    "args": { "text": "\u001b\r" },
+    "when": "terminalFocus"
+  },
 
   // Terminal: ctrl+c for copy (instead of ctrl+shift+c)
   {
@@ -23,13 +30,6 @@
   },
   { "key": "ctrl+shift+v", "command": "-workbench.action.terminal.paste" },
 
-  // Claude Code: shift+enter sends newline in terminal
-  {
-    "key": "shift+enter",
-    "command": "workbench.action.terminal.sendSequence",
-    "args": { "text": "\u001b\r" },
-    "when": "terminalFocus"
-  },
 
   // Claude Code: remove ctrl+g conflicts (allows opening prompt in editor)
   { "key": "ctrl+g", "command": "-workbench.action.gotoLine" },
