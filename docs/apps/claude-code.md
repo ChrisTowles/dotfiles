@@ -42,7 +42,7 @@ Play audio when Claude is ready for more input:
         "hooks": [
           {
             "type": "command",
-            "command": "$HOME/code/p/dotfiles/config/claude/notify.sh"
+            "command": "bun run \"$HOME/code/p/dotfiles/config/claude/notify.ts\""
           }
         ]
       }
@@ -50,6 +50,7 @@ Play audio when Claude is ready for more input:
   }
 }
 ```
+
 
 ### Status Line Hook
 
@@ -59,8 +60,8 @@ Display model and git branch information in the status line:
 {
   "statusLine": {
     "type": "command",
-    "command": "$HOME/code/p/dotfiles/config/claude/status-line.sh"
-  }
+    "command": "bun run \"$HOME/code/p/dotfiles/config/claude/statusline.ts\""
+  },
 }
 ```
 

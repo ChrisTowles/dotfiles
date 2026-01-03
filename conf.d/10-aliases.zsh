@@ -30,10 +30,6 @@ if command -v eza &>/dev/null; then
   alias tree='eza --tree'
 fi
 
-if command -v bat &>/dev/null; then
-  alias cat='bat'
-fi
-
 # jid - JSON incremental digger for building jq queries
 if command -v jid &>/dev/null; then
   alias jid='jid -q'

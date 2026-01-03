@@ -29,6 +29,7 @@ export DOTFILES_PATH="${ZDOTDIR:-$HOME/code/p/dotfiles}"
 
 # Rust/Cargo
 [[ -d "$HOME/.cargo/bin" ]] && path=("$HOME/.cargo/bin" $path)
+. "$HOME/.cargo/env"
 
 # Dotfiles bin
 [[ -d "$DOTFILES_PATH/bin" ]] && path=("$DOTFILES_PATH/bin" $path)
