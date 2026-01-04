@@ -284,18 +284,6 @@ install_cli_tools() {
         fi
         print_success "jq installed"
     fi
-
-
-    # jq (JSON processor)
-    if ! command -v jq &>/dev/null; then
-        print_info "Installing jq..."
-        if [[ "$PKG_MANAGER" == "apt" ]]; then
-            sudo apt install jq -y
-        elif [[ "$PKG_MANAGER" == "brew" ]]; then
-            brew install jq
-        fi
-        print_success "jq installed"
-    fi
 }
 
 # Install server tools

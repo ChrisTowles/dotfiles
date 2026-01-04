@@ -44,6 +44,91 @@ Splits within a tab. Horizontal or vertical divisions.
 
 ---
 
+## Claude Code Integration
+
+Automatic pane title updates based on Claude Code activity state:
+
+- 🤖 Session idle/start
+- ⚡ User prompt submitted (working)
+- 💬 Notifications/permission requests
+
+
+
+### Setup
+
+Hook configuration in `~/.claude/settings.json`:
+
+```json
+"hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "zellij action rename-pane \"🤖 $(basename $CLAUDE_PROJECT_DIR)\""
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "zellij action rename-pane \"🔥 $(basename $CLAUDE_PROJECT_DIR)\""
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "zellij action rename-pane \"💬 $(basename $CLAUDE_PROJECT_DIR)\""
+          }
+        ]
+      }
+    ],
+    "PermissionRequest": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "zellij action rename-pane \"💬 $(basename $CLAUDE_PROJECT_DIR)\""
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "zellij action rename-pane \"🤖 $(basename $CLAUDE_PROJECT_DIR)\""
+          },
+          {
+            "type": "command",
+            "command": "bun run \"$HOME/code/p/dotfiles/config/claude/notify.ts\""
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "zellij action rename-pane \"$(basename $CLAUDE_PROJECT_DIR)\""
+          }
+        ]
+      }
+    ]
+  },
+```
+
+Uses terminal title escape sequences. Zellij auto-detects title changes (unlike `rename-pane` which locks the name).
+
 ## Resources
 
 - [Zellij Official Site](https://zellij.dev/)

@@ -141,6 +141,8 @@ Browse the complete documentation in the `docs/` directory:
     - [VSCode](docs/apps/vscode.md)
     - [Windows VM on Linux](docs/apps/windows-on-linux.md)
     - [Zellij Tutorial for Beginners](docs/apps/zellij.md)
+    - **2026-01-04-cleanup/**
+      - [Dotfiles Cleanup Research](docs/tasks/2026-01-04-cleanup/research.md)
   - **tools/**
     - [Vidsrc](docs/tools/vidsrc.md)
 <!-- TOC_END -->

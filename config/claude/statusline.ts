@@ -185,7 +185,7 @@ async function main() {
     const parts = [
         c('blue', displayDir),
         gitPart,
-        c('magenta', `[${model}]`),
+        model.includes('Opus') ? c('brightCyan', `[${model}]`) : c('red', `[!${model}]`),
         version,
         c(pctColor, `${bar} ${contextPct}%`),
         // c('cyan', `⏱~${durationStr}`),
