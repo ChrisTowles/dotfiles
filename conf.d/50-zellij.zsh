@@ -44,17 +44,34 @@ zjc() {
   fi
 }
 
-# Claude dev layout - always start fresh session (overwrites)
+# Claude dev layout - prompt to join or recreate session
 zjcn() {
   if [[ -n "$ZELLIJ" ]]; then
-    echo "Already in zellij - use zjc to add tabs"
+    echo "Already in zellij session"
     return 1
   fi
   local session_name="${PWD:t}"
-  # Remove existing session (kill if alive, delete if dead)
-  zellij kill-session "$session_name" 2>/dev/null
-  zellij delete-session "$session_name" 2>/dev/null
-  zellij -n ~/.config/zellij/layouts/claude-dev.kdl -s "$session_name"
+
+  # Check if session exists
+  if zellij list-sessions 2>/dev/null | grep -q "^${session_name}$"; then
+    echo "Session '${session_name}' exists."
+    echo -n "Join existing (j) or kill & recreate (k)? [j/k]: "
+    read -r choice
+
+    case "$choice" in
+      k|K)
+        zellij kill-session "$session_name" 2>/dev/null
+        zellij delete-session "$session_name" 2>/dev/null
+        zellij -n ~/.config/zellij/layouts/claude-dev.kdl -s "$session_name"
+        ;;
+      j|J|*)
+        zellij attach "$session_name"
+        ;;
+    esac
+  else
+    # No existing session, create new
+    zellij -n ~/.config/zellij/layouts/claude-dev.kdl -s "$session_name"
+  fi
 }
 
 # Auto-start zellij (skip if: already in zellij, in vscode, in ssh, or disabled)

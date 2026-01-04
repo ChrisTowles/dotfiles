@@ -15,20 +15,20 @@
   },
 
   // Terminal: ctrl+c for copy (instead of ctrl+shift+c)
-  {
-    "key": "ctrl+c",
-    "command": "workbench.action.terminal.copySelection",
-    "when": "terminalTextSelectedInFocused || terminalFocus && terminalHasBeenCreated && terminalTextSelected || terminalFocus && terminalProcessSupported && terminalTextSelected"
-  },
-  { "key": "ctrl+shift+c", "command": "-workbench.action.terminal.copySelection" },
+  // {
+  //   "key": "ctrl+c",
+  //   "command": "workbench.action.terminal.copySelection",
+  //   "when": "terminalTextSelectedInFocused || terminalFocus && terminalHasBeenCreated && terminalTextSelected || terminalFocus && terminalProcessSupported && terminalTextSelected"
+  // },
+  // { "key": "ctrl+shift+c", "command": "-workbench.action.terminal.copySelection" },
 
   // Terminal: ctrl+v for paste (instead of ctrl+shift+v)
-  {
-    "key": "ctrl+v",
-    "command": "workbench.action.terminal.paste",
-    "when": "terminalFocus && terminalHasBeenCreated || terminalFocus && terminalProcessSupported"
-  },
-  { "key": "ctrl+shift+v", "command": "-workbench.action.terminal.paste" },
+  // {
+  //   "key": "ctrl+v",
+  //   "command": "workbench.action.terminal.paste",
+  //   "when": "terminalFocus && terminalHasBeenCreated || terminalFocus && terminalProcessSupported"
+  // },
+  // { "key": "ctrl+shift+v", "command": "-workbench.action.terminal.paste" },
 
 
   // Claude Code: remove ctrl+g conflicts (allows opening prompt in editor)
