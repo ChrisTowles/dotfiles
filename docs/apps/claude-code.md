@@ -95,6 +95,39 @@ export CLAUDE_FILESYSTEM_PATH="${pwd}"
 
 I tried a few things but currently just using the built-in VSCODE Speech feature. I have a doc on it here: [VSCode Dictation](./vscode.md)
 
+## Braintrust Integration
+
+Trace Claude Code conversations, tool calls, and sessions to Braintrust for observability.
+
+See [Braintrust Claude Code documentation](https://www.braintrust.dev/docs/integrations/sdk-integrations/claude-code) for details.
+
+### Setup
+
+Run the Braintrust setup on site, after the curl installation of braintrust. it tell you to run something like.
+
+```bash
+bun run ~/code/p/dotfiles/config/claude/braintrust-setup.ts
+```
+
+This configures hooks in `.claude/settings.local.json`:
+- **SessionStart** - Creates trace root when session begins
+- **UserPromptSubmit** - Creates Turn container for each user message
+- **PostToolUse** - Captures tool calls as children of Turn
+- **Stop** - Creates LLM span and finalizes Turn
+- **SessionEnd** - Finalizes trace when session ends
+
+### Viewing Traces
+
+View traces at: https://www.braintrust.dev/app/claude-code/logs
+
+### Debugging
+
+View hook logs:
+
+```bash
+tail -f ~/.claude/state/braintrust_hook.log
+```
+
 ### Boris Cherny
 
 

@@ -44,41 +44,24 @@ zjc() {
   fi
 }
 
-# Claude dev layout - prompt to join or recreate session
+# Claude dev layout - always start fresh session (overwrites)
 zjcn() {
   if [[ -n "$ZELLIJ" ]]; then
-    echo "Already in zellij session"
+    echo "Already in zellij - use zjc to add tabs"
     return 1
   fi
   local session_name="${PWD:t}"
-
-  # Check if session exists
-  if zellij list-sessions 2>/dev/null | grep -q "^${session_name}$"; then
-    echo "Session '${session_name}' exists."
-    echo -n "Join existing (j) or kill & recreate (k)? [j/k]: "
-    read -r choice
-
-    case "$choice" in
-      k|K)
-        zellij kill-session "$session_name" 2>/dev/null
-        zellij delete-session "$session_name" 2>/dev/null
-        zellij -n ~/.config/zellij/layouts/claude-dev.kdl -s "$session_name"
-        ;;
-      j|J|*)
-        zellij attach "$session_name"
-        ;;
-    esac
-  else
-    # No existing session, create new
-    zellij -n ~/.config/zellij/layouts/claude-dev.kdl -s "$session_name"
-  fi
+  # Remove existing session (kill if alive, delete if dead)
+  zellij kill-session "$session_name" 2>/dev/null
+  zellij delete-session "$session_name" 2>/dev/null
+  zellij -n ~/.config/zellij/layouts/claude-dev.kdl -s "$session_name"
 }
 
 # Auto-start zellij (skip if: already in zellij, in vscode, in ssh, or disabled)
-if [[ -z "$ZELLIJ" && -z "$VSCODE_INJECTION" && -z "$SSH_CONNECTION" && "$ZELLIJ_AUTO_START" != "false" ]]; then
-  # not ready to default to zellij, yet. 
-  # will try to attach to 'main' session or create it if it doesn't exist
-  # zellij attach -c main
-fi
+# if [[ -z "$ZELLIJ" && -z "$VSCODE_INJECTION" && -z "$SSH_CONNECTION" && "$ZELLIJ_AUTO_START" != "false" ]]; then
+#   # not ready to default to zellij, yet. 
+#   # will try to attach to 'main' session or create it if it doesn't exist
+#   # zellij attach -c main
+# fi
 
 zsh_debug_section "Zellij setup"
