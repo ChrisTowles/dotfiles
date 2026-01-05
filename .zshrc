@@ -90,6 +90,14 @@ alias zsh-install='zsh "$ZSH_CONFIG_DIR/install/install-deps.zsh"'
 alias zsh-check-deps='zsh "$ZSH_CONFIG_DIR/install/check-deps.zsh"'
 
 ###############################
+# Load Local File as needed. 
+###############################
+
+[[ -r "$HOME/.zshrc_local.sh" ]] && source "$HOME/.zshrc_local.sh"
+
+
+
+###############################
 # Final Timing Report
 ###############################
 

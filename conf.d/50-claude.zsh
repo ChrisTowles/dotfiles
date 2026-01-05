@@ -12,10 +12,12 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
   alias claude="$_claude_cmd"
   alias c="$_claude_cmd --dangerously-skip-permissions"
   alias cr="$_claude_cmd --dangerously-skip-permissions --resume"
+  #echo "Linux detected: Claude aliases set with --dangerously-skip-permissions"
 else
   alias claude="$_claude_cmd"
   alias c="$_claude_cmd"
   alias cr="$_claude_cmd --resume"
+  #echo "Non-Linux OS detected: Claude aliases set without --dangerously-skip-permissions"
 fi
 
 # Claude usage monitoring
