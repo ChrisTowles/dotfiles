@@ -2,6 +2,9 @@
 // StatusLine script for Claude Code
 // Features: progress bar, cache efficiency, cost estimate, git status, thinking indicator
 
+import { appendFile } from 'fs/promises'
+
+
 // Updated from Claude vCode 2.0.76
 interface StatusLineInput {
     session_id: string
@@ -132,15 +135,17 @@ async function getGitInfo(dir: string): Promise<string> {
 
 
 async function main() {
-    try {
-        // Read JSON from stdin
-        const inputText = await Bun.stdin.text()
-        const input: StatusLineInput = JSON.parse(inputText)
 
-        // Log input to file for debugging
-        const logPath = `${process.env.HOME}/.claude/statusline-input.log`
-        const fs = await import('fs/promises')
-        await fs.appendFile(logPath, inputText + '\n')
+    // Log input to file for debugging
+    const logPath = `${process.env.HOME}/.claude/statusline-input.log`
+
+    // Read JSON from stdin
+    const inputText = await Bun.stdin.text()
+    const input: StatusLineInput = JSON.parse(inputText)
+    
+    try {
+
+
 
         // Directory (shortened)
         const dir = input.workspace.current_dir
@@ -189,7 +194,11 @@ async function main() {
         console.log(parts.join(' '))
     } catch (err) {
         const msg = err instanceof Error ? err.message : String(err)
-        console.log(c('red', `[statusline err: ${msg.slice(0, 50)}]`))
+        console.log(c('red', `[statusline err: ${msg.slice(0, 250)}]`))
+        console.log(c('dim', `[see ${logPath} for details]`))
+             
+        await appendFile(logPath, inputText + '\n')
+
     }
 }
 
