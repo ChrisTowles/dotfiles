@@ -65,7 +65,7 @@ Hook configuration in `~/.claude/settings.json`:
         "hooks": [
           {
             "type": "command",
-            "command": "zellij action rename-pane \"🤖 $(basename $CLAUDE_PROJECT_DIR)\""
+            "command": "[ -n \"$ZELLIJ\" ] && zellij action rename-pane \" 🤖 \" &> /dev/null"
           }
         ]
       }
@@ -75,7 +75,7 @@ Hook configuration in `~/.claude/settings.json`:
         "hooks": [
           {
             "type": "command",
-            "command": "zellij action rename-pane \"🔥 $(basename $CLAUDE_PROJECT_DIR)\""
+            "command": "[ -n \"$ZELLIJ\" ] && zellij action rename-pane \" 🔥 \" &> /dev/null"
           }
         ]
       }
@@ -85,7 +85,7 @@ Hook configuration in `~/.claude/settings.json`:
         "hooks": [
           {
             "type": "command",
-            "command": "zellij action rename-pane \"💬 $(basename $CLAUDE_PROJECT_DIR)\""
+            "command": "[ -n \"$ZELLIJ\" ] && zellij action rename-pane \" 💬 \" &> /dev/null"
           }
         ]
       }
@@ -95,7 +95,7 @@ Hook configuration in `~/.claude/settings.json`:
         "hooks": [
           {
             "type": "command",
-            "command": "zellij action rename-pane \"💬 $(basename $CLAUDE_PROJECT_DIR)\""
+            "command": "[ -n \"$ZELLIJ\" ] && zellij action rename-pane \" 💬 \" &> /dev/null"
           }
         ]
       }
@@ -105,7 +105,7 @@ Hook configuration in `~/.claude/settings.json`:
         "hooks": [
           {
             "type": "command",
-            "command": "zellij action rename-pane \"🤖 $(basename $CLAUDE_PROJECT_DIR)\""
+            "command": "[ -n \"$ZELLIJ\" ] && zellij action rename-pane \" 🤖 \" &> /dev/null"
           },
           {
             "type": "command",
@@ -119,7 +119,7 @@ Hook configuration in `~/.claude/settings.json`:
         "hooks": [
           {
             "type": "command",
-            "command": "zellij action rename-pane \"$(basename $CLAUDE_PROJECT_DIR)\""
+            "command": "[ -n \"$ZELLIJ\" ] && zellij action rename-pane \"\" &> /dev/null"
           }
         ]
       }

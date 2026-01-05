@@ -1,7 +1,7 @@
 #!/bin/zsh
 # Display zsh key bindings reference
 
-keybindings() {
+keybindings-zsh() {
   bat <<'EOF'
 ZSH KEY BINDINGS
 ================
