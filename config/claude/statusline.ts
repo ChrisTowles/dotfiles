@@ -132,67 +132,65 @@ async function getGitInfo(dir: string): Promise<string> {
 
 
 async function main() {
-    // Read JSON from stdin
-    const inputText = await Bun.stdin.text()
-    const input: StatusLineInput = JSON.parse(inputText)
+    try {
+        // Read JSON from stdin
+        const inputText = await Bun.stdin.text()
+        const input: StatusLineInput = JSON.parse(inputText)
 
-    // Log input to file for debugging
-    const logPath = `${process.env.HOME}/.claude/statusline-input.log`
-    const fs = await import('fs/promises')
-    await fs.appendFile(logPath, inputText + '\n')
+        // Log input to file for debugging
+        const logPath = `${process.env.HOME}/.claude/statusline-input.log`
+        const fs = await import('fs/promises')
+        await fs.appendFile(logPath, inputText + '\n')
 
-    // Directory (shortened)
-    const dir = input.workspace.current_dir
-    const shortDir = dir.replace(/^\/home\/[^/]+/, '~')
-    const displayDir = shortDir.length > 25 ? '...' + shortDir.slice(-22) : shortDir
+        // Directory (shortened)
+        const dir = input.workspace.current_dir
+        const shortDir = dir.replace(/^\/home\/[^/]+/, '~')
+        const displayDir = shortDir.length > 25 ? '...' + shortDir.slice(-22) : shortDir
 
-    // Model
-    const model = shortModel(input.model.display_name || input.model.id)
+        // Model
+        const model = shortModel(input.model.display_name || input.model.id)
 
-    // Context percentage
-    const totalTokens = input.context_window.total_input_tokens + input.context_window.total_output_tokens
-    const contextSize = input.context_window.context_window_size
-    const contextPct = contextSize > 0 ? Math.round((totalTokens / contextSize) * 100) : 0
+        // Context percentage
+        const totalTokens = input.context_window.total_input_tokens + input.context_window.total_output_tokens
+        const contextSize = input.context_window.context_window_size
+        const contextPct = contextSize > 0 ? Math.round((totalTokens / contextSize) * 100) : 0
 
-    // Cache efficiency
-    const usage = input.context_window.current_usage
-    let cacheRatio = 0
-    const totalInput = usage.input_tokens + usage.cache_creation_input_tokens + usage.cache_read_input_tokens
-    if (totalInput > 0) {
-        cacheRatio = Math.round((usage.cache_read_input_tokens / totalInput) * 100)
+        // Cache efficiency
+        const usage = input.context_window.current_usage
+        let cacheRatio = 0
+        if (usage) {
+            const totalInput = usage.input_tokens + usage.cache_creation_input_tokens + usage.cache_read_input_tokens
+            if (totalInput > 0) {
+                cacheRatio = Math.round((usage.cache_read_input_tokens / totalInput) * 100)
+            }
+        }
+
+        // Git info
+        const gitInfo = await getGitInfo(dir)
+        const gitPart = gitInfo ? ` ${gitInfo}` : ''
+
+        // Progress bar
+        const bar = progressBar(contextPct)
+        const pctColor = contextColor(contextPct)
+
+        // Version
+        const version = input.version ? c('dim', `v${input.version}`) : ''
+
+        // Build output
+        const parts = [
+            c('blue', displayDir),
+            gitPart,
+            model.includes('Opus') ? c('brightCyan', `[${model}]`) : c('red', `[!${model}]`),
+            version,
+            c(pctColor, `${bar} ${contextPct}%`),
+            cacheRatio > 0 ? c('green', `cr ${cacheRatio}%`) : '',
+        ].filter(Boolean)
+
+        console.log(parts.join(' '))
+    } catch (err) {
+        const msg = err instanceof Error ? err.message : String(err)
+        console.log(c('red', `[statusline err: ${msg.slice(0, 50)}]`))
     }
-
-    // Session duration - commented out because quota reset time isn't exposed
-    // in statusLine JSON yet (see github.com/anthropics/claude-code/issues/5621)
-    // const durationMs = input.cost.total_duration_ms
-    // const durationMin = Math.floor(durationMs / 60000)
-    // const durationStr = durationMin >= 60
-    //     ? `${Math.floor(durationMin / 60)}h${durationMin % 60}m`
-    //     : `${durationMin}m`
-
-    // Git info
-    const gitInfo = await getGitInfo(dir)
-    const gitPart = gitInfo ? ` ${gitInfo}` : ''
-
-    // Progress bar
-    const bar = progressBar(contextPct)
-    const pctColor = contextColor(contextPct)
-
-    // Version
-    const version = input.version ? c('dim', `v${input.version}`) : ''
-
-    // Build output
-    const parts = [
-        c('blue', displayDir),
-        gitPart,
-        model.includes('Opus') ? c('brightCyan', `[${model}]`) : c('red', `[!${model}]`),
-        version,
-        c(pctColor, `${bar} ${contextPct}%`),
-        // c('cyan', `⏱~${durationStr}`),
-        cacheRatio > 0 ? c('green', `cr ${cacheRatio}%`) : '',
-    ].filter(Boolean)
-
-    console.log(parts.join(' '))
 }
 
-main().catch((ex) => { console.error(ex); process.exit(1) })
+main()
