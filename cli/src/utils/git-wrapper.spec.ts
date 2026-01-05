@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest'
 import { getDefaultMainBranchName, getLocalBranchNames, getMergedBranches, isGitDirectory } from './git-wrapper'
 
 describe('git-wrapper', () => {

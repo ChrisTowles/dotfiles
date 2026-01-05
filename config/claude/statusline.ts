@@ -69,19 +69,20 @@ const colors = {
     orange: '\x1b[38;5;208m',
 }
 
-function c(color: keyof typeof colors, text: string): string {
+export function c(color: keyof typeof colors, text: string): string {
     return `${colors[color]}${text}${colors.reset}`
 }
 
 // Progress bar with smooth Unicode blocks
-function progressBar(percent: number, width = 15): string {
-    const filled = Math.round((percent / 100) * width)
+export function progressBar(percent: number, width = 15): string {
+    const clamped = Math.max(0, Math.min(100, percent))
+    const filled = Math.round((clamped / 100) * width)
     const empty = width - filled
     return '▰'.repeat(filled) + '▱'.repeat(empty)
 }
 
 // Color based on percentage thresholds
-function contextColor(pct: number): keyof typeof colors {
+export function contextColor(pct: number): keyof typeof colors {
     if (pct < 40) return 'green'
     if (pct < 60) return 'yellow'
     if (pct < 80) return 'orange'
@@ -89,11 +90,25 @@ function contextColor(pct: number): keyof typeof colors {
 }
 
 // Short model name
-function shortModel(model: string): string {
+export function shortModel(model: string): string {
     return model
         .replace('Claude ', '')
         .replace(' (Preview)', '')
         .replace(' (Latest)', '')
+}
+
+// Calculate cache ratio from usage data
+export function calcCacheRatio(usage: { input_tokens?: number; cache_creation_input_tokens?: number; cache_read_input_tokens?: number } | null): number {
+    if (!usage || typeof usage.cache_read_input_tokens !== 'number') return 0
+    const totalInput = (usage.input_tokens || 0) + (usage.cache_creation_input_tokens || 0) + (usage.cache_read_input_tokens || 0)
+    if (totalInput <= 0) return 0
+    return Math.round((usage.cache_read_input_tokens / totalInput) * 100)
+}
+
+// Shorten directory path
+export function shortDir(dir: string, maxLen = 25): string {
+    const shortened = dir.replace(/^\/home\/[^/]+/, '~')
+    return shortened.length > maxLen ? '...' + shortened.slice(-(maxLen - 3)) : shortened
 }
 
 // Get git info using Bun.spawn
@@ -135,22 +150,19 @@ async function getGitInfo(dir: string): Promise<string> {
 
 
 async function main() {
-
-    // Log input to file for debugging
     const logPath = `${process.env.HOME}/.claude/statusline-input.log`
+    let inputText = ''
 
-    // Read JSON from stdin
-    const inputText = await Bun.stdin.text()
-    const input: StatusLineInput = JSON.parse(inputText)
-    
     try {
+        // Read JSON from stdin
+        inputText = await Bun.stdin.text()
+        const input: StatusLineInput = JSON.parse(inputText)
 
 
 
         // Directory (shortened)
         const dir = input.workspace.current_dir
-        const shortDir = dir.replace(/^\/home\/[^/]+/, '~')
-        const displayDir = shortDir.length > 25 ? '...' + shortDir.slice(-22) : shortDir
+        const displayDir = shortDir(dir)
 
         // Model
         const model = shortModel(input.model.display_name || input.model.id)
@@ -161,14 +173,7 @@ async function main() {
         const contextPct = contextSize > 0 ? Math.round((totalTokens / contextSize) * 100) : 0
 
         // Cache efficiency
-        const usage = input.context_window.current_usage
-        let cacheRatio = 0
-        if (usage) {
-            const totalInput = usage.input_tokens + usage.cache_creation_input_tokens + usage.cache_read_input_tokens
-            if (totalInput > 0) {
-                cacheRatio = Math.round((usage.cache_read_input_tokens / totalInput) * 100)
-            }
-        }
+        const cacheRatio = calcCacheRatio(input.context_window.current_usage)
 
         // Git info
         const gitInfo = await getGitInfo(dir)
@@ -202,4 +207,7 @@ async function main() {
     }
 }
 
-main()
+// Only run main when executed directly
+if (import.meta.main) {
+    main()
+}
