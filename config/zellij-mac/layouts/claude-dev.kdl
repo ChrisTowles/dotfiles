@@ -1,0 +1,32 @@
+// example layouts: https://zellij.dev/documentation/layout-examples.html?search=tips
+
+layout {
+    // Top tab bar
+    pane size=1 borderless=true {
+        plugin location="zellij:tab-bar"
+    }
+    pane split_direction="horizontal"  size="60%"  stacked=true {
+         pane  focus=true {
+            name "main";
+         }
+         pane {
+            name "git";
+            command "lazygit";
+        }
+    }
+    pane split_direction="horizontal" size="40%" stacked=true {
+        pane {
+            name "dev";
+        }
+        pane {
+            name "tasks";
+        }
+       
+
+    }
+
+    // status bar at bottom
+    pane size=1 borderless=true {
+        plugin location="zellij:status-bar"
+    }
+}

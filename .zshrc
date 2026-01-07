@@ -26,7 +26,9 @@ HISTFILE="${ZSH_DATA_DIR}/history"
 
 ###############################
 # Debug Timing (must be early)
-###############################
+
+# Debug alias - reload with timing
+alias zsh-load='ZSH_DEBUG_TIMING=1 source ~/.zshrc'
 
 zsh_start_time_total=$(date +%s.%N)
 if [[ -n "$ZSH_DEBUG_TIMING" ]]; then
@@ -67,6 +69,10 @@ fi
 ###############################
 
 source "$ZSH_CONFIG_DIR/lib/antidote.zsh"
+
+
+export z="z -l"  # Load z for directory jumping, but with -l for long listing
+
 
 ###############################
 # Source conf.d Modules
