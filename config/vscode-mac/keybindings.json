@@ -1,4 +1,13 @@
 [
+  // ctrl+cmd+c: send SIGINT to terminal (kill process) - use this since Karabiner maps ctrl+c to cmd+c
+  {
+    "key": "shift+cmd+c",
+    "command": "workbench.action.terminal.sendSequence",
+    "args": {
+      "text": "\u0003"
+    },
+    "when": "terminalFocus"
+  },
   {
     "key": "shift+enter",
     "command": "workbench.action.terminal.sendSequence",
@@ -57,13 +66,27 @@
     "command": "-workbench.action.files.openFolderViaWorkspace",
     "when": "!openFolderWorkspaceSupport && workbenchState == 'workspace'"
   },
-  // karabiner allows ctrl+w to close tabs, but need bind switch window to alt+w
+  // ctrl+w: close tabs (except in terminal where it sends delete-word to shell)
   {
-    "key": "alt+w",
-    "command": "workbench.action.switchWindow"
+    "key": "ctrl+w",
+    "command": "workbench.action.closeActiveEditor",
+    "when": "!terminalFocus"
   },
   {
     "key": "ctrl+w",
     "command": "-workbench.action.switchWindow"
+  },
+  {
+    "key": "alt+w",
+    "command": "workbench.action.switchWindow"
+  },
+  // change to match how i do on linux
+  {
+    "key": "ctrl+shift+p",
+    "command": "workbench.action.showCommands"
+  },
+  {
+    "key": "shift+cmd+p",
+    "command": "-workbench.action.showCommands"
   }
 ]
