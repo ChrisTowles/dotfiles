@@ -73,7 +73,6 @@ Uses [Antidote](https://github.com/mattmc3/antidote) with static bundling for fa
 - `zsh-users/zsh-completions` - Additional completions
 - `kutsan/zsh-system-clipboard` - System clipboard integration
 - `agkozak/zsh-z` - Jump to frequent directories
-- `spaceship-prompt/spaceship-prompt` - Prompt theme
 
 ### Modern CLI Tools
 Conditional aliases for: ripgrep (rg), eza, bat, jq, jid, fd

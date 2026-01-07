@@ -94,7 +94,6 @@ Architecture follows the [mattmc3/zdotdir](https://github.com/mattmc3/zdotdir) p
 - **Fast Startup**: Static plugin bundling via Antidote
 
 **Plugins** (via Antidote):
-- [spaceship-prompt](https://github.com/spaceship-prompt/spaceship-prompt) - Theme
 - [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions) - Fish-like suggestions
 - [zsh-completions](https://github.com/zsh-users/zsh-completions) - Additional completions
 - [zsh-z](https://github.com/agkozak/zsh-z) - Jump to frequent directories
@@ -191,7 +190,6 @@ brew update
   - [Maccy](https://maccy.app/) - Tried as alternative to CopyQ after issues with it locking up when pasting
 - [Magnet](https://magnet.crowdcafe.com/) - Window manager
 - [VS Code Insiders](https://code.visualstudio.com/insiders/) - See [setup guide](docs/apps/code-insiders.md)
-- [Spaceship](https://github.com/spaceship-prompt/spaceship-prompt). Currently using Spaceship and loving it. 
 
 
 

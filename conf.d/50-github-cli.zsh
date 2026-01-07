@@ -1,7 +1,7 @@
 #!/bin/zsh
 # conf.d/50-github-cli.zsh - GitHub CLI configuration and aliases
 
-command -v gh &>/dev/null || return 0
+# command -v gh &>/dev/null || return 0
 
 # Basic GitHub CLI aliases
 alias ghci='gh run list -L 1'

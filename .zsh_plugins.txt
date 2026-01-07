@@ -10,5 +10,5 @@ agkozak/zsh-z
 # Completions (replaces OMZ completion lib)
 zsh-users/zsh-completions
 
-# Theme - Spaceship Prompt
-spaceship-prompt/spaceship-prompt
+# Note: Using starship prompt (Rust binary) instead of spaceship for speed
+# Init is in conf.d/90-starship.zsh
