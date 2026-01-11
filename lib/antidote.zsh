@@ -11,9 +11,6 @@ fi
 
 zsh_debug_section "Brew setup"
 
-# Completion system init (MUST be before plugins that use compdef)
-autoload -Uz compinit && compinit
-
 # Clone antidote if not present (XDG-compliant location)
 ANTIDOTE_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/antidote"
 [[ -d "${XDG_DATA_HOME:-$HOME/.local/share}" ]] || mkdir -p "${XDG_DATA_HOME:-$HOME/.local/share}"
@@ -31,6 +28,9 @@ if [[ ! ${zsh_plugins}.zsh -nt ${zsh_plugins}.txt ]]; then
   antidote bundle < "${zsh_plugins}.txt" > "${zsh_plugins}.zsh"
 fi
 source "${zsh_plugins}.zsh"
+
+# Completion system init (AFTER plugins modify fpath)
+autoload -Uz compinit && compinit
 
 zsh_debug_section "Antidote plugins"
 
