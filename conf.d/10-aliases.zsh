@@ -20,7 +20,6 @@ alias hg='history | rg '
 
 # ZSH shortcuts
 alias zs="exec zsh"
-alias source-zsh="source ~/.zshrc"
 
 # Modern CLI tool aliases (only if installed)
 if command -v eza &>/dev/null; then
