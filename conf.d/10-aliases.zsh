@@ -18,8 +18,8 @@ alias rmdir='rm -rf'
 # History search
 alias hg='history | rg '
 
-# ZSH source shortcuts
-alias s-zsh="source ~/.zshrc"
+# ZSH shortcuts
+alias zs="exec zsh"
 alias source-zsh="source ~/.zshrc"
 
 # Modern CLI tool aliases (only if installed)
