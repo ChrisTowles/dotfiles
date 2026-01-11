@@ -3,7 +3,10 @@
 // Features: progress bar, cache efficiency, cost estimate, git status, thinking indicator
 
 import { appendFile } from 'fs/promises'
-import pc from 'picocolors'
+import { createColors } from 'picocolors'
+
+// Force colors on - statusline always needs colors regardless of TTY detection
+const pc = createColors(true)
 
 // Updated from Claude vCode 2.0.76
 interface StatusLineInput {
@@ -102,12 +105,13 @@ export function shortDir(dir: string, maxLen = 25): string {
 }
 
 // Format subscription usage display
-function formatSubUsage(usage: { percent: number; remainingMins: number }): string {
+function formatSubUsage(usage: { percent: number; remainingMins: number }, showRemaining = true): string {
     const color = usage.percent < 50 ? 'green' : usage.percent < 80 ? 'yellow' : 'red'
+    if (!showRemaining) return c(color, `sub ${usage.percent}%`)
     const hrs = Math.floor(usage.remainingMins / 60)
     const mins = usage.remainingMins % 60
     const timeStr = hrs > 0 ? `${hrs}h${mins}m` : `${mins}m`
-    return c(color, `sub ${usage.percent}% ${timeStr}`)
+    return c(color, `sub ${usage.percent}% rem ${timeStr}`)
 }
 
 // Get subscription usage from ccusage
@@ -202,7 +206,8 @@ async function main() {
             getSubscriptionUsage(),
         ])
         const gitPart = gitInfo ? ` ${gitInfo}` : ''
-        const subPart = subUsage ? formatSubUsage(subUsage) : ''
+        const showRemaining = process.env.STATUSLINE_HIDE_REMAINING !== '1'
+        const subPart = subUsage ? formatSubUsage(subUsage, showRemaining) : ''
 
         // Progress bar
         const bar = progressBar(contextPct)
