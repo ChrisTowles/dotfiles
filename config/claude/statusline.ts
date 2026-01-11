@@ -3,7 +3,7 @@
 // Features: progress bar, cache efficiency, cost estimate, git status, thinking indicator
 
 import { appendFile } from 'fs/promises'
-
+import pc from 'picocolors'
 
 // Updated from Claude vCode 2.0.76
 interface StatusLineInput {
@@ -44,33 +44,23 @@ interface StatusLineInput {
 }
 
 
-// ANSI color codes
-const colors = {
-    reset: '\x1b[0m',
-    bold: '\x1b[1m',
-    dim: '\x1b[2m',
-    // Foreground
-    black: '\x1b[30m',
-    red: '\x1b[31m',
-    green: '\x1b[32m',
-    yellow: '\x1b[33m',
-    blue: '\x1b[34m',
-    magenta: '\x1b[35m',
-    cyan: '\x1b[36m',
-    white: '\x1b[37m',
-    // Bright foreground
-    brightRed: '\x1b[91m',
-    brightGreen: '\x1b[92m',
-    brightYellow: '\x1b[93m',
-    brightBlue: '\x1b[94m',
-    brightMagenta: '\x1b[95m',
-    brightCyan: '\x1b[96m',
-    // 256-color
-    orange: '\x1b[38;5;208m',
-}
+// Color helper using picocolors
+type ColorName = 'red' | 'green' | 'yellow' | 'blue' | 'magenta' | 'cyan' | 'dim' | 'bold' | 'brightCyan' | 'orange'
 
-export function c(color: keyof typeof colors, text: string): string {
-    return `${colors[color]}${text}${colors.reset}`
+export function c(color: ColorName, text: string): string {
+    switch (color) {
+        case 'red': return pc.red(text)
+        case 'green': return pc.green(text)
+        case 'yellow': return pc.yellow(text)
+        case 'blue': return pc.blue(text)
+        case 'magenta': return pc.magenta(text)
+        case 'cyan': return pc.cyan(text)
+        case 'dim': return pc.dim(text)
+        case 'bold': return pc.bold(text)
+        case 'brightCyan': return pc.cyanBright(text)
+        case 'orange': return pc.yellow(text) // picocolors doesn't have orange, use yellow
+        default: return text
+    }
 }
 
 // Progress bar with smooth Unicode blocks
@@ -82,7 +72,7 @@ export function progressBar(percent: number, width = 15): string {
 }
 
 // Color based on percentage thresholds
-export function contextColor(pct: number): keyof typeof colors {
+export function contextColor(pct: number): ColorName {
     if (pct < 40) return 'green'
     if (pct < 60) return 'yellow'
     if (pct < 80) return 'orange'
@@ -109,6 +99,37 @@ export function calcCacheRatio(usage: { input_tokens?: number; cache_creation_in
 export function shortDir(dir: string, maxLen = 25): string {
     const shortened = dir.replace(/^\/home\/[^/]+/, '~')
     return shortened.length > maxLen ? '...' + shortened.slice(-(maxLen - 3)) : shortened
+}
+
+// Format subscription usage display
+function formatSubUsage(usage: { percent: number; remainingMins: number }): string {
+    const color = usage.percent < 50 ? 'green' : usage.percent < 80 ? 'yellow' : 'red'
+    const hrs = Math.floor(usage.remainingMins / 60)
+    const mins = usage.remainingMins % 60
+    const timeStr = hrs > 0 ? `${hrs}h${mins}m` : `${mins}m`
+    return c(color, `sub ${usage.percent}% ${timeStr}`)
+}
+
+// Get subscription usage from ccusage
+async function getSubscriptionUsage(): Promise<{ percent: number; remainingMins: number } | null> {
+    try {
+        const proc = Bun.spawn(['ccusage', 'blocks', '--active', '--json', '--token-limit', 'max'], {
+            stdout: 'pipe',
+            stderr: 'ignore',
+        })
+        const text = await new Response(proc.stdout).text()
+        const data = JSON.parse(text)
+        const block = data.blocks?.[0]
+        if (block?.tokenLimitStatus) {
+            return {
+                percent: Math.round(block.tokenLimitStatus.percentUsed),
+                remainingMins: block.projection?.remainingMinutes || 0,
+            }
+        }
+        return null
+    } catch {
+        return null
+    }
 }
 
 // Get git info using Bun.spawn
@@ -175,9 +196,13 @@ async function main() {
         // Cache efficiency
         const cacheRatio = calcCacheRatio(input.context_window.current_usage)
 
-        // Git info
-        const gitInfo = await getGitInfo(dir)
+        // Git info and subscription usage in parallel
+        const [gitInfo, subUsage] = await Promise.all([
+            getGitInfo(dir),
+            getSubscriptionUsage(),
+        ])
         const gitPart = gitInfo ? ` ${gitInfo}` : ''
+        const subPart = subUsage ? formatSubUsage(subUsage) : ''
 
         // Progress bar
         const bar = progressBar(contextPct)
@@ -194,6 +219,7 @@ async function main() {
             version,
             c(pctColor, `${bar} ${contextPct}%`),
             cacheRatio > 0 ? c('green', `cr ${cacheRatio}%`) : '',
+            subPart,
         ].filter(Boolean)
 
         console.log(parts.join(' '))
