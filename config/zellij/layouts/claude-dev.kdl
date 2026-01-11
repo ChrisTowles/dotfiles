@@ -11,7 +11,7 @@ layout {
          }
          pane {
             name "git";
-            command "lazygit";
+            command "gitui";
         }
     }
     pane split_direction="horizontal" size="40%" stacked=true {
