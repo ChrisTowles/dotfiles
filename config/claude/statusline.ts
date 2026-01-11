@@ -107,16 +107,36 @@ export function shortDir(dir: string, maxLen = 25): string {
 // Format subscription usage display
 function formatSubUsage(usage: { percent: number; remainingMins: number }, showRemaining = true): string {
     const color = usage.percent < 50 ? 'green' : usage.percent < 80 ? 'yellow' : 'red'
-    if (!showRemaining) return c(color, `sub ${usage.percent}%`)
+    if (!showRemaining) return c(color, `sub used ${usage.percent}%`)
     const hrs = Math.floor(usage.remainingMins / 60)
     const mins = usage.remainingMins % 60
     const timeStr = hrs > 0 ? `${hrs}h${mins}m` : `${mins}m`
-    return c(color, `sub ${usage.percent}% rem ${timeStr}`)
+    return c(color, `sub used ${usage.percent}% rem ${timeStr}`)
 }
 
-// Get subscription usage from ccusage
+// Cache config for ccusage
+const CACHE_FILE = '/tmp/claude-statusline-ccusage.json'
+const CACHE_TTL_MS = 2 * 60 * 1000 // 2 minutes
+
+interface CachedUsage {
+    percent: number
+    remainingMins: number
+    timestamp: number
+}
+
+// Get subscription usage from ccusage with file caching
 async function getSubscriptionUsage(): Promise<{ percent: number; remainingMins: number } | null> {
     try {
+        // Check cache first
+        const cacheFile = Bun.file(CACHE_FILE)
+        if (await cacheFile.exists()) {
+            const cached: CachedUsage = await cacheFile.json()
+            if (Date.now() - cached.timestamp < CACHE_TTL_MS) {
+                return { percent: cached.percent, remainingMins: cached.remainingMins }
+            }
+        }
+
+        // Fetch fresh data
         const proc = Bun.spawn(['ccusage', 'blocks', '--active', '--json', '--token-limit', 'max'], {
             stdout: 'pipe',
             stderr: 'ignore',
@@ -125,10 +145,13 @@ async function getSubscriptionUsage(): Promise<{ percent: number; remainingMins:
         const data = JSON.parse(text)
         const block = data.blocks?.[0]
         if (block?.tokenLimitStatus) {
-            return {
+            const result = {
                 percent: Math.round(block.tokenLimitStatus.percentUsed),
                 remainingMins: block.projection?.remainingMinutes || 0,
             }
+            // Write to cache
+            await Bun.write(CACHE_FILE, JSON.stringify({ ...result, timestamp: Date.now() }))
+            return result
         }
         return null
     } catch {
