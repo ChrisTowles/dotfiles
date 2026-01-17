@@ -65,6 +65,18 @@ if [[ -d "$ZSH_CONFIG_DIR/completions" ]]; then
 fi
 
 ###############################
+# Generate Tool Completions (before compinit)
+###############################
+
+# Ensure completions dir exists
+mkdir -p "$ZSH_CONFIG_DIR/completions"
+
+# Cargo completions (via rustup)
+if command -v rustup &>/dev/null && [[ ! -f "$ZSH_CONFIG_DIR/completions/_cargo" ]]; then
+  rustup completions zsh cargo > "$ZSH_CONFIG_DIR/completions/_cargo" 2>/dev/null
+fi
+
+###############################
 # Bootstrap Antidote
 ###############################
 
