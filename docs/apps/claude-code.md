@@ -75,11 +75,15 @@ After being shocked at it token usage, the [GitHub MCP server](https://github.co
 
 Use the built-in `gh` CLI commands instead of the GitHub MCP server.
 
-### Playwright MCP Server
+### Chrome DevTools MCP Server
+
+Official Chrome DevTools MCP from Google - provides browser automation, debugging, performance analysis, and screenshot capabilities.
 
 ```bash
-claude mcp add -s user playwright npx '@playwright/mcp@latest'
+claude mcp add chrome-devtools --scope user -- npx chrome-devtools-mcp@latest
 ```
+
+GitHub: https://github.com/ChromeDevTools/chrome-devtools-mcp
 
 ## Python Project Setup
 

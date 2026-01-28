@@ -2,6 +2,11 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Software Installation
+
+- **Never use Flatpak** - always prefer native installation methods
+- Priority: APT/deb packages → official tarballs/binaries → PPAs → Snap (last resort)
+
 ## Repository Structure
 
 This is a personal dotfiles repository following the [mattmc3/zdotdir](https://github.com/mattmc3/zdotdir) pattern:
