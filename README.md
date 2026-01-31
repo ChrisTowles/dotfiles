@@ -20,3 +20,18 @@ git config --global push.default current
 ## Documentation
 
 Browse app-specific guides in `docs/apps/`.
+
+
+
+
+## 
+  - [zsh-completions](https://github.com/zsh-users/zsh-completions)
+    - lets you tab to complete any command line arguments
+  - [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions)
+    - As you type commands, you will see a completion offered from your history
+  - [zsh-history-substring-search](https://github.com/zsh-users/zsh-history-substring-search)
+    - type part of a previous command and search your history to find it
+  - [zsh-system-clipboard]()
+  - [zsh-z (directory jumping)]()
+  - [fast-syntax-highlighting]()
+  - source zsh-syntax-highlighting.zsh
