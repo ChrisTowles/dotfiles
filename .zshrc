@@ -5,7 +5,10 @@
 
 
 echo "DOTFILES_DIR is set to '${DOTFILES_DIR}'"
-DOTFILES_DIR="~/code/p/dotfiles"
+DOTFILES_DIR="$HOME/code/p/dotfiles"
+
+export EDITOR="code-insiders"
+export VISUAL="$EDITOR"
 
 # Profiling support (use: zprofrc)
 #[[ "$ZPROFRC" -ne 1 ]] || zmodload zsh/zprof
@@ -85,6 +88,28 @@ fpath=(~/.zsh/zsh-completions/src $fpath)
 if command -v rustc >/dev/null 2>&1; then
   fpath=("$(rustc --print sysroot)/share/zsh/site-functions" $fpath)
 fi
+
+# Generated completions
+mkdir -p ~/.zsh/completions
+if [[ "$TOWLES_SETUP" -eq 1 ]]; then
+  echo " Generating tool completions..."
+  command -v zellij >/dev/null && zellij setup --generate-completion zsh > ~/.zsh/completions/_zellij
+  command -v docker >/dev/null && docker completion zsh > ~/.zsh/completions/_docker
+  command -v gh >/dev/null && gh completion -s zsh > ~/.zsh/completions/_gh
+  command -v npm >/dev/null && npm completion > ~/.zsh/completions/_npm
+  command -v pnpm >/dev/null && pnpm completion zsh > ~/.zsh/completions/_pnpm
+  command -v rustup >/dev/null && rustup completions zsh > ~/.zsh/completions/_rustup
+  command -v uv >/dev/null && uv generate-shell-completion zsh > ~/.zsh/completions/_uv
+  # aws uses a completer binary, not a generated file
+  if command -v aws_completer >/dev/null; then
+    echo "autoload -Uz bashcompinit && bashcompinit\ncomplete -C aws_completer aws" > ~/.zsh/completions/_aws
+  fi
+fi
+fpath=(~/.zsh/completions $fpath)
+
+# gcloud completions (installed by gcloud SDK)
+[[ -f ~/google-cloud-sdk/completion.zsh.inc ]] && source ~/google-cloud-sdk/completion.zsh.inc
+
 zsh_debug_section "zsh-completions"
 
 ################################################
@@ -130,8 +155,10 @@ fi
 source ~/.zsh/zsh-z/zsh-z.plugin.zsh
 zsh_debug_section "zsh-z"
 
+
+
 ################################################
-#   fast-syntax-highlighting                   
+#   fast-syntax-highlighting
 ################################################
 
 if [[ "$TOWLES_SETUP" -eq 1 ]] ; then
@@ -206,6 +233,7 @@ zsh_debug_section "history-config"
 # Source custom functions
 for _fn in "$DOTFILES_DIR"/functions/*.sh(N); do
   source "$_fn"
+  zsh_debug_section "$_fn"
 done
 zsh_debug_section "autoload-functions"
 
@@ -216,11 +244,7 @@ zsh_debug_section "autoload-functions"
 [[ -r "$HOME/.zshrc_local.sh" ]] && source "$HOME/.zshrc_local.sh"
 zsh_debug_section "local-zshrc"
 
-###############################
-# Starship Prompt
-###############################
-
-eval "$(starship init zsh)"
+# Starship loaded via functions/starship.sh
 zsh_debug_section "starship"
 
 
