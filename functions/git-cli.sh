@@ -96,10 +96,10 @@ git-ai-commit() {
     return 1
   fi
 
-  files=$(git diff --cached --stat)
+  files=$(git diff --cached --stat --color=always)
   message_count=5
 
-  echo "Staged files:"
+  echo -e "\033[1;36mStaged files:\033[0m"
   echo "$files"
   echo
   echo "Generating ${message_count} commit messages with Claude..."
