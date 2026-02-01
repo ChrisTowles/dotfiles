@@ -4,8 +4,8 @@
 
 
 
-echo "DOTFILES_DIR is set to '${DOTFILES_DIR}'"
 DOTFILES_DIR="$HOME/code/p/dotfiles"
+#echo "DOTFILES_DIR is set to '${DOTFILES_DIR}'"
 
 export EDITOR="code-insiders"
 export VISUAL="$EDITOR"
@@ -16,7 +16,7 @@ export VISUAL="$EDITOR"
 
 alias zsh-towles-setup="TOWLES_SETUP=1 exec zsh"
 
-echo "TOWLES_SETUP is set to '${TOWLES_SETUP}'"
+# echo "TOWLES_SETUP is set to '${TOWLES_SETUP}'"
 
 
 
