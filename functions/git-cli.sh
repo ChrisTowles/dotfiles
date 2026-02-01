@@ -18,9 +18,9 @@ alias gi="gh issue create --web"
 
 # Create issue in web interface
 alias ga="git add ."
+alias gp="git push"
 
-
-# Create issue in web interface
+# Add all and commit with AI
 alias gca="git add . && git-ai-commit"
 
 # List PRs
