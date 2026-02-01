@@ -15,6 +15,11 @@ alias gco='git stash && gmain && gh pr checkout '
 # Create issue in web interface
 alias gi="gh issue create --web"
 
+# Browse issues and checkout a branch for selected issue
+gib() {
+  gh issue list --state open | fzf --header "Select issue" | awk '{print $1}' | xargs -I{} gh issue develop {} --checkout
+}
+
 
 # Create issue in web interface
 alias ga="git add ."
@@ -96,6 +101,7 @@ gmain() {
 }
 
 # git-ai-commit - Generate commit message with Claude AI
+#  this is wired up to lazygit as `c` keybinding for committing
 git-ai-commit() {
   local files diff suggestions selected
 
