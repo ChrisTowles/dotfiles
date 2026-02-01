@@ -96,7 +96,7 @@ git-ai-commit() {
     return 1
   fi
 
-  files=$(git diff --cached --name-status)
+  files=$(git diff --cached --stat)
   message_count=5
 
   echo "Staged files:"
