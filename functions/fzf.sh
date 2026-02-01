@@ -3,7 +3,7 @@
 ################################################
 
 # Ctrl+T: paste files/dirs, Ctrl+R: history, Alt+C: cd into dir
-if [[ "$TOWLES_SETUP" -eq 1 ]] ; then
+if [[ "$DOTFILES_SETUP" -eq 1 ]] ; then
   if [[ -d ~/.fzf ]]; then
     echo " Updating fzf..."
     git -C ~/.fzf pull && ~/.fzf/install --key-bindings --completion --no-update-rc --no-bash --no-fish

@@ -36,7 +36,7 @@ EOF
 }
 
 # Install/update starship in setup mode
-if [[ "$TOWLES_SETUP" -eq 1 ]]; then
+if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
   if command -v starship >/dev/null 2>&1; then
     echo " Starship already installed: $(starship --version)"
   else

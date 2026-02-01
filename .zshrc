@@ -5,7 +5,6 @@
 
 
 DOTFILES_DIR="$HOME/code/p/dotfiles"
-#echo "DOTFILES_DIR is set to '${DOTFILES_DIR}'"
 
 export EDITOR="code-insiders"
 export VISUAL="$EDITOR"
@@ -14,10 +13,11 @@ export VISUAL="$EDITOR"
 #[[ "$ZPROFRC" -ne 1 ]] || zmodload zsh/zprof
 #alias zprofrc="ZPROFRC=1 zsh"
 
-alias zsh-towles-setup="TOWLES_SETUP=1 exec zsh"
+alias zsh-dotfiles-setup="DOTFILES_SETUP=1 exec zsh"
 
-# echo "TOWLES_SETUP is set to '${TOWLES_SETUP}'"
-
+if [[ "$DOTFILES_SETUP" -eq 1 ]] ; then
+  echo "⚠️  Running zshrc in setup mode..."
+fi
 
 
 
@@ -52,7 +52,7 @@ fi
 
 
 # meaning previous commands are suggested as you type
-if [[ "$TOWLES_SETUP" -eq 1 ]] ; then
+if [[ "$DOTFILES_SETUP" -eq 1 ]] ; then
   echo "⚠️  Running zshrc in setup mode..."
   if [[ -d ~/.zsh/zsh-autosuggestions ]]; then
     echo " Updating zsh-autosuggestions..."
@@ -72,7 +72,7 @@ zsh_debug_section "zsh-autosuggestions"
 
 # providing many additional completion definitions
 # try with "git -" and hit tab
-if [[ "$TOWLES_SETUP" -eq 1 ]] ; then
+if [[ "$DOTFILES_SETUP" -eq 1 ]] ; then
   if [[ -d ~/.zsh/zsh-completions ]]; then
     echo " Updating zsh-completions..."
     git -C ~/.zsh/zsh-completions pull
@@ -91,7 +91,7 @@ fi
 
 # Generated completions
 mkdir -p ~/.zsh/completions
-if [[ "$TOWLES_SETUP" -eq 1 ]]; then
+if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
   echo " Generating tool completions..."
   command -v zellij >/dev/null && zellij setup --generate-completion zsh > ~/.zsh/completions/_zellij
   command -v docker >/dev/null && docker completion zsh > ~/.zsh/completions/_docker
@@ -117,7 +117,7 @@ zsh_debug_section "zsh-completions"
 ################################################
 
 
-if [[ "$TOWLES_SETUP" -eq 1 ]] ; then
+if [[ "$DOTFILES_SETUP" -eq 1 ]] ; then
   if [[ -d ~/.zsh/zsh-history-substring-search ]]; then
     echo " Updating zsh-history-substring-search..."
     git -C ~/.zsh/zsh-history-substring-search pull
@@ -159,7 +159,7 @@ zsh_debug_section "word-navigation"
 #   zsh-z (directory jumping)                     
 ################################################
 
-if [[ "$TOWLES_SETUP" -eq 1 ]] ; then
+if [[ "$DOTFILES_SETUP" -eq 1 ]] ; then
   if [[ -d ~/.zsh/zsh-z ]]; then
     echo " Updating zsh-z..."
     git -C ~/.zsh/zsh-z pull
@@ -179,7 +179,7 @@ zsh_debug_section "zsh-z"
 #   fast-syntax-highlighting
 ################################################
 
-if [[ "$TOWLES_SETUP" -eq 1 ]] ; then
+if [[ "$DOTFILES_SETUP" -eq 1 ]] ; then
   if [[ -d ~/.zsh/fast-syntax-highlighting ]]; then
     echo " Updating fast-syntax-highlighting..."
     git -C ~/.zsh/fast-syntax-highlighting pull

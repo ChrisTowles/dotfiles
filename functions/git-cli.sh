@@ -15,6 +15,14 @@ alias gco='git stash && gmain && gh pr checkout '
 # Create issue in web interface
 alias gi="gh issue create --web"
 
+
+# Create issue in web interface
+alias ga="git add ."
+
+
+# Create issue in web interface
+alias gca="git add . && git-ai-commit"
+
 # List PRs
 alias pr-list='gh pr list'
 
