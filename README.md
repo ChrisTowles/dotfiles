@@ -21,6 +21,28 @@ git config --global push.default current
 
 Browse app-specific guides in `docs/apps/`.
 
+## Starship
+
+- <https://starship.rs>
+
+### Nerd Font (required for icons)
+
+Install a Nerd Font so Starship icons render correctly (especially in VSCode terminal):
+
+```bash
+mkdir -p ~/.local/share/fonts
+cd ~/.local/share/fonts
+curl -fLO https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/FiraCode.zip
+unzip FiraCode.zip -d FiraCode
+rm FiraCode.zip
+fc-cache -fv
+```
+
+Then configure VSCode terminal font in `settings.json`:
+
+```json
+"terminal.integrated.fontFamily": "FiraCode Nerd Font"
+```
 
 ## Zsh Plugins
 

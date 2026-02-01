@@ -138,6 +138,24 @@ HISTORY_SUBSTRING_SEARCH_FUZZY=1
 zsh_debug_section "zsh-history-substring-search"
 
 ################################################
+#   Word Navigation Keybindings
+################################################
+
+# Ctrl+Left/Right - jump words
+bindkey '^[[1;5D' backward-word   # Ctrl+Left
+bindkey '^[[1;5C' forward-word    # Ctrl+Right
+
+# Alt+Left/Right - jump words (alternate)
+bindkey '^[[1;3D' backward-word   # Alt+Left
+bindkey '^[[1;3C' forward-word    # Alt+Right
+
+# Alt+b/f - emacs-style word navigation
+bindkey '^[b' backward-word       # Alt+b
+bindkey '^[f' forward-word        # Alt+f
+
+zsh_debug_section "word-navigation"
+
+################################################
 #   zsh-z (directory jumping)                     
 ################################################
 

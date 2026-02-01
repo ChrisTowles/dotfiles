@@ -17,3 +17,8 @@ Wayland
 Change shortcut to take screenshot: Settings > Keyboard > Custom Shortcuts
 
 ![](docs/images/keybinding-set-take-screenshot.png)
+
+
+
+
+sudo update-alternatives --set editor /usr/bin/code-insiders
