@@ -88,7 +88,7 @@ gmain() {
 
 # git-ai-commit - Generate commit message with Claude AI
 git-ai-commit() {
-  local diff suggestions selected
+  local files diff suggestions selected
 
   diff=$(git diff --cached)
   if [ -z "$diff" ]; then
@@ -96,11 +96,19 @@ git-ai-commit() {
     return 1
   fi
 
+  files=$(git diff --cached --name-status)
   message_count=5
 
+  echo "Staged files:"
+  echo "$files"
+  echo
   echo "Generating ${message_count} commit messages with Claude..."
   suggestions=$(claude --print "Generate ${message_count} concise git commit messages for these changes. One per line, no numbering, no quotes. Use conventional commits (feat:, fix:, refactor:, docs:, chore:).
 
+Files changed:
+$files
+
+Diff:
 $diff" 2>/dev/null)
 
   if [ -z "$suggestions" ]; then
