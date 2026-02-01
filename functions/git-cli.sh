@@ -1,6 +1,7 @@
 # github-cli.sh - GitHub CLI configuration and aliases
 
 alias g="lazygit"
+alias gc="git-ai-commit"
 
 # Open repo in browser
 alias gw="gh browse"
@@ -83,4 +84,35 @@ gmain() {
     git checkout main
   fi
   git pull
+}
+
+# git-ai-commit - Generate commit message with Claude AI
+git-ai-commit() {
+  local diff suggestions selected
+
+  diff=$(git diff --cached)
+  if [ -z "$diff" ]; then
+    echo "No staged changes found"
+    return 1
+  fi
+
+  message_count=5
+
+  echo "Generating ${message_count} commit messages with Claude..."
+  suggestions=$(claude --print "Generate ${message_count} concise git commit messages for these changes. One per line, no numbering, no quotes. Use conventional commits (feat:, fix:, refactor:, docs:, chore:).
+
+$diff" 2>/dev/null)
+
+  if [ -z "$suggestions" ]; then
+    echo "Failed to get suggestions from Claude"
+    return 1
+  fi
+  
+  # use fzf to select a commit message
+  selected=$(echo -e "$suggestions\n[Cancel]" | fzf --height=40% --prompt="Select commit message: ")
+  if [ -z "$selected" ] || [ "$selected" = "[Cancel]" ]; then
+    echo "Cancelled"
+    return 1
+  fi
+  git commit -m "$selected"
 }
