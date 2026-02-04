@@ -182,13 +182,18 @@ async function main() {
         // Version
         const version = input.version ? c('dim', `v${input.version}`) : ''
 
+        // Context display - show "ready" state when fresh/cleared
+        const contextDisplay = contextPct === 0
+            ? c('cyan', '○ ready')
+            : c(pctColor, `${bar} ${contextPct}%`)
+
         // Build output
         const parts = [
             c('blue', displayDir),
             gitInfo,
             model.includes('Opus') ? c('brightCyan', `[${model}]`) : c('red', `[!${model}]`),
             version,
-            c(pctColor, `${bar} ${contextPct}%`),
+            contextDisplay,
             cacheRatio > 0 ? c('green', `cr ${cacheRatio}%`) : '',
         ].filter(Boolean)
 
