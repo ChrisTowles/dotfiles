@@ -1,6 +1,6 @@
 #!/usr/bin/env bun
 // StatusLine script for Claude Code
-// Features: progress bar, cache efficiency, cost estimate, git status, thinking indicator
+// Features: progress bar, cache efficiency, git status
 
 import { appendFile } from 'fs/promises'
 import { createColors } from 'picocolors'
@@ -51,19 +51,9 @@ interface StatusLineInput {
 type ColorName = 'red' | 'green' | 'yellow' | 'blue' | 'magenta' | 'cyan' | 'dim' | 'bold' | 'brightCyan' | 'orange'
 
 export function c(color: ColorName, text: string): string {
-    switch (color) {
-        case 'red': return pc.red(text)
-        case 'green': return pc.green(text)
-        case 'yellow': return pc.yellow(text)
-        case 'blue': return pc.blue(text)
-        case 'magenta': return pc.magenta(text)
-        case 'cyan': return pc.cyan(text)
-        case 'dim': return pc.dim(text)
-        case 'bold': return pc.bold(text)
-        case 'brightCyan': return pc.cyanBright(text)
-        case 'orange': return pc.yellow(text) // picocolors doesn't have orange, use yellow
-        default: return text
-    }
+    if (color === 'brightCyan') return pc.cyanBright(text)
+    if (color === 'orange') return pc.yellow(text)
+    return pc[color](text)
 }
 
 // Progress bar with smooth Unicode blocks
@@ -90,10 +80,25 @@ export function shortModel(model: string): string {
         .replace(' (Latest)', '')
 }
 
+// Token usage type shared across calculations
+type TokenUsage = {
+    input_tokens?: number
+    output_tokens?: number
+    cache_creation_input_tokens?: number
+    cache_read_input_tokens?: number
+}
+
+// Sum all input tokens (regular + cache creation + cache read)
+function sumInputTokens(usage: TokenUsage): number {
+    return (usage.input_tokens ?? 0) +
+        (usage.cache_creation_input_tokens ?? 0) +
+        (usage.cache_read_input_tokens ?? 0)
+}
+
 // Calculate cache ratio from usage data
-export function calcCacheRatio(usage: { input_tokens?: number; cache_creation_input_tokens?: number; cache_read_input_tokens?: number } | null): number {
-    if (!usage || typeof usage.cache_read_input_tokens !== 'number') return 0
-    const totalInput = (usage.input_tokens || 0) + (usage.cache_creation_input_tokens || 0) + (usage.cache_read_input_tokens || 0)
+export function calcCacheRatio(usage: TokenUsage | null): number {
+    if (!usage?.cache_read_input_tokens) return 0
+    const totalInput = sumInputTokens(usage)
     if (totalInput <= 0) return 0
     return Math.round((usage.cache_read_input_tokens / totalInput) * 100)
 }
@@ -102,61 +107,6 @@ export function calcCacheRatio(usage: { input_tokens?: number; cache_creation_in
 export function shortDir(dir: string, maxLen = 25): string {
     const shortened = dir.replace(/^\/home\/[^/]+/, '~')
     return shortened.length > maxLen ? '...' + shortened.slice(-(maxLen - 3)) : shortened
-}
-
-// Format subscription usage display
-function formatSubUsage(usage: { percent: number; remainingMins: number }, showRemaining = true): string {
-    const color = usage.percent < 50 ? 'green' : usage.percent < 80 ? 'yellow' : 'red'
-    if (!showRemaining) return c(color, `sub used ${usage.percent}%`)
-    const hrs = Math.floor(usage.remainingMins / 60)
-    const mins = usage.remainingMins % 60
-    const timeStr = hrs > 0 ? `${hrs}h${mins}m` : `${mins}m`
-    return c(color, `sub used ${usage.percent}% rem ${timeStr}`)
-}
-
-// Cache config for ccusage
-const CACHE_FILE = '/tmp/claude-statusline-ccusage.json'
-const CACHE_TTL_MS = 2 * 60 * 1000 // 2 minutes
-
-interface CachedUsage {
-    percent: number
-    remainingMins: number
-    timestamp: number
-}
-
-// Get subscription usage from ccusage with file caching
-async function getSubscriptionUsage(): Promise<{ percent: number; remainingMins: number } | null> {
-    try {
-        // Check cache first
-        const cacheFile = Bun.file(CACHE_FILE)
-        if (await cacheFile.exists()) {
-            const cached: CachedUsage = await cacheFile.json()
-            if (Date.now() - cached.timestamp < CACHE_TTL_MS) {
-                return { percent: cached.percent, remainingMins: cached.remainingMins }
-            }
-        }
-
-        // Fetch fresh data
-        const proc = Bun.spawn(['ccusage', 'blocks', '--active', '--json', '--token-limit', 'max'], {
-            stdout: 'pipe',
-            stderr: 'ignore',
-        })
-        const text = await new Response(proc.stdout).text()
-        const data = JSON.parse(text)
-        const block = data.blocks?.[0]
-        if (block?.tokenLimitStatus) {
-            const result = {
-                percent: Math.round(block.tokenLimitStatus.percentUsed),
-                remainingMins: block.projection?.remainingMinutes || 0,
-            }
-            // Write to cache
-            await Bun.write(CACHE_FILE, JSON.stringify({ ...result, timestamp: Date.now() }))
-            return result
-        }
-        return null
-    } catch {
-        return null
-    }
 }
 
 // Get git info using Bun.spawn
@@ -196,7 +146,6 @@ async function getGitInfo(dir: string): Promise<string> {
     }
 }
 
-
 async function main() {
     const logPath = `${process.env.HOME}/.claude/statusline-input.log`
     let inputText = ''
@@ -206,8 +155,6 @@ async function main() {
         inputText = await Bun.stdin.text()
         const input: StatusLineInput = JSON.parse(inputText)
 
-
-
         // Directory (shortened)
         const dir = input.workspace.current_dir
         const displayDir = shortDir(dir)
@@ -215,22 +162,18 @@ async function main() {
         // Model
         const model = shortModel(input.model.display_name || input.model.id)
 
-        // Context percentage
-        const totalTokens = input.context_window.total_input_tokens + input.context_window.total_output_tokens
-        const contextSize = input.context_window.context_window_size
-        const contextPct = contextSize > 0 ? Math.round((totalTokens / contextSize) * 100) : 0
+        // Context percentage (current usage, not session totals)
+        const usage = input.context_window?.current_usage
+        const contextSize = input.context_window?.context_window_size ?? 0
+        const contextPct = usage && contextSize > 0
+            ? Math.round(((sumInputTokens(usage) + (usage.output_tokens ?? 0)) / contextSize) * 100)
+            : 0
 
         // Cache efficiency
-        const cacheRatio = calcCacheRatio(input.context_window.current_usage)
+        const cacheRatio = calcCacheRatio(usage ?? null)
 
-        // Git info and subscription usage in parallel
-        const [gitInfo, subUsage] = await Promise.all([
-            getGitInfo(dir),
-            getSubscriptionUsage(),
-        ])
-        const gitPart = gitInfo ? ` ${gitInfo}` : ''
-        const showRemaining = process.env.STATUSLINE_HIDE_REMAINING !== '1'
-        const subPart = subUsage ? formatSubUsage(subUsage, showRemaining) : ''
+        // Git info
+        const gitInfo = await getGitInfo(dir)
 
         // Progress bar
         const bar = progressBar(contextPct)
@@ -242,12 +185,11 @@ async function main() {
         // Build output
         const parts = [
             c('blue', displayDir),
-            gitPart,
+            gitInfo,
             model.includes('Opus') ? c('brightCyan', `[${model}]`) : c('red', `[!${model}]`),
             version,
             c(pctColor, `${bar} ${contextPct}%`),
             cacheRatio > 0 ? c('green', `cr ${cacheRatio}%`) : '',
-            subPart,
         ].filter(Boolean)
 
         console.log(parts.join(' '))
