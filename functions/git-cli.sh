@@ -24,7 +24,7 @@ gib() {
 # Create issue in web interface
 alias ga="git add ."
 alias gp="git push"
-alias gs="git status --color=always"
+alias gs="git status"
 
 # Add all and commit with AI
 alias gca="git add . && git-ai-commit"
