@@ -22,10 +22,6 @@ fi
 
 
 
-
-
-
-
 ###############################
 # Debug Timing (must be early)
 
@@ -302,3 +298,11 @@ fi
 # Always return success
 
 ############### Anything after this auto added ################
+
+# pnpm
+export PNPM_HOME="/Users/ctowles/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
