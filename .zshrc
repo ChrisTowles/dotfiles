@@ -97,6 +97,7 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
   command -v pnpm >/dev/null && pnpm completion zsh > ~/.zsh/completions/_pnpm
   command -v rustup >/dev/null && rustup completions zsh > ~/.zsh/completions/_rustup
   command -v uv >/dev/null && uv generate-shell-completion zsh > ~/.zsh/completions/_uv
+  command -v fnm >/dev/null && fnm completions --shell zsh > ~/.zsh/completions/_fnm
   command -v bun >/dev/null && bun completions > ~/.zsh/completions/_bun
   # aws uses a completer binary, not a generated file
   if command -v aws_completer >/dev/null; then
