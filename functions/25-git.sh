@@ -30,6 +30,17 @@ git-ai-commit() {
   bun run "$_GIT_CONFIG_DIR/ai-commit.ts"
 }
 
+# grebase-preserve - Rebase onto a branch while preserving original author as committer
+# Prevents rebase from overwriting committer info on other people's commits
+grebase-preserve() {
+  local target="${1:-main}"
+  git rebase "$target" && git filter-branch -f --env-filter '
+    export GIT_COMMITTER_NAME="$GIT_AUTHOR_NAME"
+    export GIT_COMMITTER_EMAIL="$GIT_AUTHOR_EMAIL"
+    export GIT_COMMITTER_DATE="$GIT_AUTHOR_DATE"
+  ' "$(git merge-base HEAD "$target")..HEAD"
+}
+
 # git-ignored - Show all files not included in Git
 git-ignored() {
   echo "Showing all files not included in Git"
