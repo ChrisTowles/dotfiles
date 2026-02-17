@@ -2,8 +2,18 @@
 
 
 
-# Setup: symlink tmux config
+# Setup: install tmux and symlink config
 if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
+  if ! command -v tmux >/dev/null 2>&1; then
+    echo " Installing tmux..."
+    case "$(uname -s)" in
+      Darwin) brew install tmux ;;
+      Linux)
+        sudo apt install -y tmux
+        ;;
+    esac
+  fi
+
   local config_src="${0:a:h}/../config/tmux/tmux.conf"
   if [[ -f "$config_src" ]]; then
     echo " Linking tmux config..."
@@ -19,7 +29,9 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
     echo " Installing TPM..."
     git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
   fi
-  echo " Run 'prefix + I' inside tmux to install plugins"
+  # Install and update tmux plugins via TPM
+  ~/.tmux/plugins/tpm/bin/install_plugins
+  ~/.tmux/plugins/tpm/bin/update_plugins all
 fi
 
 # ts - Attach/create session named after current directory

@@ -12,10 +12,11 @@ pnpm-install() {
 }
 
 pnpm-install-global() {
-  pnpm install --global tsx
-  pnpm install --global @antfu/ni
-  pnpm install --global fd-find
-  pnpm install --global @towles/tool
+  pnpm install --global \
+    tsx `# TypeScript execute - run .ts files directly` \
+    @antfu/ni `# Unified package manager runner (ni, nr, nu)` \
+    fd-find `# Fast file finder (fd command)` \
+    @towles/tool `# Personal CLI utilities`
 }
 
 if [[ "$DOTFILES_SETUP" -eq 1 ]] ; then
