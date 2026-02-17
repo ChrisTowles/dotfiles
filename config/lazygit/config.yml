@@ -1,0 +1,6 @@
+customCommands:
+  - key: "c"
+    context: "files"
+    command: "zsh -ic 'git-ai-commit'"
+    description: "AI-generated commit message via Claude"
+    output: terminal
