@@ -27,16 +27,13 @@ Browse app-specific guides in `docs/apps/`.
 
 ### Nerd Font (required for icons)
 
-Install a Nerd Font so Starship icons render correctly (especially in VSCode terminal):
+FiraCode Nerd Font is installed automatically during setup (`zsh-dotfiles-setup`), or manually:
 
 ```bash
-mkdir -p ~/.local/share/fonts
-cd ~/.local/share/fonts
-curl -fLO https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/FiraCode.zip
-unzip FiraCode.zip -d FiraCode
-rm FiraCode.zip
-fc-cache -fv
+nerd-fonts-setup
 ```
+
+Supports both macOS (via Homebrew cask) and Linux (downloads to `~/.local/share/fonts`).
 
 Then configure VSCode terminal font in `settings.json`:
 

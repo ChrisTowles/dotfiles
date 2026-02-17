@@ -16,7 +16,6 @@ pnpm-install-global() {
   pnpm install --global @antfu/ni
   pnpm install --global fd-find
   pnpm install --global @towles/tool
-  pnpm install --global @anthropic-ai/claude-code
 }
 
 if [[ "$DOTFILES_SETUP" -eq 1 ]] ; then

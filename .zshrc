@@ -14,6 +14,8 @@ export VISUAL="$EDITOR"
 #[[ "$ZPROFRC" -ne 1 ]] || zmodload zsh/zprof
 #alias zprofrc="ZPROFRC=1 zsh"
 
+# exec replaces the shell process cleanly; `source ~/.zshrc` can leave stale state
+alias ez="exec zsh"
 alias zsh-dotfiles-setup="DOTFILES_SETUP=1 exec zsh"
 
 if [[ "$DOTFILES_SETUP" -eq 1 ]] ; then
@@ -299,11 +301,3 @@ fi
 # Always return success
 
 ############### Anything after this auto added ################
-
-# pnpm
-export PNPM_HOME="/Users/ctowles/.local/share/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
-# pnpm end
