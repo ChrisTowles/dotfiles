@@ -1,4 +1,12 @@
-# Claude Code alias
+# Claude Code setup and aliases
+
+if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
+  if ! command -v claude >/dev/null 2>&1; then
+    echo " Installing Claude Code... (https://code.claude.com/docs/en/setup)"
+    curl -fsSL https://claude.ai/install.sh | bash
+  fi
+fi
+
 alias c="claude --dangerously-skip-permissions"
 alias cr="claude --dangerously-skip-permissions --resume"
 

@@ -51,14 +51,15 @@ _nerd_fonts_vscode() {
 
   local font_family="FiraCode Nerd Font"
 
-  # Use tsx to safely merge JSON settings
-  npx tsx -e "
-import { readFileSync, writeFileSync } from 'fs';
-const [settingsFile, font] = process.argv.slice(2);
-const settings = JSON.parse(readFileSync(settingsFile, 'utf8'));
+  # Safely merge font into VS Code JSON settings
+  node -e "
+const fs = require('fs');
+const settingsFile = process.argv[1];
+const font = process.argv[2];
+const settings = JSON.parse(fs.readFileSync(settingsFile, 'utf8'));
 settings['editor.fontFamily'] = font;
 settings['terminal.integrated.fontFamily'] = font;
-writeFileSync(settingsFile, JSON.stringify(settings, null, 2) + '\n');
+fs.writeFileSync(settingsFile, JSON.stringify(settings, null, 2) + '\n');
 " "$settings_file" "$font_family"
   echo " VS Code Insiders font set to $font_family"
 }

@@ -58,8 +58,13 @@ pr() {
 
 # Setup GH alias function (run once to configure gh aliases)
 gh-alias-setup() {
-  gh alias set m --shell 'PAGER="less -FX" gh issue list --state open --assignee @me'
-  gh alias set mv --shell 'PAGER="less -FX" gh issue list --state open --assignee @me --web'
-  gh alias set iv --shell 'gh issue view $1 -w'
-  gh alias set pr-ls --shell 'PAGER="less -FX" gh pr list'
+  gh alias set --clobber m --shell 'PAGER="less -FX" gh issue list --state open --assignee @me'
+  gh alias set --clobber mv --shell 'PAGER="less -FX" gh issue list --state open --assignee @me --web'
+  gh alias set --clobber iv --shell 'gh issue view $1 -w'
+  gh alias set --clobber pr-ls --shell 'PAGER="less -FX" gh pr list'
 }
+
+# Run gh-alias-setup during dotfiles setup
+if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
+  gh-alias-setup
+fi
