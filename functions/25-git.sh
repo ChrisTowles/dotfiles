@@ -1,6 +1,7 @@
 # git.sh - Git aliases and helper functions
 
 alias gc="git-ai-commit"
+alias gcm="git-ai-commit"
 alias ga="git add ."
 alias gp="git push"
 alias gs="git status"
@@ -24,42 +25,9 @@ gmain() {
 
 # git-ai-commit - Generate commit message with Claude AI
 #  this is wired up to lazygit as `c` keybinding for committing
+_GIT_CONFIG_DIR="${0:a:h}/../config/git"
 git-ai-commit() {
-  local files diff suggestions selected
-
-  diff=$(git diff --cached)
-  if [ -z "$diff" ]; then
-    echo "No staged changes found"
-    return 1
-  fi
-
-  files=$(git diff --cached --stat --color=always)
-  message_count=5
-
-  echo -e "\033[1;36mStaged files:\033[0m"
-  echo "$files"
-  echo
-  echo "Generating ${message_count} commit messages with Claude..."
-  suggestions=$(claude --print "Generate ${message_count} concise git commit messages for these changes. One per line, no numbering, no quotes. Use conventional commits (feat:, fix:, refactor:, docs:, chore:).
-
-Files changed:
-$files
-
-Diff:
-$diff" 2>/dev/null)
-
-  if [ -z "$suggestions" ]; then
-    echo "Failed to get suggestions from Claude"
-    return 1
-  fi
-
-  # use fzf to select a commit message
-  selected=$(echo -e "$suggestions\n[Cancel]" | fzf --height=40% --prompt="Select commit message: ")
-  if [ -z "$selected" ] || [ "$selected" = "[Cancel]" ]; then
-    echo "Cancelled"
-    return 1
-  fi
-  git commit -m "$selected"
+  bun run "$_GIT_CONFIG_DIR/ai-commit.ts"
 }
 
 # git-ignored - Show all files not included in Git

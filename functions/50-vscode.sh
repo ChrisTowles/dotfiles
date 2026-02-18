@@ -19,11 +19,11 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
   case "$(uname -s)" in
     Darwin)
       local keybindings_dir="$HOME/Library/Application Support/Code - Insiders/User"
-      local src="$config_src/vscode-mac/keybindings.json"
+      local src="$config_src/vscode/mac/keybindings.json"
       ;;
     Linux)
       local keybindings_dir="$HOME/.config/Code - Insiders/User"
-      local src="$config_src/vscode/keybindings.json"
+      local src="$config_src/vscode/linux/keybindings.json"
       ;;
   esac
   if [[ -f "$src" ]]; then

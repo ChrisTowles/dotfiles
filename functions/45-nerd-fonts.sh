@@ -37,31 +37,8 @@ _nerd_fonts_install() {
 
 # Configure VS Code Insiders to use the Nerd Font
 _nerd_fonts_vscode() {
-  local settings_file
-  if [[ "$(uname)" == "Darwin" ]]; then
-    settings_file="$HOME/Library/Application Support/Code - Insiders/User/settings.json"
-  else
-    settings_file="$HOME/.config/Code - Insiders/User/settings.json"
-  fi
-
-  if [[ ! -f "$settings_file" ]]; then
-    mkdir -p "$(dirname "$settings_file")"
-    echo '{}' > "$settings_file"
-  fi
-
-  local font_family="FiraCode Nerd Font"
-
-  # Safely merge font into VS Code JSON settings
-  node -e "
-const fs = require('fs');
-const settingsFile = process.argv[1];
-const font = process.argv[2];
-const settings = JSON.parse(fs.readFileSync(settingsFile, 'utf8'));
-settings['editor.fontFamily'] = font;
-settings['terminal.integrated.fontFamily'] = font;
-fs.writeFileSync(settingsFile, JSON.stringify(settings, null, 2) + '\n');
-" "$settings_file" "$font_family"
-  echo " VS Code Insiders font set to $font_family"
+  bun run "${0:a:h}/../config/vscode/setup-settings.ts" "FiraCode Nerd Font"
+  echo " VS Code Insiders font set to FiraCode Nerd Font"
 }
 
 # Install fonts in setup mode
