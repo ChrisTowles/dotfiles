@@ -17,6 +17,9 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
     curl -fsSL https://bun.sh/install | bash
   fi
 
+  # Install repo dependencies (picocolors, etc.)
+  bun install --cwd "${0:a:h}/.."
+
   # Generate zsh completions
   if command -v bun >/dev/null 2>&1; then
     echo " Generating bun completions..."

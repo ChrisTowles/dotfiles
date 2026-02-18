@@ -91,3 +91,7 @@ Prints millisecond timestamps at each loading stage.
   ```
 - Complex logic (JSON merging, interactive UIs) should be extracted into TypeScript files under `config/` and called with `bun run`, rather than inlined in shell scripts
 - Functions files are numbered by 5s (05, 10, 15...) to allow inserting new files without renaming
+- TypeScript files use `bun run` (not `npx tsx`) — Bun is the primary TS runtime
+- One `package.json` at repo root — all `config/**/*.ts` files share dependencies
+- Type-check with `bunx tsc --noEmit` — `tsconfig.json` covers `config/**/*.ts` with `@types/bun`
+- lazygit custom commands need `zsh -ic '...'` to access shell functions (lazygit uses a plain shell by default)

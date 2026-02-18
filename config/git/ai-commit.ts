@@ -1,16 +1,14 @@
 #!/usr/bin/env bun
 
+import pc from "picocolors";
+
 const MESSAGE_COUNT = 5;
 
+// Terminal control sequences (not colors — picocolors doesn't cover these)
 const esc = {
   reset: "\x1b[0m",
   bold: "\x1b[1m",
-  dim: "\x1b[2m",
-  cyan: "\x1b[36m",
-  green: "\x1b[32m",
-  red: "\x1b[31m",
   yellow: "\x1b[33m",
-  inverse: "\x1b[7m",
   hide: "\x1b[?25l",
   show: "\x1b[?25h",
   clearLine: "\x1b[2K",
@@ -18,12 +16,12 @@ const esc = {
 };
 
 const c = {
-  cyan: (s: string) => `${esc.bold}${esc.cyan}${s}${esc.reset}`,
-  red: (s: string) => `${esc.red}${s}${esc.reset}`,
-  dim: (s: string) => `${esc.dim}${s}${esc.reset}`,
-  green: (s: string) => `${esc.green}${s}${esc.reset}`,
-  yellow: (s: string) => `${esc.yellow}${s}${esc.reset}`,
-  highlight: (s: string) => `${esc.inverse}${esc.bold} ${s} ${esc.reset}`,
+  cyan: (s: string) => pc.bold(pc.cyan(s)),
+  red: (s: string) => pc.red(s),
+  dim: (s: string) => pc.dim(s),
+  green: (s: string) => pc.green(s),
+  yellow: (s: string) => pc.yellow(s),
+  highlight: (s: string) => pc.inverse(pc.bold(` ${s} `)),
 };
 
 async function run(cmd: string[]): Promise<string> {
@@ -34,7 +32,7 @@ async function run(cmd: string[]): Promise<string> {
 }
 
 // Simple fuzzy match - returns score (higher = better), -1 = no match
-function fuzzyScore(query: string, target: string): number {
+export function fuzzyScore(query: string, target: string): number {
   const q = query.toLowerCase();
   const t = target.toLowerCase();
   let qi = 0;
@@ -57,7 +55,7 @@ function fuzzyScore(query: string, target: string): number {
 }
 
 // Highlight matching characters in the string
-function highlightMatch(query: string, target: string): string {
+export function highlightMatch(query: string, target: string): string {
   if (!query) return target;
   const q = query.toLowerCase();
   const t = target.toLowerCase();
@@ -66,7 +64,7 @@ function highlightMatch(query: string, target: string): string {
 
   for (let ti = 0; ti < target.length; ti++) {
     if (qi < q.length && t[ti] === q[qi]) {
-      result += `${esc.bold}${esc.yellow}${target[ti]}${esc.reset}`;
+      result += pc.bold(pc.yellow(target[ti]));
       qi++;
     } else {
       result += target[ti];
@@ -308,4 +306,6 @@ ${diff}`;
   process.exit(1);
 }
 
-main();
+if (import.meta.main) {
+  main();
+}

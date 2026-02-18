@@ -26,6 +26,9 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
     echo " Installing latest LTS Node.js..."
     fnm install --lts
     fnm default lts-latest
+    # Enable corepack so projects use the correct pnpm/yarn version
+    # from their package.json "packageManager" field
+    corepack enable
   fi
 
   # Generate zsh completions

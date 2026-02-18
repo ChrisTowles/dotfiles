@@ -34,11 +34,16 @@ fi
 
 # Search home directory with fzf and open in $EDITOR
 fh() {
-  local file
-  if command -v fd >/dev/null 2>&1; then
-    file=$(fd --type f --hidden --follow --exclude .git . ~ | fzf --preview 'head -100 {}')
+  local file preview_cmd
+  if command -v bat >/dev/null 2>&1; then
+    preview_cmd='bat --color=always --style=numbers --line-range=:200 {}'
   else
-    file=$(find ~ -type f 2>/dev/null | fzf --preview 'head -100 {}')
+    preview_cmd='head -100 {}'
+  fi
+  if command -v fd >/dev/null 2>&1; then
+    file=$(fd --type f --hidden --follow --exclude .git . ~ | fzf --preview "$preview_cmd")
+  else
+    file=$(find ~ -type f 2>/dev/null | fzf --preview "$preview_cmd")
   fi
   [[ -n "$file" ]] && $EDITOR "$file" >/dev/null 2>&1 &
 }
