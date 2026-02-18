@@ -64,7 +64,12 @@ gh-alias-setup() {
   gh alias set --clobber pr-ls --shell 'PAGER="less -FX" gh pr list'
 }
 
-# Run gh-alias-setup during dotfiles setup
+# Run gh-alias-setup and generate completions during dotfiles setup
 if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
   gh-alias-setup
+
+  # Generate zsh completions
+  echo " Generating gh completions..."
+  mkdir -p ~/.zsh/completions
+  gh completion -s zsh > ~/.zsh/completions/_gh
 fi

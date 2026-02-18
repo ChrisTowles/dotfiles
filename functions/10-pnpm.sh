@@ -15,7 +15,6 @@ pnpm-install-global() {
   pnpm install --global \
     tsx `# TypeScript execute - run .ts files directly` \
     @antfu/ni `# Unified package manager runner (ni, nr, nu)` \
-    fd-find `# Fast file finder (fd command)` \
     @towles/tool `# Personal CLI utilities`
 }
 

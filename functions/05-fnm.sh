@@ -27,4 +27,11 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
     fnm install --lts
     fnm default lts-latest
   fi
+
+  # Generate zsh completions
+  if command -v fnm >/dev/null 2>&1; then
+    echo " Generating fnm completions..."
+    mkdir -p ~/.zsh/completions
+    fnm completions --shell zsh > ~/.zsh/completions/_fnm
+  fi
 fi

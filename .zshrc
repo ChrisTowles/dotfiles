@@ -251,6 +251,9 @@ zsh_debug_section "history-config"
 
 # Source custom functions
 for _fn in "$DOTFILES_DIR"/functions/*.sh(N); do
+  if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
+    echo "\033[2m──\033[0m \033[36m${_fn:t}\033[0m \033[2m──\033[0m"
+  fi
   source "$_fn"
   zsh_debug_section "$_fn"
 done
