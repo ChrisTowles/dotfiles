@@ -28,4 +28,9 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]] ; then
   fi
   echo " Installing global pnpm packages..."
   pnpm-install-global
+
+  # Generate zsh completions
+  echo " Generating pnpm completions..."
+  mkdir -p ~/.zsh/completions
+  pnpm completion zsh > ~/.zsh/completions/_pnpm
 fi

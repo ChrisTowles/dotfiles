@@ -71,3 +71,4 @@ Prints millisecond timestamps at each loading stage.
 - Setup/install logic is gated behind `DOTFILES_SETUP=1` to avoid running on every shell start
 - Platform detection uses `uname` checks for Linux vs macOS differences
 - Only two package managers need support: `brew` (macOS) and `apt` (Linux)
+- Only x86_64 architecture needs support — no ARM/aarch64 at this time

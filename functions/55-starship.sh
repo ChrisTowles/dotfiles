@@ -44,6 +44,11 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
     curl -sS https://starship.rs/install.sh | sh -s -- -y
   fi
   _starship_setup_config
+
+  # Generate zsh completions
+  echo " Generating starship completions..."
+  mkdir -p ~/.zsh/completions
+  starship completions zsh > ~/.zsh/completions/_starship
 fi
 
 # Initialize starship prompt

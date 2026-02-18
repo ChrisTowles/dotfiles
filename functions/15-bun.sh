@@ -16,4 +16,11 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
     echo " Installing bun..."
     curl -fsSL https://bun.sh/install | bash
   fi
+
+  # Generate zsh completions
+  if command -v bun >/dev/null 2>&1; then
+    echo " Generating bun completions..."
+    mkdir -p ~/.zsh/completions
+    bun completions > ~/.zsh/completions/_bun 2>/dev/null
+  fi
 fi

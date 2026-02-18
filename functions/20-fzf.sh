@@ -4,6 +4,15 @@
 
 # Ctrl+T: paste files/dirs, Ctrl+R: history, Alt+C: cd into dir
 if [[ "$DOTFILES_SETUP" -eq 1 ]] ; then
+  # Install fd (faster find, used by fzf)
+  if ! command -v fd >/dev/null 2>&1; then
+    echo " Installing fd..."
+    case "$(uname -s)" in
+      Darwin) brew install fd ;;
+      Linux) sudo apt install -y fd-find ;;
+    esac
+  fi
+
   if [[ -d ~/.fzf ]]; then
     echo " Updating fzf..."
     git -C ~/.fzf pull && ~/.fzf/install --key-bindings --completion --no-update-rc --no-bash --no-fish
