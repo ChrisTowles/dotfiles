@@ -11,3 +11,8 @@ fi
 i() {
   cd ~/code/$1
 }
+
+# ii - fuzzy jump into a project directory using zoxide
+ii() {
+  zi ~/code
+}

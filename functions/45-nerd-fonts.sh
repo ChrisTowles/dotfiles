@@ -1,6 +1,6 @@
 # nerd-fonts - Install Nerd Fonts for Starship and terminal icons
 
-NERD_FONT_VERSION="v3.3.0"
+_NERD_FONTS_DIR="${0:a:h}"
 NERD_FONT_NAME="FiraCode"
 
 _nerd_fonts_install() {
@@ -23,9 +23,12 @@ _nerd_fonts_install() {
       echo " $NERD_FONT_NAME Nerd Font already installed at $font_dir"
     else
       echo " Installing $NERD_FONT_NAME Nerd Font..."
+      local latest_url
+      latest_url=$(curl -fsSL -o /dev/null -w '%{url_effective}' https://github.com/ryanoasis/nerd-fonts/releases/latest)
+      local version="${latest_url##*/}"
       local tmp_zip
       tmp_zip=$(mktemp /tmp/nerd-font-XXXXXX.zip)
-      curl -fL "https://github.com/ryanoasis/nerd-fonts/releases/download/$NERD_FONT_VERSION/$NERD_FONT_NAME.zip" -o "$tmp_zip"
+      curl -fL "https://github.com/ryanoasis/nerd-fonts/releases/download/$version/$NERD_FONT_NAME.zip" -o "$tmp_zip"
       mkdir -p "$font_dir"
       unzip -o "$tmp_zip" -d "$font_dir"
       rm -f "$tmp_zip"
@@ -37,7 +40,7 @@ _nerd_fonts_install() {
 
 # Configure VS Code Insiders to use the Nerd Font
 _nerd_fonts_vscode() {
-  bun run "${0:a:h}/../config/vscode/setup-settings.ts" "FiraCode Nerd Font"
+  bun run "$_NERD_FONTS_DIR/../config/vscode/setup-settings.ts" "FiraCode Nerd Font"
   echo " VS Code Insiders font set to FiraCode Nerd Font"
 }
 

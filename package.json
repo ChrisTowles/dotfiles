@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "test": "bun test",
-    "typecheck": "bunx tsc --noEmit"
+    "typecheck": "bunx tsc --noEmit",
+    "help": "bun run config/help.ts",
+    "commit": "bun run config/git/ai-commit.ts"
   },
   "packageManager": "pnpm@10.28.0",
   "dependencies": {

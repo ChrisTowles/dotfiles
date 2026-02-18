@@ -157,22 +157,13 @@ bindkey '^[f' forward-word        # Alt+f
 zsh_debug_section "word-navigation"
 
 ################################################
-#   zsh-z (directory jumping)                     
+#   zoxide (smart directory jumping, replaces zsh-z)
 ################################################
 
-if [[ "$DOTFILES_SETUP" -eq 1 ]] ; then
-  if [[ -d ~/.zsh/zsh-z ]]; then
-    echo " Updating zsh-z..."
-    git -C ~/.zsh/zsh-z pull
-  else
-    echo " Installing from https://github.com/agkozak/zsh-z"
-    git clone https://github.com/agkozak/zsh-z.git ~/.zsh/zsh-z
-  fi
+if command -v zoxide >/dev/null 2>&1; then
+  eval "$(zoxide init zsh)"
 fi
-
-
-source ~/.zsh/zsh-z/zsh-z.plugin.zsh
-zsh_debug_section "zsh-z"
+zsh_debug_section "zoxide"
 
 
 
