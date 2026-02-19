@@ -2,7 +2,7 @@
 # https://slack.com
 
 if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
-  if ! command -v slack >/dev/null 2>&1; then
+  if ! command -v slack >/dev/null 2>&1 && [[ ! -d "/Applications/Slack.app" ]]; then
     echo " Installing Slack..."
     case "$(uname -s)" in
       Darwin) brew install --cask slack ;;
