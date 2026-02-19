@@ -1,31 +1,23 @@
 # Bambu Studio on Linux
 
-## AppImage (Recommended)
-
-Better GPU performance than Flatpak, no sandbox issues.
+## Install via Flatpak
 
 ```bash
-# Run install script
 ./install/bambu-studio.sh
 ```
 
-Installs to `~/.local/bin/BambuStudio.AppImage` with desktop entry.
+Sets up Flatpak/Flathub if needed and installs BambuStudio. Also removes any old `.deb` installation.
 
-### Manual update
+### Update
 
-Re-run `./install/bambu-studio.sh` to fetch latest version.
-
-## Flatpak (Not recommended)
-
-Known GPU/sandbox issues on NVIDIA systems.
+Re-run `./install/bambu-studio.sh` or:
 
 ```bash
-flatpak install flathub com.bambulab.BambuStudio
-flatpak run com.bambulab.BambuStudio
+flatpak update com.bambulab.BambuStudio
 ```
 
-If needed, GPU overrides:
+### Uninstall
+
 ```bash
-flatpak override --user --device=all com.bambulab.BambuStudio
-flatpak override --user --env=__GLX_VENDOR_LIBRARY_NAME=nvidia com.bambulab.BambuStudio
+flatpak uninstall com.bambulab.BambuStudio
 ```
