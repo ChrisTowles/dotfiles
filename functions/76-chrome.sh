@@ -2,7 +2,7 @@
 # https://www.google.com/chrome/
 
 if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
-  if ! command -v google-chrome >/dev/null 2>&1 && ! command -v google-chrome-stable >/dev/null 2>&1; then
+  if ! command -v google-chrome >/dev/null 2>&1 && ! command -v google-chrome-stable >/dev/null 2>&1 && [[ ! -d "/Applications/Google Chrome.app" ]]; then
     echo " Installing Google Chrome..."
     case "$(uname -s)" in
       Darwin) brew install --cask google-chrome ;;
