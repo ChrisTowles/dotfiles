@@ -2,40 +2,48 @@
 
 Personal setup notes and documentation for my development environment.
 
-## Git Configuration
+## Quick Start
+
+Bootstrap a fresh machine (Linux or macOS, x86_64):
 
 ```bash
-git config --global user.email "you@example.com"
+curl -fsSL https://raw.githubusercontent.com/ChrisTowles/dotfiles/main/install.sh | bash
+```
+
+This installs git and zsh if missing, clones the repo to `~/code/p/dotfiles`, symlinks `~/.zshrc`, sets zsh as the default shell, and runs the full dotfiles setup.
+
+To re-run setup on an existing machine (install new tools, update plugins):
+
+```bash
+zsh-dotfiles-setup
+# or: DOTFILES_SETUP=1 exec zsh
+```
+
+## Post-Install
+
+If authenticated with `gh auth login`, git user config is set automatically from your GitHub profile during setup. Otherwise, configure manually:
+
+```bash
+gh-git-config                # auto-configure from GitHub
+# or manually:
 git config --global user.name "Your Name"
+git config --global user.email "you@example.com"
 git config --global core.editor "code-insiders --wait"
 git config --global push.default current
 ```
 
-## Setup
+## Documentation
 
 - [Linux Setup Notes](./docs/linux-setup-notes.md)
 - [Mac Setup Notes](./docs/mac-setup-notes.md)
 - [VS Code Extensions](./docs/vscode-extendsions.md)
+- App-specific guides in [`docs/apps/`](./docs/apps/)
 
-## Documentation
+## Nerd Font
 
-Browse app-specific guides in `docs/apps/`.
+FiraCode Nerd Font is installed automatically during setup, or manually with `nerd-fonts-setup`. Supports macOS (Homebrew cask) and Linux (`~/.local/share/fonts`).
 
-## Starship
-
-- <https://starship.rs>
-
-### Nerd Font (required for icons)
-
-FiraCode Nerd Font is installed automatically during setup (`zsh-dotfiles-setup`), or manually:
-
-```bash
-nerd-fonts-setup
-```
-
-Supports both macOS (via Homebrew cask) and Linux (downloads to `~/.local/share/fonts`).
-
-Then configure VSCode terminal font in `settings.json`:
+VSCode terminal font (`settings.json`):
 
 ```json
 "terminal.integrated.fontFamily": "FiraCode Nerd Font"
@@ -43,11 +51,8 @@ Then configure VSCode terminal font in `settings.json`:
 
 ## Zsh Plugins
 
-- [zsh-completions](https://github.com/zsh-users/zsh-completions)
-  - lets you tab to complete any command line arguments
-- [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions)
-  - As you type commands, you will see a completion offered from your history
-- [zsh-history-substring-search](https://github.com/zsh-users/zsh-history-substring-search)
-  - type part of a previous command and search your history to find it
-- [zsh-z (directory jumping)](https://github.com/agkozak/zsh-z)
+- [zsh-completions](https://github.com/zsh-users/zsh-completions) -- tab-complete command arguments
+- [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions) -- history-based inline suggestions
+- [zsh-history-substring-search](https://github.com/zsh-users/zsh-history-substring-search) -- search history by substring
+- [zsh-z](https://github.com/agkozak/zsh-z) -- directory jumping
 - [fast-syntax-highlighting](https://github.com/zdharma-continuum/fast-syntax-highlighting)

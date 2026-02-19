@@ -43,17 +43,40 @@ gib() {
 
 # Push to origin and open GitHub PR creation
 pr() {
-  remote=origin
+  local remote=origin
+  local branch
   branch=$(git symbolic-ref --short HEAD)
 
-  if [[ $branch == "master" ]] || [[ $branch == "main" ]]; then
+  if [[ $branch == "master" || $branch == "main" ]]; then
     echo "Error: In $branch branch, can't do a PR."
     return 1
   fi
 
-  set -x
-  git push ${remote} ${branch}
-  gh pr create --web
+  git push "$remote" "$branch" && gh pr create --web
+}
+
+# Configure git global user.name and user.email from GitHub profile
+gh-git-config() {
+  if ! gh auth status &>/dev/null; then
+    echo "Not authenticated — run 'gh auth login' first."
+    return 1
+  fi
+
+  local gh_name gh_email
+  gh_name="$(gh api user --jq '.name // empty')"
+  gh_email="$(gh api user/emails --jq '[.[] | select(.primary)] | .[0].email // empty')"
+
+  if [[ -z "$gh_name" ]] || [[ -z "$gh_email" ]]; then
+    echo "Could not fetch name or email from GitHub API."
+    return 1
+  fi
+
+  echo "Setting git config from GitHub:"
+  echo "  user.name  = $gh_name"
+  echo "  user.email = $gh_email"
+  git config --global user.name "$gh_name"
+  git config --global user.email "$gh_email"
+  echo "Done."
 }
 
 # Setup GH alias function (run once to configure gh aliases)
@@ -64,12 +87,18 @@ gh-alias-setup() {
   gh alias set --clobber pr-ls --shell 'PAGER="less -FX" gh pr list'
 }
 
-# Run gh-alias-setup and generate completions during dotfiles setup
+# Setup: configure aliases, completions, and git user during dotfiles setup
 if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
   gh-alias-setup
 
-  # Generate zsh completions
   echo " Generating gh completions..."
   mkdir -p ~/.zsh/completions
   gh completion -s zsh > ~/.zsh/completions/_gh
+
+  if ! gh auth status &>/dev/null; then
+    echo " GitHub CLI not authenticated — run 'gh auth login' then 'gh-git-config' to set git user."
+  elif [[ -z "$(git config --global user.name)" || -z "$(git config --global user.email)" ]]; then
+    echo " Git user not configured globally — pulling from GitHub..."
+    gh-git-config
+  fi
 fi

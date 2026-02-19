@@ -8,13 +8,20 @@ Personal dotfiles managing Zsh shell configuration, tool setup, and app configs 
 
 ## Setup & Installation
 
-Bootstrap a fresh machine by setting the env var and reloading:
+**Fresh machine** — install script handles git, zsh, repo cloning, `.zshrc` symlink, and default shell:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/ChrisTowles/dotfiles/main/install.sh | bash
+```
+
+**Re-run / update** — on an already-configured machine, reinstall tools and update plugins:
 
 ```bash
 DOTFILES_SETUP=1 exec zsh
+# or use the alias: zsh-dotfiles-setup
 ```
 
-This triggers auto-installation of Zsh plugins (into `~/.zsh/`), generates shell completions, installs tools (fnm, pnpm, bun, starship, fzf, tmux+TPM), and creates config symlinks.
+Both paths trigger auto-installation of Zsh plugins (into `~/.zsh/`), generate shell completions, install tools (fnm, pnpm, bun, starship, fzf, tmux+TPM), and create config symlinks.
 
 ## Architecture
 
@@ -38,7 +45,7 @@ Each file in `functions/` is a self-contained module for one tool. Files follow 
 - **20-fzf.sh** - Fuzzy finder setup with `fd` integration, `fh()` for home search
 - **25-git.sh** - `git-ai-commit()` for AI-powered commits, `gmain()`, common git aliases
 - **30-lazygit.sh** - Terminal git UI, config symlink, `c` key mapped to `git-ai-commit`
-- **35-gh.sh** - GitHub CLI aliases, `pr()` for push+PR creation, `gib()` for issue browsing, `gh-alias-setup()`
+- **35-gh.sh** - GitHub CLI aliases, `pr()` push+PR, `gib()` issue browsing, `gh-git-config()` git user from GitHub API
 - **40-tmux.sh** - Session management (`ts`, `tsn`, `tss`, `ta`), TPM installation
 - **45-nerd-fonts.sh** - Nerd Font install + VS Code font config
 - **50-vscode.sh** - VS Code Insiders install, keybindings symlink
@@ -95,3 +102,4 @@ Prints millisecond timestamps at each loading stage.
 - One `package.json` at repo root — all `config/**/*.ts` files share dependencies
 - Type-check with `bunx tsc --noEmit` — `tsconfig.json` covers `config/**/*.ts` with `@types/bun`
 - lazygit custom commands need `zsh -ic '...'` to access shell functions (lazygit uses a plain shell by default)
+- `install.sh` is **bash** (not zsh) since it runs before zsh is installed — avoid zsh-isms in that file
