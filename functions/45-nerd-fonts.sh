@@ -23,12 +23,8 @@ _nerd_fonts_install() {
       echo " $NERD_FONT_NAME Nerd Font already installed at $font_dir"
     else
       echo " Installing $NERD_FONT_NAME Nerd Font..."
-      local latest_url
-      latest_url=$(curl -fsSL -o /dev/null -w '%{url_effective}' https://github.com/ryanoasis/nerd-fonts/releases/latest)
-      local version="${latest_url##*/}"
-      local tmp_zip
-      tmp_zip=$(mktemp /tmp/nerd-font-XXXXXX.zip)
-      curl -fL "https://github.com/ryanoasis/nerd-fonts/releases/download/$version/$NERD_FONT_NAME.zip" -o "$tmp_zip"
+      gh release download --repo ryanoasis/nerd-fonts --pattern "${NERD_FONT_NAME}.zip" -D /tmp --clobber
+      local tmp_zip="/tmp/${NERD_FONT_NAME}.zip"
       mkdir -p "$font_dir"
       unzip -o "$tmp_zip" -d "$font_dir"
       rm -f "$tmp_zip"

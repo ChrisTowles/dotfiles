@@ -5,15 +5,7 @@
 if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
   if ! command -v delta >/dev/null 2>&1; then
     echo " Installing delta..."
-    case "$(uname -s)" in
-      Darwin) brew install git-delta ;;
-      Linux)
-        DELTA_VERSION=$(curl -s "https://api.github.com/repos/dandavison/delta/releases/latest" | grep -Po '"tag_name": "\K[^"]*')
-        curl -Lo /tmp/delta.deb "https://github.com/dandavison/delta/releases/latest/download/git-delta_${DELTA_VERSION}_amd64.deb"
-        sudo apt install -y /tmp/delta.deb
-        rm -f /tmp/delta.deb
-        ;;
-    esac
+    cargo install git-delta
   fi
 
   # Configure git to use delta as pager

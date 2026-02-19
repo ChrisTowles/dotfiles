@@ -7,9 +7,12 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
     case "$(uname -s)" in
       Darwin) brew install --cask visual-studio-code-insiders ;;
       Linux)
-        curl -fL "https://code.visualstudio.com/sha/download?build=insider&os=linux-deb-x64" -o /tmp/code-insiders.deb
-        sudo apt install -y /tmp/code-insiders.deb
-        rm -f /tmp/code-insiders.deb
+        # Add Microsoft apt repository
+        sudo install -m 0755 -d /etc/apt/keyrings
+        curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | sudo gpg --dearmor -o /etc/apt/keyrings/microsoft.gpg
+        echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/microsoft.gpg] https://packages.microsoft.com/repos/code stable main" | sudo tee /etc/apt/sources.list.d/vscode.list > /dev/null
+        sudo apt-get update -qq
+        sudo apt-get install -y -qq code-insiders
         ;;
     esac
   fi

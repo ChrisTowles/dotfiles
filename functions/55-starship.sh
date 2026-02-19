@@ -41,7 +41,7 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
     echo " Starship already installed: $(starship --version)"
   else
     echo " Installing starship..."
-    curl -sS https://starship.rs/install.sh | sh -s -- -y
+    cargo install starship
   fi
   _starship_setup_config
 

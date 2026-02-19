@@ -5,10 +5,7 @@
 if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
   if ! command -v zoxide >/dev/null 2>&1; then
     echo " Installing zoxide..."
-    case "$(uname -s)" in
-      Darwin) brew install zoxide ;;
-      Linux) curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh ;;
-    esac
+    cargo install zoxide
   fi
 
   # Seed zoxide database with project directories
@@ -23,4 +20,11 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
     echo " Removing old zsh-z (replaced by zoxide)..."
     rm -rf ~/.zsh/zsh-z
   fi
+fi
+
+# Initialize zoxide with interactive tab completion
+# --cmd z: keeps the familiar `z` command name
+# Tab completion on `z <query><tab>` shows ranked matches (like old z plugin)
+if command -v zoxide >/dev/null 2>&1; then
+  eval "$(zoxide init zsh --cmd z)"
 fi

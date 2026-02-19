@@ -7,23 +7,24 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]] ; then
   # Install fd (faster find, used by fzf)
   if ! command -v fd >/dev/null 2>&1; then
     echo " Installing fd..."
-    case "$(uname -s)" in
-      Darwin) brew install fd ;;
-      Linux) sudo apt install -y fd-find ;;
-    esac
+    cargo install fd-find
   fi
 
-  if [[ -d ~/.fzf ]]; then
-    echo " Updating fzf..."
-    git -C ~/.fzf pull && ~/.fzf/install --key-bindings --completion --no-update-rc --no-bash --no-fish
-  else
-    echo " Installing from https://github.com/junegunn/fzf"
-    git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-    ~/.fzf/install --key-bindings --completion --no-update-rc --no-bash --no-fish
+  if ! command -v fzf >/dev/null 2>&1; then
+    echo " Installing fzf..."
+    case "$(uname -s)" in
+      Darwin) brew install fzf ;;
+      Linux)
+        gh release download --repo junegunn/fzf --pattern "fzf-*-linux_amd64.tar.gz" -D /tmp --clobber
+        tar xf /tmp/fzf-*-linux_amd64.tar.gz -C /tmp fzf
+        sudo install /tmp/fzf /usr/local/bin/fzf
+        rm /tmp/fzf /tmp/fzf-*-linux_amd64.tar.gz
+        ;;
+    esac
   fi
 fi
 
-[[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
+eval "$(fzf --zsh)"
 
 # Use fd if available (faster, respects .gitignore)
 if command -v fd >/dev/null 2>&1; then

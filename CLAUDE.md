@@ -42,8 +42,12 @@ Each file in `functions/` is a self-contained module for one tool. Files follow 
 - **10-pnpm.sh** - Package manager, global tools (tsx, ni, @towles/tool)
 - **15-bun.sh** - JavaScript runtime
 - **16-uv.sh** - Python package manager
+- **17-rust.sh** - Rust toolchain via rustup, generates zsh completions
 - **20-fzf.sh** - Fuzzy finder setup with `fd` integration, `fh()` for home search
+- **21-bat.sh** - Cat clone with syntax highlighting, installed via cargo
+- **22-zoxide.sh** - Smarter cd replacement, installed via cargo
 - **25-git.sh** - `git-ai-commit()` for AI-powered commits, `gmain()`, common git aliases
+- **26-git-delta.sh** - Syntax-highlighted git diffs, installed via cargo
 - **30-lazygit.sh** - Terminal git UI, config symlink, `c` key mapped to `git-ai-commit`
 - **35-gh.sh** - GitHub CLI aliases, `pr()` push+PR, `gib()` issue browsing, `gh-git-config()` git user from GitHub API
 - **40-tmux.sh** - Session management (`ts`, `tsn`, `tss`, `ta`), TPM installation
@@ -53,9 +57,15 @@ Each file in `functions/` is a self-contained module for one tool. Files follow 
 - **60-claude-code.sh** - Claude Code install, statusline/notification hooks
 - **65-aws-cli.sh** - AWS CLI completions (manual install warning)
 - **70-i.sh** - Quick `cd` to project directories under `~/code/{p,w,f}`
+- **75-docker.sh** - Docker Engine install with completions
+- **76-chrome.sh** - Google Chrome install via apt repo / brew cask
+- **77-slack.sh** - Slack Desktop install
+- **78-cliphist.sh** - Wayland clipboard manager with wofi picker, COSMIC hotkey setup
+- **99-help.sh** - `zsh-dotfiles-help` command displaying all aliases/functions
 
 ### config/ Directory
 
+- **help.ts** - Colored help output for all shell aliases and functions
 - **claude/** - TypeScript scripts for Claude Code hooks (statusline, notifications, settings setup)
 - **git/** - `ai-commit.ts` — interactive AI commit message generator with built-in fuzzy selector
 - **lazygit/** - `config.yml` — custom keybindings (`c` → `git-ai-commit`)
@@ -68,9 +78,17 @@ Each file in `functions/` is a self-contained module for one tool. Files follow 
 ```
 g     → lazygit
 gc/gcm → git-ai-commit (AI-powered commit messages via Claude + interactive selector)
+gca   → git add . && git-ai-commit
+ga    → git add .
+gp    → git push
+gs    → git status
 c     → claude --dangerously-skip-permissions
+cr    → claude --dangerously-skip-permissions --resume
 code  → code-insiders
 ls    → ls -al
+ez    → exec zsh
+dif   → delta (syntax-highlighted diff)
+gw    → gh browse
 ```
 
 ## Debugging Shell Load Time
@@ -103,3 +121,10 @@ Prints millisecond timestamps at each loading stage.
 - Type-check with `bunx tsc --noEmit` — `tsconfig.json` covers `config/**/*.ts` with `@types/bun`
 - lazygit custom commands need `zsh -ic '...'` to access shell functions (lazygit uses a plain shell by default)
 - `install.sh` is **bash** (not zsh) since it runs before zsh is installed — avoid zsh-isms in that file
+- Linux installs for GitHub-hosted CLIs use `gh release download` (not curl+grep):
+  ```bash
+  gh release download --repo owner/repo --pattern "tool_*_Linux_x86_64.tar.gz" -D /tmp --clobber
+  sudo install /tmp/tool /usr/local/bin/tool
+  ```
+- Rust ecosystem tools (bat, fd, zoxide, delta, starship) install via `cargo install`
+- Private/internal shell functions use underscore prefix (e.g. `_nerd_fonts_install`)
