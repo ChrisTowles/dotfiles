@@ -28,8 +28,8 @@ case "$OS" in
   *) error "Unsupported OS: $OS (only Linux and macOS are supported)"; exit 1 ;;
 esac
 
-if [[ "$ARCH" != "x86_64" ]]; then
-  error "Unsupported architecture: $ARCH (only x86_64 is supported)"
+if [[ "$OS" == "Linux" && "$ARCH" != "x86_64" ]]; then
+  error "Unsupported architecture: $ARCH (only x86_64 is supported on Linux)"
   exit 1
 fi
 

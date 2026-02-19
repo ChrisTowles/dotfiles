@@ -106,7 +106,8 @@ Prints millisecond timestamps at each loading stage.
 - Setup/install logic is gated behind `DOTFILES_SETUP=1` to avoid running on every shell start
 - Platform detection uses `uname` checks for Linux vs macOS differences
 - Only two package managers need support: `brew` (macOS) and `apt` (Linux)
-- Only x86_64 architecture needs support — no ARM/aarch64 at this time
+- macOS supports both x86_64 and arm64 (Apple Silicon) — all macOS installs use `brew` which handles architecture automatically
+- Linux only needs x86_64 support — no ARM/aarch64 on Linux at this time
 - `${0:a:h}` resolves the sourced file's directory — but ONLY at the top level of a file, not inside functions. Inside a function, `$0` becomes the shell name (e.g. `zsh`). If a function needs the file's directory, capture it in a variable at the top level first:
   ```bash
   _MY_DIR="${0:a:h}"        # top-level: correct
