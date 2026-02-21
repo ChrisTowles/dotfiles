@@ -1,44 +1,24 @@
 # Claude Desktop
 
-Installation guide for Claude Desktop on PopOS/Debian-based Linux systems.
+Installation guide for Claude Desktop on PopOS/Debian-based Linux systems using the [aaddrick/claude-desktop-debian](https://github.com/aaddrick/claude-desktop-debian) community package (includes Cowork support).
 
 ## Installation
 
-### Method 1: Pre-built .deb Package (Recommended)
-
-Download the latest release from [claude-desktop-debian releases](https://github.com/aaddrick/claude-desktop-debian/releases):
+Add the apt repository and install:
 
 ```bash
+# Add the GPG key
+curl -fsSL https://aaddrick.github.io/claude-desktop-debian/KEY.gpg | sudo gpg --dearmor -o /usr/share/keyrings/claude-desktop.gpg
 
-echo "Fetching latest release info..."
-LATEST_RELEASE=$(curl -s "https://api.github.com/repos/${REPO}/releases/latest")
-VERSION=$(echo "$LATEST_RELEASE" | jq -r '.tag_name')
-DOWNLOAD_URL=$(echo "$LATEST_RELEASE" | jq -r ".assets[] | select(.name | contains(\"${ARCH}.deb\")) | .browser_download_url")
+# Add the repository
+echo "deb [signed-by=/usr/share/keyrings/claude-desktop.gpg arch=amd64,arm64] https://aaddrick.github.io/claude-desktop-debian stable main" | sudo tee /etc/apt/sources.list.d/claude-desktop.list
 
-if [ -z "$DOWNLOAD_URL" ]; then
-    echo "Error: Could not find .deb package for ${ARCH}"
-    exit 1
-fi
-
-echo "Latest version: ${VERSION}"
-echo "Downloading from: ${DOWNLOAD_URL}"
-
-cd "$TEMP_DIR"
-curl -L -o "claude-desktop_${VERSION}_${ARCH}.deb" "$DOWNLOAD_URL"
-
-echo "Installing..."
-sudo dpkg -i "claude-desktop_${VERSION}_${ARCH}.deb"
-
-echo "Fixing dependencies if needed..."
-sudo apt --fix-broken install -y
-
-echo "Cleaning up..."
-rm -rf "$TEMP_DIR"
-
-echo "✓ Claude Desktop ${VERSION} installed successfully"
-
+# Update and install
+sudo apt update
+sudo apt install claude-desktop
 ```
 
+Updates come through normal `sudo apt upgrade`.
 
 ## Configuration
 
@@ -57,5 +37,3 @@ $HOME/claude-desktop-launcher.log
 ## Requirements
 
 - Debian-based Linux distribution (PopOS, Ubuntu, Debian, Linux Mint, MX Linux, etc.)
-- Git (for building from source)
-- Basic build tools (automatically installed by build script)
