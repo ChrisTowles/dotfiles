@@ -15,7 +15,7 @@ export VISUAL="$EDITOR"
 #alias zprofrc="ZPROFRC=1 zsh"
 
 # exec replaces the shell process cleanly; `source ~/.zshrc` can leave stale state
-alias ez="exec zsh"
+alias ez="unset DOTFILES_SETUP && exec zsh"
 alias zsh-dotfiles-setup="DOTFILES_SETUP=1 exec zsh"
 
 if [[ "$DOTFILES_SETUP" -eq 1 ]] ; then
