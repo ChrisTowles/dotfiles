@@ -52,7 +52,15 @@ interface ManualTest {
   steps: string[];
 }
 
-type DrillTest = KeyTest | SequenceTest | PasteTest | ManualTest;
+interface ReminderTest {
+  type: "reminder";
+  name: string;
+  tip: string;
+  /** Steps shown as bullet points */
+  steps: string[];
+}
+
+type DrillTest = KeyTest | SequenceTest | PasteTest | ManualTest | ReminderTest;
 
 const ALL_TESTS: DrillTest[] = [
   // Copy & paste
@@ -80,9 +88,9 @@ const ALL_TESTS: DrillTest[] = [
     ],
   },
   {
-    type: "manual",
+    type: "reminder",
     name: "Paste image from clipboard",
-    tip: "Test that image copy/paste works with your clipboard",
+    tip: "Reminder: test that image copy/paste works with your clipboard",
     steps: [
       "Take a screenshot first (Ctrl+4 or Print Screen)",
       "Open a browser, chat app, or editor that accepts images",
@@ -114,11 +122,13 @@ const ALL_TESTS: DrillTest[] = [
     expectedName: "Ctrl+F",
   },
   {
-    type: "key",
+    type: "reminder",
     name: "VS Code — find all files (Ctrl+Shift+F)",
-    tip: "Opens search across all files in the workspace",
-    expectedByte: 0x06,
-    expectedName: "Ctrl+Shift+F",
+    tip: "Reminder: opens search across all files in the workspace",
+    steps: [
+      "Press Ctrl+Shift+F in VS Code to search across all files",
+      "This shortcut cannot be detected in a raw terminal",
+    ],
   },
   {
     type: "key",
@@ -128,11 +138,13 @@ const ALL_TESTS: DrillTest[] = [
     expectedName: "Ctrl+B",
   },
   {
-    type: "key",
+    type: "reminder",
     name: "VS Code — command palette (Ctrl+Shift+P)",
-    tip: "Opens the command palette to run any VS Code command",
-    expectedByte: 0x10,
-    expectedName: "Ctrl+Shift+P",
+    tip: "Reminder: opens the command palette to run any VS Code command",
+    steps: [
+      "Press Ctrl+Shift+P in VS Code to open the command palette",
+      "This shortcut cannot be detected in a raw terminal",
+    ],
   },
   // Tmux splits
   {
@@ -541,6 +553,44 @@ async function runManualTest(
   disableRaw();
 }
 
+// ─── Reminder test runner ─────────────────────────────────────────────
+
+async function runReminderTest(
+  test: ReminderTest,
+  index: number,
+  total: number
+) {
+  header(index, total, test.name);
+  console.log(pc.white(`  → ${test.tip}`));
+  console.log();
+  for (const step of test.steps) {
+    console.log(pc.white(`  ${pc.dim("•")} ${step}`));
+  }
+  hint("Press Space to acknowledge, Escape to skip, Ctrl+C to quit");
+  console.log();
+
+  enableRaw();
+  process.stdout.write(pc.yellow("  Waiting... "));
+  const key = await readKey();
+  process.stdout.write("\n");
+
+  const special = handleSpecialKey(key, test.name);
+  if (special === "skip") {
+    record(test.name, "skip");
+  } else if (special === "quit") {
+    disableRaw();
+    printSummary();
+    process.exit(0);
+  } else if (key.length === 1 && key[0] === 0x20) {
+    // space
+    record(test.name, "pass");
+  } else {
+    console.log(pc.dim(`  Got ${describeKey(key)}, press Space to acknowledge`));
+    record(test.name, "skip");
+  }
+  disableRaw();
+}
+
 // ─── Summary ─────────────────────────────────────────────────────────
 
 function printSummary() {
@@ -616,6 +666,9 @@ async function main() {
         break;
       case "manual":
         await runManualTest(test, i + 1, total);
+        break;
+      case "reminder":
+        await runReminderTest(test, i + 1, total);
         break;
     }
   }
