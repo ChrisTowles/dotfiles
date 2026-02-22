@@ -1,0 +1,12 @@
+[claude-stt]
+hotkey = "ctrl+shift+space"
+mode = "toggle"
+engine = "moonshine"
+moonshine_model = "moonshine/base"
+whisper_model = "medium"
+sample_rate = 16000
+max_recording_seconds = 300
+output_mode = "auto"
+sound_effects = true
+improve_text = false
+soft_newlines = true
