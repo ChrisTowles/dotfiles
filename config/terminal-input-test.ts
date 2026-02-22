@@ -580,6 +580,16 @@ function shuffle<T>(arr: T[]): T[] {
 // ─── Main ────────────────────────────────────────────────────────────
 
 async function main() {
+  if (process.env.TMUX) {
+    console.error(
+      pc.red("Error: Running inside tmux — tmux will capture the key inputs this test needs to detect.")
+    );
+    console.error(
+      pc.red("Please run this script outside of tmux.")
+    );
+    process.exit(1);
+  }
+
   console.log();
   console.log(pc.bold(pc.magenta("  ⌨  Terminal Shortcut Trainer")));
   console.log(

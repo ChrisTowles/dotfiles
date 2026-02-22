@@ -44,59 +44,44 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]] && _is_popos; then
     fi
   fi
 
-  # ── grim + slurp for direct area screenshots ──
-  for pkg in grim slurp; do
-    if ! command -v "$pkg" >/dev/null 2>&1; then
-      echo " Installing $pkg..."
-      sudo apt install -y "$pkg"
-    fi
-  done
-
   # ── COSMIC custom keybindings ──
+  # Overwrites custom shortcuts file with our desired bindings:
+  #   Ctrl+`           → cliphist picker (clipboard manager via wofi)
+  #   Ctrl+Shift+4     → cosmic-screenshot (like macOS Cmd+Shift+4)
+  #   Ctrl+Shift+Space → claude-sst-toggle (speech-to-text)
   if [[ "$XDG_CURRENT_DESKTOP" == "COSMIC" ]]; then
     local shortcuts_dir="$HOME/.config/cosmic/com.system76.CosmicSettings.Shortcuts/v1"
     local custom_file="$shortcuts_dir/custom"
     mkdir -p "$shortcuts_dir"
 
-    # Ctrl+4 → area screenshot to clipboard (like macOS Cmd+Shift+4)
-    if [[ ! -f "$custom_file" ]]; then
-      echo " Creating COSMIC shortcuts with Ctrl+4 screenshot..."
-      cat > "$custom_file" <<'EORON'
+    local desired
+    desired=$(cat <<'EORON'
 {
-    (modifiers: [Ctrl], key: "4"): Spawn("bash -c 'grim -g \"$(slurp)\" - | wl-copy'"),
+    (modifiers: [Ctrl], key: "grave"): Spawn("bash -c 'cliphist-wofi-img | wl-copy && sleep 0.1 && wtype -M ctrl -M shift -k v'"),
+    (modifiers: [Ctrl, Shift], key: "4"): Spawn("cosmic-screenshot"),
+    (modifiers: [Ctrl, Shift], key: "space"): Spawn("claude-sst-toggle"),
 }
 EORON
-    elif ! grep -q 'key: "4"' "$custom_file"; then
-      echo " Adding Ctrl+4 screenshot shortcut..."
-      # Insert new binding before the closing }
-      head -n -1 "$custom_file" > "${custom_file}.tmp"
-      echo '    (modifiers: [Ctrl], key: "4"): Spawn("bash -c '\''grim -g \\\"$(slurp)\\\" - | wl-copy'\''"),' >> "${custom_file}.tmp"
-      echo "}" >> "${custom_file}.tmp"
-      mv "${custom_file}.tmp" "$custom_file"
+)
+
+    if [[ ! -f "$custom_file" ]] || [[ "$(cat "$custom_file")" != "$desired" ]]; then
+      echo "  Updating COSMIC custom shortcuts..."
+      echo "$desired" > "$custom_file"
     fi
   fi
 fi
 
 # Pop!_OS helper aliases (only defined on Pop!_OS)
 if _is_popos; then
-  # Area screenshot to clipboard
-  screenshot-area() {
-    grim -g "$(slurp)" - | wl-copy
-    echo "Screenshot copied to clipboard"
+  # Interactive screenshot (opens COSMIC screenshot tool)
+  screenshot() {
+    cosmic-screenshot --interactive
   }
 
-  # Full screen screenshot to clipboard
+  # Full screen screenshot saved to ~/Pictures/Screenshots
   screenshot-full() {
-    grim - | wl-copy
-    echo "Screenshot copied to clipboard"
-  }
-
-  # Area screenshot saved to file
-  screenshot-save() {
     local dir="$HOME/Pictures/Screenshots"
     mkdir -p "$dir"
-    local file="$dir/screenshot-$(date +%Y%m%d-%H%M%S).png"
-    grim -g "$(slurp)" "$file"
-    echo "Screenshot saved to $file"
+    cosmic-screenshot --interactive=false --save-dir "$dir"
   }
 fi
