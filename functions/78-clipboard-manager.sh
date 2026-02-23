@@ -63,7 +63,8 @@ EOF
 
   elif [[ "$(uname -s)" == "Darwin" ]]; then
     # ── macOS: Maccy ──
-    if ! brew list --cask maccy &>/dev/null; then
+    local maccy_app="/Applications/Maccy.app"
+    if ! brew list --cask maccy &>/dev/null && [[ ! -d "$maccy_app" ]]; then
       echo " Installing Maccy..."
       brew install --cask maccy
     fi

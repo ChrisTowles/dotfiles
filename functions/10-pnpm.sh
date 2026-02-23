@@ -1,15 +1,12 @@
 # pnpm - Fast, disk space efficient package manager
+# pnpm is provided by corepack (enabled in 05-fnm.sh), no standalone install needed
 
-# Add pnpm to PATH
+# Add pnpm global bin to PATH
 export PNPM_HOME="$HOME/.local/share/pnpm"
 case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
-
-pnpm-install() {
-  curl -fsSL https://get.pnpm.io/install.sh | sh -
-}
 
 pnpm-install-global() {
   pnpm install --global \
@@ -20,10 +17,9 @@ pnpm-install-global() {
 
 if [[ "$DOTFILES_SETUP" -eq 1 ]] ; then
   if ! command -v pnpm >/dev/null 2>&1; then
-    echo " Installing pnpm..."
-    pnpm-install
+    echo " pnpm not found — ensure corepack is enabled (corepack enable)"
   else
-    echo " pnpm already installed"
+    echo " pnpm already installed (via corepack): $(pnpm --version)"
   fi
   echo " Installing global pnpm packages..."
   pnpm-install-global

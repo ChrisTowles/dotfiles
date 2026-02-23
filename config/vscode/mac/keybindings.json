@@ -8,6 +8,12 @@
     },
     "when": "terminalFocus"
   },
+  // ctrl+a: select all in editor, but pass through to terminal for tmux prefix
+  {
+    "key": "ctrl+a",
+    "command": "editor.action.selectAll",
+    "when": "!terminalFocus"
+  },
   {
     "key": "shift+enter",
     "command": "workbench.action.terminal.sendSequence",
@@ -55,7 +61,7 @@
     "command": "-markdown.extension.editing.toggleBold",
     "when": "!editorTextFocus"
   },
-  // remove cmd+0= which is cntrl o, to enable sesession in zellij
+  // remove cmd+o to enable session switching in zellij
   {
     "key": "cmd+o",
     "command": "-workbench.action.files.openFile",

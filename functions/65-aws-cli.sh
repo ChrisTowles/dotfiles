@@ -21,3 +21,4 @@ fi
 
 # AWS aliases
 # alias awsp='aws --profile'
+alias assumef='assume --no-cache'

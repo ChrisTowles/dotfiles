@@ -13,6 +13,19 @@ This prevents Karabiner from remapping Ctrl+key shortcuts to Cmd+key in VS Code,
 
 Other terminal/editor apps (iTerm2, Terminal.app, Ghostty, Emacs, etc.) are also excluded from these PC-Style mappings.
 
+## Linux-Style Terminal Copy/Paste
+
+Terminal apps use **Ctrl+Shift+C/V** for copy/paste (matching Linux terminal conventions), handled by a dedicated Karabiner rule:
+
+| Shortcut | Action | How |
+| --- | --- | --- |
+| Ctrl+Shift+C | Copy | → Cmd+C via Karabiner |
+| Ctrl+V | Paste (text) | → Cmd+V via Karabiner |
+| Ctrl+Shift+V | Paste (image) | → raw Ctrl+V (Claude Code reads clipboard) |
+| Ctrl+C | SIGINT (kill process) | Raw passthrough (excluded from remap) |
+
+Ctrl+Shift+V sends raw Ctrl+V so Claude Code can detect and paste images from the clipboard. Ctrl+V does standard text paste.
+
 ## Setup
 
 Symlink this directory to the Karabiner config location:

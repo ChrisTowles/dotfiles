@@ -10,8 +10,9 @@ _nerd_fonts_install() {
       echo " Homebrew not found, install it first: https://brew.sh"
       return 1
     fi
-    if brew list --cask font-fira-code-nerd-font &>/dev/null; then
-      echo " $NERD_FONT_NAME Nerd Font already installed (brew cask)"
+    local font_file="$HOME/Library/Fonts/FiraCodeNerdFont-Bold.ttf"
+    if brew list --cask font-fira-code-nerd-font &>/dev/null || [[ -f "$font_file" ]]; then
+      echo " $NERD_FONT_NAME Nerd Font already installed"
     else
       echo " Installing $NERD_FONT_NAME Nerd Font via Homebrew..."
       brew install --cask font-fira-code-nerd-font
