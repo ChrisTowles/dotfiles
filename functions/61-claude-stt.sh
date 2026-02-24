@@ -1,5 +1,5 @@
 # Claude STT — speech-to-text plugin for Claude Code
-# Uses ChrisTowles/claude-stt fork (feature/claude-text-improvement branch)
+# Uses ChrisTowles/claude-stt fork (main branch)
 # Not registered as a Claude Code plugin — the plugin uses python/python3 directly
 # instead of uv, so the SessionStart hook fails. We manage the daemon via shell commands instead.
 
@@ -31,7 +31,7 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
   # Clone or update the fork
   if [[ ! -d "$_CLAUDE_STT_DIR" ]]; then
     echo " Cloning claude-stt fork..."
-    git clone -b feature/claude-text-improvement https://github.com/ChrisTowles/claude-stt.git "$_CLAUDE_STT_DIR"
+    git clone https://github.com/ChrisTowles/claude-stt.git "$_CLAUDE_STT_DIR"
   else
     echo " Updating claude-stt fork..."
     git -C "$_CLAUDE_STT_DIR" pull --ff-only 2>/dev/null || true
