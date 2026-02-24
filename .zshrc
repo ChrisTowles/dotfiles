@@ -7,7 +7,9 @@
 DOTFILES_DIR="$HOME/code/p/dotfiles"
 
 alias ls='ls -al'
-export EDITOR="code-insiders"
+# --wait makes VS Code block until the tab is closed, required for tools
+# that use $EDITOR (git commit, claude code ctrl+g prompt editing, etc.)
+export EDITOR="code-insiders --wait"
 export VISUAL="$EDITOR"
 
 # Profiling support (use: zprofrc)
