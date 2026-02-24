@@ -1,0 +1,4 @@
+Skills in this directory are symlinked to ~/.claude/skills/ during setup.
+Claude loads them on demand when relevant, or invoke directly with /skill-name.
+
+Docs: https://code.claude.com/docs/en/skills.md

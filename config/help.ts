@@ -81,6 +81,13 @@ console.log(cmd("c", "claude --dangerously-skip-permissions"));
 console.log(cmd("cr", "claude --resume (skip permissions)"));
 console.log();
 
+console.log(h("Claude STT"));
+console.log(cmd("stt-start", "Start speech-to-text daemon (background)"));
+console.log(cmd("stt-stop", "Stop speech-to-text daemon"));
+console.log(cmd("stt-status", "Check daemon status"));
+console.log(cmd("stt-run", "Run daemon in foreground (Ctrl+C to stop)"));
+console.log();
+
 console.log(h("Other"));
 console.log(cmd("code", "VS Code Insiders"));
 console.log(cmd("bat", "Syntax-highlighted cat (cat stays plain)"));

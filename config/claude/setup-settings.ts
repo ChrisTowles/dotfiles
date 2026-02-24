@@ -34,3 +34,44 @@ settings.hooks = {
 };
 
 writeFileSync(settingsFile, JSON.stringify(settings, null, 2) + "\n");
+
+// --- Symlink CLAUDE.md ---
+
+import { lstatSync, renameSync, symlinkSync, readdirSync } from "fs";
+
+const claudeMdSrc = join(configSrc, "global-claude-md.md");
+const claudeMdDest = join(process.env.HOME!, ".claude", "CLAUDE.md");
+
+function ensureSymlink(src: string, dest: string) {
+  try {
+    const stat = lstatSync(dest);
+    if (!stat.isSymbolicLink()) {
+      renameSync(dest, dest + `.${new Date().toISOString().slice(0, 10)}.bak`);
+      symlinkSync(src, dest);
+    }
+  } catch {
+    symlinkSync(src, dest);
+  }
+}
+
+ensureSymlink(claudeMdSrc, claudeMdDest);
+
+// --- Symlink rules ---
+
+const rulesSrc = join(configSrc, "rules");
+const rulesDest = join(process.env.HOME!, ".claude", "rules");
+mkdirSync(rulesDest, { recursive: true });
+
+for (const file of readdirSync(rulesSrc).filter((f) => f.endsWith(".md"))) {
+  ensureSymlink(join(rulesSrc, file), join(rulesDest, file));
+}
+
+// --- Symlink skills ---
+
+const skillsSrc = join(configSrc, "skills");
+const skillsDest = join(process.env.HOME!, ".claude", "skills");
+mkdirSync(skillsDest, { recursive: true });
+
+for (const file of readdirSync(skillsSrc).filter((f) => f.endsWith(".md"))) {
+  ensureSymlink(join(skillsSrc, file), join(skillsDest, file));
+}

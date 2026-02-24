@@ -1,0 +1,4 @@
+Rules in this directory are symlinked to ~/.claude/rules/ during setup.
+They apply globally to all Claude Code sessions.
+
+Docs: https://code.claude.com/docs/en/memory.md#modular-rules-with-clauderules
