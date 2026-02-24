@@ -146,6 +146,15 @@ const ALL_TESTS: DrillTest[] = [
       "This shortcut cannot be detected in a raw terminal",
     ],
   },
+  {
+    type: "reminder",
+    name: "VS Code — file explorer (Ctrl+Shift+E)",
+    tip: "Reminder: opens the file explorer sidebar in VS Code",
+    steps: [
+      "Press Ctrl+Shift+E in VS Code to focus the file explorer",
+      "This shortcut cannot be detected in a raw terminal",
+    ],
+  },
   // Tmux splits
   {
     type: "sequence",

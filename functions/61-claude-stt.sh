@@ -1,12 +1,14 @@
 # Claude STT — speech-to-text plugin for Claude Code
 # Uses ChrisTowles/claude-stt fork (feature/claude-text-improvement branch)
+# Not registered as a Claude Code plugin — the plugin uses python/python3 directly
+# instead of uv, so the SessionStart hook fails. We manage the daemon via shell commands instead.
 
 _CLAUDE_STT_DIR="$HOME/code/f/claude-stt"
 
 if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
   if [[ "$(uname -s)" == "Linux" ]]; then
     # System deps: audio backend, build deps, text injection
-    for pkg in libportaudio2 portaudio19-dev python3-dev xdotool wtype; do
+    for pkg in libportaudio2 portaudio19-dev python3-dev xdotool ydotool wtype libnotify-bin; do
       if ! dpkg -s "$pkg" &>/dev/null; then
         echo " Installing $pkg..."
         sudo apt install -y "$pkg"
@@ -43,10 +45,28 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
 
   # Symlink config into plugin directory
   local config_src="${0:a:h}/../config/claude-stt/config.toml"
-  local config_dir="$HOME/.claude/plugins/claude-stt"
+  local config_dir="$HOME/.config/claude-stt"
   mkdir -p "$config_dir"
   ln -sf "$config_src" "$config_dir/config.toml"
-
-  # Register as Claude Code plugin
-  bun run "${0:a:h}/../config/claude-stt/register-plugin.ts"
 fi
+
+# Shell commands for managing the daemon
+stt-start() {
+  echo "Starting claude-stt daemon in background..."
+  uv run --directory "$_CLAUDE_STT_DIR" python -m claude_stt.daemon start --background
+}
+
+stt-stop() {
+  echo "Stopping claude-stt daemon..."
+  uv run --directory "$_CLAUDE_STT_DIR" python -m claude_stt.daemon stop
+}
+
+stt-status() {
+  echo "Checking claude-stt daemon status..."
+  uv run --directory "$_CLAUDE_STT_DIR" python -m claude_stt.daemon status
+}
+
+stt-run() {
+  echo "Running claude-stt daemon in foreground (Ctrl+C to stop)..."
+  uv run --directory "$_CLAUDE_STT_DIR" python -m claude_stt.daemon run
+}

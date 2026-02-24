@@ -1,12 +1,22 @@
 [claude-stt]
 hotkey = "ctrl+shift+space"
-mode = "toggle"
-engine = "moonshine"
-moonshine_model = "moonshine/base"
+mode = "toggle"                  # "toggle" or "push-to-talk"
+engine = "whisper"               # "whisper" or "moonshine"
+# moonshine_model = "moonshine/base"
 whisper_model = "medium"
 sample_rate = 16000
-max_recording_seconds = 300
-output_mode = "auto"
+max_recording_seconds = 300      # max 600
+audio_device = 8                   # Jabra Evolve2 40 SE
+output_mode = "injection"             # "auto", "injection", or "clipboard"
 sound_effects = true
+
+# When true, sends transcribed text through Claude CLI to fix
+# grammar, punctuation, and formatting before injecting it.
 improve_text = false
+
+# Use Shift+Enter for newlines instead of Enter (only the final
+# trailing newline becomes a real Enter)
 soft_newlines = true
+
+# Language for transcription ("auto" = auto-detect, or ISO 639-1 code)
+language = "en"

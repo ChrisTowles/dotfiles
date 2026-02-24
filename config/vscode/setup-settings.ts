@@ -21,5 +21,6 @@ try {
 
 settings["editor.fontFamily"] = font;
 settings["terminal.integrated.fontFamily"] = font;
+settings["window.nativeTabs"] = true;
 
 writeFileSync(settingsFile, JSON.stringify(settings, null, 2) + "\n");

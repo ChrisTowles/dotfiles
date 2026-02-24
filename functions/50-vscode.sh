@@ -17,6 +17,26 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
     esac
   fi
 
+  # Install mandatory extensions
+  local _vscode_extensions=(
+    anthropic.claude-code
+    GitHub.copilot
+    chris-towles.markdown-paste-image
+    antfu.file-nesting
+    antfu.where-am-i
+    antfu.smart-clicks
+    moshfeu.compare-folders
+    Vue.volar
+    ms-python.python
+    rust-lang.rust-analyzer
+  )
+  for ext in "${_vscode_extensions[@]}"; do
+    if ! code-insiders --list-extensions 2>/dev/null | grep -qi "^${ext}$"; then
+      echo " Installing VS Code extension: $ext"
+      code-insiders --install-extension "$ext" --force 2>/dev/null || true
+    fi
+  done
+
   # Symlink keybindings.json
   local config_src="${0:a:h}/../config"
   case "$(uname -s)" in
