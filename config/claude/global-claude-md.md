@@ -2,7 +2,7 @@
 
 - Use a hard cutover approach and never implement backward compatibility.
 - Use Plan Mode for non-trivial tasks — explore first, then plan, then implement.
-- Use the task system (TaskCreate/TaskUpdate) to track multi-step work. Create tasks before starting and mark them completed when done.
+- Use the task system (TaskCreate/TaskUpdate) to track multi-step work. Create tasks before starting, then start, and mark them completed when done.
 - Always verify changes work — run tests, typecheck, or build after implementation. Don't claim something is fixed without evidence.
 
 
