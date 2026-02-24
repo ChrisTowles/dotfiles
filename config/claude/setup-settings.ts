@@ -65,13 +65,3 @@ mkdirSync(rulesDest, { recursive: true });
 for (const file of readdirSync(rulesSrc).filter((f) => f.endsWith(".md"))) {
   ensureSymlink(join(rulesSrc, file), join(rulesDest, file));
 }
-
-// --- Symlink skills ---
-
-const skillsSrc = join(configSrc, "skills");
-const skillsDest = join(process.env.HOME!, ".claude", "skills");
-mkdirSync(skillsDest, { recursive: true });
-
-for (const file of readdirSync(skillsSrc).filter((f) => f.endsWith(".md"))) {
-  ensureSymlink(join(skillsSrc, file), join(skillsDest, file));
-}
