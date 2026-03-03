@@ -16,4 +16,16 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
         ;;
     esac
   fi
+
+  # Set Chrome as default browser on macOS
+  case "$(uname -s)" in
+    Darwin)
+      if ! command -v defaultbrowser >/dev/null 2>&1; then
+        echo " Installing defaultbrowser..."
+        brew install defaultbrowser
+      fi
+      echo " Setting Chrome as default browser..."
+      defaultbrowser chrome
+      ;;
+  esac
 fi
