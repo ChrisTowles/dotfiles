@@ -27,10 +27,12 @@ fi
 eval "$(fzf --zsh)"
 
 # Use fd if available (faster, respects .gitignore)
+_FD_EXCLUDES='--exclude .git --exclude node_modules --exclude .cache --exclude .npm --exclude .pnpm-store --exclude .bun --exclude .next --exclude .nuxt --exclude .turbo --exclude dist --exclude .output --exclude coverage --exclude target --exclude .venv --exclude __pycache__ --exclude .trash --exclude .Trash --exclude .docker'
+
 if command -v fd >/dev/null 2>&1; then
-  export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
+  export FZF_DEFAULT_COMMAND="fd --type f --hidden --follow $_FD_EXCLUDES"
   export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-  export FZF_ALT_C_COMMAND='fd --type d --hidden --follow --exclude .git'
+  export FZF_ALT_C_COMMAND="fd --type d --hidden --follow $_FD_EXCLUDES"
 fi
 
 # Search home directory with fzf and open in $EDITOR
@@ -42,7 +44,7 @@ fh() {
     preview_cmd='head -100 {}'
   fi
   if command -v fd >/dev/null 2>&1; then
-    file=$(fd --type f --hidden --follow --exclude .git . ~ | fzf --preview "$preview_cmd")
+    file=$(fd --type f --hidden --follow ${=_FD_EXCLUDES} . ~ | fzf --preview "$preview_cmd")
   else
     file=$(find ~ -type f 2>/dev/null | fzf --preview "$preview_cmd")
   fi

@@ -46,9 +46,10 @@
     "key": "ctrl+p",
     "command": "-workbench.action.quickOpen"
   },
-  // Go to definition: ctrl+b (IntelliJ style)
+  // Go to definition: cmd+b (Karabiner remaps ctrl+b → cmd+b in VS Code)
+  { "key": "cmd+b", "command": "-workbench.action.toggleSidebarVisibility" },
   {
-    "key": "ctrl+b",
+    "key": "cmd+b",
     "command": "editor.action.revealDefinition",
     "when": "editorHasDefinitionProvider && editorTextFocus"
   },
@@ -57,7 +58,7 @@
     "command": "-editor.action.revealDefinition"
   },
   {
-    "key": "ctrl+b",
+    "key": "cmd+b",
     "command": "-markdown.extension.editing.toggleBold",
     "when": "!editorTextFocus"
   },
@@ -94,5 +95,10 @@
   {
     "key": "shift+cmd+p",
     "command": "-workbench.action.showCommands"
+  },
+  // Search in files: ctrl+shift+f (match Linux default, since Karabiner excludes VS Code from ctrl→cmd remap)
+  {
+    "key": "ctrl+shift+f",
+    "command": "workbench.action.findInFiles"
   }
 ]
