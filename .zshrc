@@ -111,9 +111,6 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
 fi
 fpath=(~/.zsh/completions $fpath)
 
-# gcloud completions (installed by gcloud SDK)
-[[ -f ~/google-cloud-sdk/completion.zsh.inc ]] && source ~/google-cloud-sdk/completion.zsh.inc
-
 zsh_debug_section "zsh-completions"
 
 ################################################
@@ -252,6 +249,11 @@ zsh_debug_section "history-config"
 # Autoload Functions
 ###############################
 
+# Post-setup message queue (functions append via: DOTFILES_SETUP_MESSAGES+=("message"))
+if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
+  DOTFILES_SETUP_MESSAGES=()
+fi
+
 # Source custom functions
 for _fn in "$DOTFILES_DIR"/functions/*.sh(N); do
   if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
@@ -261,6 +263,16 @@ for _fn in "$DOTFILES_DIR"/functions/*.sh(N); do
   zsh_debug_section "$_fn"
 done
 zsh_debug_section "autoload-functions"
+
+# Print post-setup messages
+if [[ "$DOTFILES_SETUP" -eq 1 ]] && (( ${#DOTFILES_SETUP_MESSAGES[@]} > 0 )); then
+  echo ""
+  echo "\033[1;33m--- Post-setup actions ---\033[0m"
+  for _msg in "${DOTFILES_SETUP_MESSAGES[@]}"; do
+    echo "  $_msg"
+  done
+  echo ""
+fi
 
 ###############################
 # Load Local File as needed. 
@@ -307,3 +319,5 @@ fi
 # Always return success
 
 ############### Anything after this auto added ################
+
+[[ -f "$HOME/.local/bin/env" ]] && . "$HOME/.local/bin/env"
