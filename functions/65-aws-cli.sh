@@ -4,12 +4,7 @@
 # AWS uses a completer binary, not a generated file
 if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
   if ! command -v aws >/dev/null 2>&1; then
-    echo ""
-    echo "  ⚠⚠⚠  AWS CLI is NOT installed  ⚠⚠⚠"
-    echo ""
-    echo "  Install it manually from:"
-    echo "  https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html"
-    echo ""
+    DOTFILES_SETUP_MESSAGES+=("AWS CLI not installed — install manually: https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html")
   else
     if command -v aws_completer >/dev/null; then
       echo " Generating AWS CLI completions..."

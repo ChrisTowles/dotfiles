@@ -7,10 +7,11 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
     case "$(uname -s)" in
       Darwin) brew install lazygit ;;
       Linux)
-        gh release download --repo jesseduffield/lazygit --pattern "lazygit_*_Linux_x86_64.tar.gz" -D /tmp --clobber
-        tar xf /tmp/lazygit_*_Linux_x86_64.tar.gz -C /tmp lazygit
+        rm -f /tmp/lazygit_*_linux_x86_64.tar.gz(N)
+        gh release download --repo jesseduffield/lazygit --pattern "lazygit_*_linux_x86_64.tar.gz" -D /tmp
+        tar xf /tmp/lazygit_*_linux_x86_64.tar.gz -C /tmp lazygit
         sudo install /tmp/lazygit /usr/local/bin/lazygit
-        rm /tmp/lazygit /tmp/lazygit_*_Linux_x86_64.tar.gz
+        rm -f /tmp/lazygit /tmp/lazygit_*_linux_x86_64.tar.gz(N)
         ;;
     esac
   fi

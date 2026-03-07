@@ -15,10 +15,11 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]] ; then
     case "$(uname -s)" in
       Darwin) brew install fzf ;;
       Linux)
-        gh release download --repo junegunn/fzf --pattern "fzf-*-linux_amd64.tar.gz" -D /tmp --clobber
+        rm -f /tmp/fzf-*-linux_amd64.tar.gz(N)
+        gh release download --repo junegunn/fzf --pattern "fzf-*-linux_amd64.tar.gz" -D /tmp
         tar xf /tmp/fzf-*-linux_amd64.tar.gz -C /tmp fzf
         sudo install /tmp/fzf /usr/local/bin/fzf
-        rm /tmp/fzf /tmp/fzf-*-linux_amd64.tar.gz
+        rm -f /tmp/fzf /tmp/fzf-*-linux_amd64.tar.gz(N)
         ;;
     esac
   fi

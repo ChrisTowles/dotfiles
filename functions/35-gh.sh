@@ -81,10 +81,10 @@ gh-git-config() {
 
 # Setup GH alias function (run once to configure gh aliases)
 gh-alias-setup() {
-  gh alias set --clobber m --shell 'PAGER="less -FX" gh issue list --state open --assignee @me'
-  gh alias set --clobber mv --shell 'PAGER="less -FX" gh issue list --state open --assignee @me --web'
-  gh alias set --clobber iv --shell 'gh issue view $1 -w'
-  gh alias set --clobber pr-ls --shell 'PAGER="less -FX" gh pr list'
+  gh alias delete m 2>/dev/null; gh alias set m --shell 'PAGER="less -FX" gh issue list --state open --assignee @me'
+  gh alias delete mv 2>/dev/null; gh alias set mv --shell 'PAGER="less -FX" gh issue list --state open --assignee @me --web'
+  gh alias delete iv 2>/dev/null; gh alias set iv --shell 'gh issue view $1 -w'
+  gh alias delete pr-ls 2>/dev/null; gh alias set pr-ls --shell 'PAGER="less -FX" gh pr list'
 }
 
 # Setup: configure aliases, completions, and git user during dotfiles setup
@@ -96,9 +96,10 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
   gh completion -s zsh > ~/.zsh/completions/_gh
 
   if ! gh auth status &>/dev/null; then
-    echo " GitHub CLI not authenticated — run 'gh auth login' then 'gh-git-config' to set git user."
+    DOTFILES_SETUP_MESSAGES+=("Run 'gh auth login' then 'gh-git-config' to set git user")
   elif [[ -z "$(git config --global user.name)" || -z "$(git config --global user.email)" ]]; then
-    echo " Git user not configured globally — pulling from GitHub..."
-    gh-git-config
+    if ! gh-git-config &>/dev/null; then
+      DOTFILES_SETUP_MESSAGES+=("Git user not configured — run 'gh-git-config' to set from GitHub profile")
+    fi
   fi
 fi
