@@ -14,9 +14,10 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
     # Install cliphist binary
     if ! command -v cliphist >/dev/null 2>&1; then
       echo " Installing cliphist..."
-      gh release download --repo sentriz/cliphist --pattern "*-linux-amd64" -D /tmp --clobber
+      rm -f /tmp/*-linux-amd64(N)
+      gh release download --repo sentriz/cliphist --pattern "*-linux-amd64" -D /tmp
       sudo install /tmp/*-linux-amd64 /usr/local/bin/cliphist
-      rm /tmp/*-linux-amd64
+      rm -f /tmp/*-linux-amd64(N)
     fi
 
     # Install cliphist-wofi-img helper (official contrib script, patched for ImageMagick 6)

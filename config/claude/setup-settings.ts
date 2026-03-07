@@ -13,6 +13,8 @@ try {
   settings = JSON.parse(readFileSync(settingsFile, "utf8"));
 } catch {}
 
+settings.voiceEnabled = true;
+
 settings.statusLine = {
   type: "command",
   command: `bun run ${configSrc}/statusline.ts`,
