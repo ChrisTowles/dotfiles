@@ -2,6 +2,19 @@
 # https://github.com/googleworkspace/cli
 # Requires: gcloud CLI (Google Cloud SDK)
 
+# PATH for gcloud
+if [[ "$(uname)" == "Darwin" ]]; then
+  _gcloud_sdk_dir="/opt/homebrew/share/google-cloud-sdk"
+else
+  _gcloud_sdk_dir="$HOME/google-cloud-sdk"
+fi
+if [[ -d "$_gcloud_sdk_dir/bin" ]]; then
+  case ":$PATH:" in
+    *":$_gcloud_sdk_dir/bin:"*) ;;
+    *) export PATH="$_gcloud_sdk_dir/bin:$PATH" ;;
+  esac
+fi
+
 # Setup: install gcloud SDK
 if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
   if ! command -v gcloud >/dev/null 2>&1; then
@@ -17,14 +30,6 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
   fi
 fi
 
-# PATH for gcloud (Linux manual install)
-if [[ -d "$HOME/google-cloud-sdk/bin" ]]; then
-  case ":$PATH:" in
-    *":$HOME/google-cloud-sdk/bin:"*) ;;
-    *) export PATH="$HOME/google-cloud-sdk/bin:$PATH" ;;
-  esac
-fi
-
 # Setup: install gws via cargo
 if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
   if ! command -v gws >/dev/null 2>&1; then
@@ -36,4 +41,4 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
 fi
 
 # gcloud completions
-[[ -f ~/google-cloud-sdk/completion.zsh.inc ]] && source ~/google-cloud-sdk/completion.zsh.inc
+[[ -f "$_gcloud_sdk_dir/completion.zsh.inc" ]] && source "$_gcloud_sdk_dir/completion.zsh.inc"

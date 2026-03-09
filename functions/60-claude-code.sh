@@ -44,6 +44,21 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
       claude plugin install "$entry" 2>/dev/null || true
     fi
   done
+
+  # MCP servers (format: name command args...)
+  local _claude_mcps=(
+    "chrome-devtools npx chrome-devtools-mcp@latest"
+  )
+  for entry in "${_claude_mcps[@]}"; do
+    local mcp_name="${entry%% *}"
+    if echo "$_settings_content" | grep -q "\"$mcp_name\""; then
+      echo " Claude MCP already configured: $mcp_name"
+    else
+      echo " Adding Claude MCP server: $mcp_name"
+      local mcp_args="${entry#* }"
+      claude mcp add -s user "$mcp_name" -- ${=mcp_args} 2>/dev/null || true
+    fi
+  done
 fi
 
 alias c="claude --dangerously-skip-permissions"
