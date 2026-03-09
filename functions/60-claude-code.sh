@@ -49,9 +49,11 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
   local _claude_mcps=(
     "chrome-devtools npx chrome-devtools-mcp@latest"
   )
+  local _mcp_list
+  _mcp_list=$(claude mcp list 2>/dev/null || echo "")
   for entry in "${_claude_mcps[@]}"; do
     local mcp_name="${entry%% *}"
-    if echo "$_settings_content" | grep -q "\"$mcp_name\""; then
+    if echo "$_mcp_list" | grep -q "$mcp_name"; then
       echo " Claude MCP already configured: $mcp_name"
     else
       echo " Adding Claude MCP server: $mcp_name"
