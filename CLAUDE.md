@@ -99,6 +99,15 @@ ZSH_DEBUG_TIMING=1 exec zsh
 
 Prints millisecond timestamps at each loading stage.
 
+## Git Identity
+
+This repo uses a **personal** GitHub identity (local git config):
+- `user.name` = `Chris Towles`
+- `user.email` = `Chris.Towles@gmail.com`
+- `credential.helper` = `!gh auth git-credential` (uses the active `gh` account, which should be `ChrisTowles`)
+
+The work profile (`212787373_aero`) is the global default — this repo overrides it locally.
+
 ## Conventions
 
 - Shell functions use POSIX-compatible syntax where possible
