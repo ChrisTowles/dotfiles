@@ -46,10 +46,15 @@
     "key": "ctrl+p",
     "command": "-workbench.action.quickOpen"
   },
-  // Go to definition: cmd+b (Karabiner remaps ctrl+b → cmd+b in VS Code)
+  // Go to definition: ctrl+b and cmd+b (Karabiner excludes VS Code from ctrl→cmd remap)
   { "key": "cmd+b", "command": "-workbench.action.toggleSidebarVisibility" },
   {
     "key": "cmd+b",
+    "command": "editor.action.revealDefinition",
+    "when": "editorHasDefinitionProvider && editorTextFocus"
+  },
+  {
+    "key": "ctrl+b",
     "command": "editor.action.revealDefinition",
     "when": "editorHasDefinitionProvider && editorTextFocus"
   },
@@ -100,5 +105,10 @@
   {
     "key": "ctrl+shift+f",
     "command": "workbench.action.findInFiles"
+  },
+  // Find in file: ctrl+f (Karabiner excludes VS Code from ctrl→cmd remap, so we need this explicitly)
+  {
+    "key": "ctrl+f",
+    "command": "actions.find"
   }
 ]

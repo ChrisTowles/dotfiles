@@ -45,18 +45,19 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
     fi
   done
 
-  # MCP servers (format: name command args...)
+  # MCP servers at user scope (format: name command args...)
   local _claude_mcps=(
-    "chrome-devtools npx chrome-devtools-mcp@latest"
+    "chrome-devtools npx chrome-devtools-mcp@latest --browserUrl http://127.0.0.1:9222"
   )
-  local _mcp_list
-  _mcp_list=$(claude mcp list 2>/dev/null || echo "")
+  local _claude_json="$HOME/.claude.json"
+  local _claude_json_content
+  _claude_json_content=$(cat "$_claude_json" 2>/dev/null || echo "{}")
   for entry in "${_claude_mcps[@]}"; do
     local mcp_name="${entry%% *}"
-    if echo "$_mcp_list" | grep -q "$mcp_name"; then
-      echo " Claude MCP already configured: $mcp_name"
+    if echo "$_claude_json_content" | python3 -c "import sys,json; d=json.load(sys.stdin); sys.exit(0 if '$mcp_name' in d.get('mcpServers',{}) else 1)" 2>/dev/null; then
+      echo " Claude MCP already configured (user): $mcp_name"
     else
-      echo " Adding Claude MCP server: $mcp_name"
+      echo " Adding Claude MCP server (user): $mcp_name"
       local mcp_args="${entry#* }"
       claude mcp add -s user "$mcp_name" -- ${=mcp_args} 2>/dev/null || true
     fi
