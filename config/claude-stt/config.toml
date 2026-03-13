@@ -1,5 +1,5 @@
 [claude-stt]
-hotkey = "ctrl+shift+space"
+hotkey = "option+d"
 mode = "toggle"                  # "toggle" or "push-to-talk"
 engine = "whisper"               # "whisper" or "moonshine"
 # moonshine_model = "moonshine/base"
