@@ -12,6 +12,8 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
 
   # Add custom marketplaces
   local _claude_marketplaces=(
+    anthropics/skills
+    anthropics/claude-plugins-official
     ChrisTowles/towles-tool
   )
   for marketplace in "${_claude_marketplaces[@]}"; do
@@ -28,11 +30,16 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
   # Auto-update is enabled by default for claude-plugins-official marketplace
   local _claude_plugins=(
     superpowers@claude-plugins-official
-    code-simplifier@claude-plugins-official
     typescript-lsp@claude-plugins-official
     claude-md-management@claude-plugins-official
-    tt@towles-tool
+    frontend-design@claude-plugins-official
+    feature-dev@claude-plugins-official
+    plugin-dev@claude-plugins-official
+    hookify@claude-plugins-official
+    skill-creator@claude-plugins-official
+    
   )
+  #tt@towles-tool
   local _settings_file="$HOME/.claude/settings.json"
   local _settings_content
   _settings_content=$(cat "$_settings_file" 2>/dev/null || echo "{}")
