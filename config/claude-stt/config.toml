@@ -1,12 +1,12 @@
 [claude-stt]
-hotkey = "option+d"
+hotkey = "cmd+d"
 mode = "toggle"                  # "toggle" or "push-to-talk"
 engine = "whisper"               # "whisper" or "moonshine"
 # moonshine_model = "moonshine/base"
 whisper_model = "medium"
 sample_rate = 16000
 max_recording_seconds = 300      # max 600
-audio_device = 8                   # Jabra Evolve2 40 SE
+audio_device = "Jabra Evolve2 40 SE"
 output_mode = "injection"             # "auto", "injection", or "clipboard"
 sound_effects = true
 
