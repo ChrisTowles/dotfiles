@@ -108,6 +108,8 @@ This repo uses a **personal** GitHub identity (local git config):
 
 The work profile (`212787373_aero`) is the global default — this repo overrides it locally.
 
+**Pushing to this repo** — use `./scripts/git-push.sh` instead of `git push`. On macOS it switches to the `ChrisTowles` gh account, pushes, and switches back. On Linux it's a passthrough.
+
 ## Conventions
 
 - Shell functions use POSIX-compatible syntax where possible
