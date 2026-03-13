@@ -17,6 +17,6 @@
 - Destructure imports when possible (eg. import { foo } from 'bar')
 
 ## Git
-
+  
 **Always rebase merge** — always use rebase merge (`gh pr merge --rebase`) when merging PRs.
 **Preserve commit authorship** — when rebasing, keep the original author intact (don't use `--reset-author`). Use `--committer-date-is-author-date` to keep dates aligned. Prefer `gh pr merge --rebase` (GitHub-side rebase) over local rebase+push — GitHub sets the committer to its bot, not the merger, which preserves fair credit attribution. Never squash-merge other people's commits — it replaces the author entirely.
