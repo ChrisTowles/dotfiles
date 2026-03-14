@@ -20,6 +20,13 @@ settings.statusLine = {
   command: `bun run ${configSrc}/statusline.ts`,
 };
 
+settings.teammateMode = "tmux";
+
+settings.env = {
+  ...settings.env,
+  CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS: "1",
+};
+
 settings.hooks = {
   ...settings.hooks,
   Notification: [
