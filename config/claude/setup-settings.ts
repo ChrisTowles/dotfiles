@@ -27,6 +27,9 @@ settings.env = {
   CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS: "1",
 };
 
+// MCP servers are managed via `claude mcp add` (stored in ~/.claude.json),
+// not in settings.json. See 60-claude-code.sh for the setup.
+
 settings.hooks = {
   ...settings.hooks,
   Notification: [

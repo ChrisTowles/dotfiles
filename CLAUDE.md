@@ -54,7 +54,7 @@ Each file in `functions/` is a self-contained module for one tool. Files follow 
 - **45-nerd-fonts.sh** - Nerd Font install + VS Code font config
 - **50-vscode.sh** - VS Code Insiders install, keybindings symlink
 - **55-starship.sh** - Prompt init with git metrics display
-- **60-claude-code.sh** - Claude Code install, statusline/notification hooks
+- **60-claude-code.sh** - Claude Code install, statusline/notification hooks, MCP server setup via `claude mcp add`
 - **65-aws-cli.sh** - AWS CLI completions (manual install warning)
 - **70-i.sh** - Quick `cd` to project directories under `~/code/{p,w,f}`
 - **75-docker.sh** - Docker Engine install with completions
@@ -140,3 +140,5 @@ The work profile (`212787373_aero`) is the global default — this repo override
   ```
 - Rust ecosystem tools (bat, fd, zoxide, delta, starship) install via `cargo install`
 - Private/internal shell functions use underscore prefix (e.g. `_nerd_fonts_install`)
+- Claude Code MCP servers are registered via `claude mcp add -s user` (stored in `~/.claude.json`), NOT in `settings.json`. The `settings.json` `mcpServers` field should stay empty. Setup in `60-claude-code.sh` handles idempotent registration.
+- Chrome DevTools MCP uses `--autoConnect` which connects to an existing Chrome session via the user data directory pipe. Requires Chrome 144+ with remote debugging enabled at `chrome://inspect/#remote-debugging`.
