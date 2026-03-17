@@ -118,6 +118,7 @@ The work profile (`212787373_aero`) is the global default — this repo override
 - Platform detection uses `uname` checks for Linux vs macOS differences
 - Only two package managers need support: `brew` (macOS) and `apt` (Linux)
 - macOS supports both x86_64 and arm64 (Apple Silicon) — all macOS installs use `brew` which handles architecture automatically
+- macOS `/bin/bash` is 3.2 (lacks associative arrays, modern syntax) — Homebrew bash 5.x is required for tmux plugins. Installed via `brew install bash` in `40-tmux.sh` setup, and tmux.conf prepends `/opt/homebrew/bin` to PATH so `#!/usr/bin/env bash` finds it
 - Linux only needs x86_64 support — no ARM/aarch64 on Linux at this time
 - `${0:a:h}` resolves the sourced file's directory — but ONLY at the top level of a file, not inside functions. Inside a function, `$0` becomes the shell name (e.g. `zsh`). If a function needs the file's directory, capture it in a variable at the top level first:
   ```bash

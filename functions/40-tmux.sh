@@ -8,10 +8,14 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
     echo " Installing tmux..."
     case "$(uname -s)" in
       Darwin) brew install tmux ;;
-      Linux)
-        sudo apt install -y tmux
-        ;;
+      Linux) sudo apt install -y tmux ;;
     esac
+  fi
+
+  # macOS /bin/bash is 3.2 which lacks associative arrays — tmux plugins need bash 4+
+  if [[ "$(uname -s)" == "Darwin" ]] && ! /opt/homebrew/bin/bash --version &>/dev/null; then
+    echo " Installing modern bash (required for tmux plugins)..."
+    brew install bash
   fi
 
   local config_src="${0:a:h}/../config/tmux/tmux.conf"
@@ -21,17 +25,18 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
     ln -sf "$config_src" ~/.config/tmux/tmux.conf
   fi
 
-  # Install TPM (Tmux Plugin Manager)
-  if [[ -d ~/.tmux/plugins/tpm ]]; then
+  # Install TPM (Tmux Plugin Manager) into XDG config dir
+  local tpm_dir="$HOME/.config/tmux/plugins/tpm"
+  if [[ -d "$tpm_dir" ]]; then
     echo " Updating TPM..."
-    git -C ~/.tmux/plugins/tpm pull
+    git -C "$tpm_dir" pull
   else
     echo " Installing TPM..."
-    git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+    git clone https://github.com/tmux-plugins/tpm "$tpm_dir"
   fi
   # Install and update tmux plugins via TPM
-  ~/.tmux/plugins/tpm/bin/install_plugins
-  ~/.tmux/plugins/tpm/bin/update_plugins all
+  "$tpm_dir/bin/install_plugins"
+  "$tpm_dir/bin/update_plugins" all
 fi
 
 # ts - Attach/create session named after current directory

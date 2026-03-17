@@ -273,9 +273,10 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]] && (( ${#DOTFILES_SETUP_MESSAGES[@]} > 0 )); th
   done
   echo ""
 fi
+unset DOTFILES_SETUP
 
 ###############################
-# Load Local File as needed. 
+# Load Local File as needed.
 ###############################
 
 [[ -r "$HOME/.zshrc_local.sh" ]] && source "$HOME/.zshrc_local.sh"
