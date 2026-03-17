@@ -8,7 +8,7 @@
     "help": "bun run config/help.ts",
     "input-test": "bun run config/terminal-input-test.ts",
     "commit": "bun run config/git/ai-commit.ts",
-    "lint:shell": "shellcheck install.sh scripts/git-push.sh functions/*.sh"
+    "lint:shell": "shellcheck install.sh scripts/*.sh functions/*.sh"
   },
   "packageManager": "pnpm@10.28.0",
   "dependencies": {
