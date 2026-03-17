@@ -9,7 +9,7 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
 fi
 
 i() {
-  cd ~/code/$1
+  cd ~/code/"$1" || return
 }
 
 # ii - fuzzy jump into a project directory using zoxide
