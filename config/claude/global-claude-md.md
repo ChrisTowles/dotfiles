@@ -5,6 +5,14 @@
 - Use the task system (TaskCreate/TaskUpdate) to track multi-step work. Create tasks before starting, then start, and mark them completed when done.
 - Always verify changes work — run tests, typecheck, or build after implementation. Don't claim something is fixed without evidence.
 
+## Personal Repos
+
+Repos live under `~/code/` in three directories: `p/` (personal), `w/` (work), `f/` (forks of open source).
+
+- `~/code/p/dotfiles` — Zsh shell config, tool setup, app configs (Linux + macOS)
+- `~/code/p/toolbox` — Personal utilities and scripts
+- `~/code/p/blog` — Personal blog
+
 
 ## Plan Mode
 
