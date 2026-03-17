@@ -16,3 +16,9 @@ disable=SC2028
 
 # SC2088: Tilde does not expand in quotes (used intentionally in display strings)
 disable=SC2088
+
+# SC1036,SC1072,SC1073,SC1009: zsh (N) null-glob qualifier misread as bash syntax errors
+disable=SC1036
+disable=SC1072
+disable=SC1073
+disable=SC1009

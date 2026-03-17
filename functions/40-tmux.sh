@@ -65,8 +65,9 @@ tsn() {
 tss() {
   local session
   session=$(tmux list-sessions -F '#{session_name}' 2>/dev/null | fzf --header "Select tmux session")
-  # shellcheck disable=SC2015
-  [ -n "$session" ] && tmux switch-client -t "$session" 2>/dev/null || tmux attach -t "$session"
+  if [ -n "$session" ]; then
+    tmux switch-client -t "$session" 2>/dev/null || tmux attach -t "$session"
+  fi
 }
 
 # ta - Attach to a session by name, or pick from fzf if no args
