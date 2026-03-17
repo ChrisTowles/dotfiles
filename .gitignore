@@ -113,3 +113,6 @@ dist
 .tmp/
 
 *.local.*
+
+# Auto-claude artifacts
+.auto-claude/
