@@ -12,6 +12,8 @@ Repos live under `~/code/` in three directories: `p/` (personal), `w/` (work), `
 - `~/code/p/dotfiles` — Zsh shell config, tool setup, app configs (Linux + macOS)
 - `~/code/p/toolbox` — Personal utilities and scripts
 - `~/code/p/blog` — Personal blog
+- `~/code/p/towles-tool` — Personal tools and claude code plugin, cli named `tt`
+
 
 
 ## Plan Mode
