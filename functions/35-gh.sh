@@ -80,6 +80,7 @@ gh-git-config() {
 }
 
 # Setup GH alias function (run once to configure gh aliases)
+# shellcheck disable=SC2016
 gh-alias-setup() {
   gh alias delete m 2>/dev/null; gh alias set m --shell 'PAGER="less -FX" gh issue list --state open --assignee @me'
   gh alias delete mv 2>/dev/null; gh alias set mv --shell 'PAGER="less -FX" gh issue list --state open --assignee @me --web'

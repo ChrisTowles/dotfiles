@@ -88,6 +88,7 @@ if _is_popos; then
   # Restart COSMIC desktop (restarts display manager, will log you out)
   popos-restart-desktop() {
     echo "This will restart the display manager and LOG YOU OUT."
+    # shellcheck disable=SC2162
     read -q "?Are you sure? [y/N] " || { echo; return 1; }
     echo
     sudo systemctl restart cosmic-greeter

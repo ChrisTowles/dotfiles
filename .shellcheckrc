@@ -1,0 +1,18 @@
+# shellcheckrc - Global shellcheck configuration
+# Most files in this repo are zsh scripts sourced by .zshrc.
+# shellcheck has no --shell=zsh mode, so we suppress zsh-incompatible warnings globally.
+
+# Default to bash for sourced files without shebangs (functions/*.sh)
+shell=bash
+
+# SC2168: 'local' is only valid in functions (valid at top-level in zsh)
+disable=SC2168
+
+# SC1091: Not following sourced files (can't resolve dynamic paths)
+disable=SC1091
+
+# SC2028: echo may not expand escape sequences (zsh echo does by default)
+disable=SC2028
+
+# SC2088: Tilde does not expand in quotes (used intentionally in display strings)
+disable=SC2088

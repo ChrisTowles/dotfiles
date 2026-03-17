@@ -65,7 +65,9 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
       echo " Claude MCP already configured (user): $mcp_name"
     else
       echo " Adding Claude MCP server (user): $mcp_name"
+      # shellcheck disable=SC2034
       local mcp_args="${entry#* }"
+      # shellcheck disable=SC2086
       claude mcp add -s user "$mcp_name" -- ${=mcp_args} 2>/dev/null || true
     fi
   done

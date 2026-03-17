@@ -1,3 +1,4 @@
+# shellcheck disable=SC1036,SC1046,SC1047,SC1072,SC1073,SC1009
 # Clipboard manager — cliphist (Linux/Wayland) / Maccy (macOS)
 
 if [[ "$DOTFILES_SETUP" -eq 1 ]]; then

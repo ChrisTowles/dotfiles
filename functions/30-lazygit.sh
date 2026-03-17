@@ -1,3 +1,4 @@
+# shellcheck disable=SC1036,SC1072,SC1073,SC1009
 # lazygit - Terminal UI for Git
 
 # Setup: install lazygit and symlink config
