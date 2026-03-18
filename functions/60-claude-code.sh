@@ -37,9 +37,8 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
     plugin-dev@claude-plugins-official
     hookify@claude-plugins-official
     skill-creator@claude-plugins-official
-    
+    tt@towles-tool
   )
-  #tt@towles-tool
   local _settings_file="$HOME/.claude/settings.json"
   local _settings_content
   _settings_content=$(cat "$_settings_file" 2>/dev/null || echo "{}")
