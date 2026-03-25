@@ -74,5 +74,7 @@ fi
 
 alias c="claude --dangerously-skip-permissions"
 alias cr="claude --dangerously-skip-permissions --resume"
+alias cc="claude --channels plugin:discord@claude-plugins-official"
+alias ccr="claude --channels plugin:discord@claude-plugins-official --resume"
 
 
