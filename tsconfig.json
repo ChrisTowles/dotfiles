@@ -6,7 +6,8 @@
     "esModuleInterop": true,
     "strict": true,
     "noEmit": true,
-    "types": ["bun-types"]
+    "skipLibCheck": true,
+    "types": ["@types/bun"]
   },
   "include": ["config/**/*.ts"]
 }
