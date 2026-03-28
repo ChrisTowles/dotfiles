@@ -6,6 +6,17 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
     curl -fsSL https://claude.ai/install.sh | bash
   fi
 
+  # Update Claude Desktop
+  if [[ "$(uname)" == "Darwin" ]]; then
+    echo " Updating Claude Desktop (brew)..."
+    brew upgrade --cask claude 2>/dev/null || brew install --cask claude 2>/dev/null || true
+  else
+    if command -v apt >/dev/null 2>&1; then
+      echo " Updating Claude Desktop (apt)..."
+      sudo apt update -qq && sudo apt install -y claude-desktop 2>/dev/null || true
+    fi
+  fi
+
   # Configure settings, symlink CLAUDE.md, and rules
   bun run "${0:a:h}/../config/claude/setup-settings.ts"
   echo " Claude Code configured (settings, CLAUDE.md, rules)"
