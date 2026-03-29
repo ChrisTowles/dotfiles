@@ -6,9 +6,7 @@ improve_model = "haiku"          # Claude model for text improvement
 
 
 mode = "toggle"                  # "toggle" or "push-to-talk"
-engine = "whisper"               # "whisper" or "moonshine"
-# moonshine_model = "moonshine/base"
-whisper_model = "medium"
+stt_model = "CohereLabs/cohere-transcribe-03-2026"
 sample_rate = 16000
 max_recording_seconds = 300      # max 600
 audio_device = "Jabra Evolve2 40 SE"

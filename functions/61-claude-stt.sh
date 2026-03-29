@@ -67,6 +67,7 @@ stt-status() {
 }
 
 stt-run() {
+  stt-stop 2>/dev/null
   echo "Running claude-stt daemon in foreground (Ctrl+C to stop)..."
   uv run --directory "$_CLAUDE_STT_DIR" python -m claude_stt.daemon run
 }
