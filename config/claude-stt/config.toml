@@ -1,12 +1,7 @@
 [claude-stt]
-hotkey = "cmd+d"
-# Second hotkey that records + fixes grammar/punctuation via Claude CLI
-improve_hotkey = "ctrl+shift+space"
-improve_model = "haiku"          # Claude model for text improvement
-
-
+hotkey = "ctrl+shift+space"
 mode = "toggle"                  # "toggle" or "push-to-talk"
-stt_model = "CohereLabs/cohere-transcribe-03-2026"
+stt_model = "Qwen/Qwen3-ASR-1.7B"
 sample_rate = 16000
 max_recording_seconds = 300      # max 600
 audio_device = "Jabra Evolve2 40 SE"
@@ -18,6 +13,3 @@ sound_effects = true
 # Use Shift+Enter for newlines instead of Enter (only the final
 # trailing newline becomes a real Enter)
 soft_newlines = true
-
-# Language for transcription ("auto" = auto-detect, or ISO 639-1 code)
-language = "en"
