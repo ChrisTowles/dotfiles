@@ -11,8 +11,19 @@ esac
 pnpm-install-global() {
   pnpm install --global \
     tsx `# TypeScript execute - run .ts files directly` \
-    @antfu/ni `# Unified package manager runner (ni, nr, nu)` \
-    @towles/tool `# Personal CLI utilities`
+    @antfu/ni `# Unified package manager runner (ni, nr, nu)`
+}
+
+# Link tt CLI from primary repo (dev mode, always up to date)
+tt-link() {
+  local primary="$HOME/code/p/towles-tool-repos/towles-tool-primary"
+  if [[ -d "$primary" ]]; then
+    (cd "$primary" && pnpm link --global)
+    echo " @towles/tool linked from $primary"
+  else
+    echo " towles-tool-primary not found at $primary, installing from npm"
+    pnpm install --global @towles/tool
+  fi
 }
 
 if [[ "$DOTFILES_SETUP" -eq 1 ]] ; then
@@ -23,6 +34,8 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]] ; then
   fi
   echo " Installing global pnpm packages..."
   pnpm-install-global
+  echo " Linking @towles/tool..."
+  tt-link
 
   # Generate zsh completions
   echo " Generating pnpm completions..."
