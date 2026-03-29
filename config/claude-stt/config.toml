@@ -1,14 +1,10 @@
 [claude-stt]
 hotkey = "ctrl+shift+space"
 mode = "toggle"                  # "toggle" or "push-to-talk"
-stt_model = "Qwen/Qwen3-ASR-1.7B"
-sample_rate = 16000
+ws_port = 18333
 max_recording_seconds = 300      # max 600
-audio_device = "Jabra Evolve2 40 SE"
-output_mode = "injection"             # "auto", "injection", or "clipboard"
+output_mode = "injection"        # "auto", "injection", or "clipboard"
 sound_effects = true
-
-
 
 # Use Shift+Enter for newlines instead of Enter (only the final
 # trailing newline becomes a real Enter)
