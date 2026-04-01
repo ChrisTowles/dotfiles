@@ -83,6 +83,10 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
   done
 fi
 
+# Fullscreen rendering: flicker-free alternate screen buffer with mouse support
+# https://code.claude.com/docs/en/fullscreen
+export CLAUDE_CODE_NO_FLICKER=1
+
 alias c="claude --dangerously-skip-permissions"
 alias cr="claude --dangerously-skip-permissions --resume"
 alias cc="claude --dangerously-skip-permissions --channels plugin:discord@claude-plugins-official"
