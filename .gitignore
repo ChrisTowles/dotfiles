@@ -116,3 +116,6 @@ dist
 
 # Auto-claude artifacts
 .auto-claude/
+
+# LazyVim lock file (generated on first run)
+config/nvim/lazy-lock.json
