@@ -16,3 +16,20 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
     esac
   fi
 fi
+
+# ghostty-help - Print Ghostty tips and workarounds
+ghostty-help() {
+  echo "\033[1;36mGhostty keybindings:\033[0m"
+  echo "  Cmd+Shift+Click    Open URL (required inside tmux)"
+  echo "  Cmd+Click          Open URL (only works outside tmux)"
+  echo "  Cmd+D              Split right"
+  echo "  Cmd+Shift+D        Split down"
+  echo "  Cmd+Shift+Enter    Toggle fullscreen"
+  echo "  Cmd+Shift+,        Open config"
+  echo ""
+  echo "\033[1;36mKnown issues:\033[0m"
+  echo "  Right-click menu in tmux is broken (follows cursor)"
+  echo "    https://github.com/ghostty-org/ghostty/discussions/5362"
+  echo "  Cmd+Click in tmux requires Shift workaround"
+  echo "    https://github.com/ghostty-org/ghostty/issues/11573"
+}
