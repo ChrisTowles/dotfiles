@@ -76,6 +76,18 @@ else
   ok "Repo cloned"
 fi
 
+# Sysctl tuning (Linux only)
+if [[ "$OS" == "Linux" ]]; then
+  SYSCTL_SRC="$DOTFILES_DIR/config/sysctl/90-dotfiles.conf"
+  SYSCTL_DST="/etc/sysctl.d/90-dotfiles.conf"
+  if [[ -f "$SYSCTL_SRC" ]]; then
+    info "Installing sysctl config..."
+    sudo ln -sf "$SYSCTL_SRC" "$SYSCTL_DST"
+    sudo sysctl --load="$SYSCTL_DST" >/dev/null 2>&1
+    ok "sysctl config installed and applied"
+  fi
+fi
+
 # Symlink .zshrc
 ZSHRC_TARGET="$DOTFILES_DIR/.zshrc"
 
