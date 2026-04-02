@@ -86,6 +86,7 @@ fi
 # Fullscreen rendering: flicker-free alternate screen buffer with mouse support
 # https://code.claude.com/docs/en/fullscreen
 export CLAUDE_CODE_NO_FLICKER=1
+export CLAUDE_CODE_NEW_INIT=1
 
 alias c="claude --dangerously-skip-permissions"
 alias cr="claude --dangerously-skip-permissions --resume"
