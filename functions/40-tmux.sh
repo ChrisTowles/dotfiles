@@ -87,23 +87,34 @@ ta() {
 
 # tmux-help - Print all custom tmux aliases and keybindings
 tmux-help() {
-  echo "\033[1;36mCustom tmux aliases:\033[0m"
-  echo "  ts       Attach/create session named after current dir"
-  echo "  tsn      Always create new session named after current dir"
-  echo "  tss      Switch session with fzf picker"
-  echo "  ta       Attach to session (fzf picker if no args)"
-  echo "  tl       List sessions"
-  echo "  tk       Kill session (current if no args, or tk <name>)"
-  echo "  tka      Kill all sessions"
-  echo "  td       Detach"
-  echo "  tw       List windows"
-  echo "  tp       List panes"
+  echo "\033[1;36m── Starting a session ──\033[0m"
+  echo "  ts         Start or reattach session named after current dir (most common)"
+  echo "  tsn        Force a new session even if one exists for this dir"
   echo ""
-  echo "\033[1;36mDefault tmux keybindings (prefix = Ctrl+a):\033[0m"
+  echo "\033[1;36m── Navigating sessions ──\033[0m"
+  echo "  ta         Reattach to a session (fzf picker, or ta <name>)"
+  echo "  tss        Switch between sessions while inside tmux"
+  echo "  tl         List all running sessions"
+  echo ""
+  echo "\033[1;36m── Leaving a session ──\033[0m"
+  echo "  td         Detach — leave session running in background, come back with ta"
+  echo "  exit       Close current pane — kills session when it's the last pane"
+  echo "  Ctrl+d     Same as exit"
+  echo ""
+  echo "\033[1;36m── Destroying sessions ──\033[0m"
+  echo "  tkc        Kill the current session and drop out of tmux"
+  echo "  tk         Kill a session by name or fzf picker (tk <name>)"
+  echo "  tka        Kill tmux server — destroys ALL sessions"
+  echo ""
+  echo "\033[1;36m── Windows & panes ──\033[0m"
+  echo "  tw         List windows in current session"
+  echo "  tp         List panes in current window"
+  echo ""
+  echo "\033[1;36m── Keybindings (prefix = Ctrl+a) ──\033[0m"
   echo "  Sessions:"
-  echo "    prefix s       List sessions"
+  echo "    prefix d       Detach (same as td)"
+  echo "    prefix s       List/pick sessions"
   echo "    prefix \$       Rename session"
-  echo "    prefix d       Detach"
   echo "    prefix (  )    Previous/next session"
   echo "  Windows:"
   echo "    prefix c       New window"
@@ -119,21 +130,30 @@ tmux-help() {
   echo "    prefix x       Kill pane"
   echo "    prefix {  }    Swap pane left/right"
   echo "  Other:"
-  echo "    prefix [       Enter copy mode"
+  echo "    prefix [       Enter copy mode (scroll/copy text)"
   echo "    prefix :       Command prompt"
   echo "    prefix ?       List all keybindings"
 }
 
 # Aliases
 alias tl='tmux list-sessions'
-# tk - Kill session by name, or kill current session if no args
+# tk - Kill session by name, or pick from fzf if no args
 tk() {
   if [ -n "$1" ]; then
     tmux kill-session -t "$1"
-  else
-    tmux kill-session
+    return
   fi
+  local session
+  session=$(tmux list-sessions -F '#{session_name}' 2>/dev/null | fzf --header "Kill which session? (ESC to cancel)")
+  if [ -z "$session" ]; then
+    echo "Cancelled"
+    return 1
+  fi
+  tmux kill-session -t "$session"
 }
+# tkc - Kill the current session
+alias tkc='tmux kill-session'
+# tka - Kill ALL sessions (kills the tmux server)
 alias tka='tmux kill-server'
 alias td='tmux detach'
 alias tw='tmux list-windows'
