@@ -26,6 +26,9 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
     anthropics/skills
     anthropics/claude-plugins-official
     ChrisTowles/towles-tool
+    obra/superpowers-marketplace
+    EveryInc/compound-engineering-plugin
+    trailofbits/skills
   )
   for marketplace in "${_claude_marketplaces[@]}"; do
     local marketplace_name="${marketplace##*/}"
@@ -40,15 +43,15 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
   # Install plugins (format: name@marketplace)
   # Auto-update is enabled by default for claude-plugins-official marketplace
   local _claude_plugins=(
-    superpowers@claude-plugins-official
     typescript-lsp@claude-plugins-official
     claude-md-management@claude-plugins-official
     frontend-design@claude-plugins-official
-    feature-dev@claude-plugins-official
     plugin-dev@claude-plugins-official
-    hookify@claude-plugins-official
     skill-creator@claude-plugins-official
     tt@towles-tool
+    superpowers@superpowers-marketplace
+    compound-engineering@compound-engineering-plugin
+    ask-questions-if-underspecified@trailofbits
   )
   local _settings_file="$HOME/.claude/settings.json"
   local _settings_content
