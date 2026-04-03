@@ -40,31 +40,6 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
     fi
   done
 
-  # Install plugins (format: name@marketplace)
-  # Auto-update is enabled by default for claude-plugins-official marketplace
-  local _claude_plugins=(
-    typescript-lsp@claude-plugins-official
-    claude-md-management@claude-plugins-official
-    frontend-design@claude-plugins-official
-    plugin-dev@claude-plugins-official
-    skill-creator@claude-plugins-official
-    tt@towles-tool
-    superpowers@superpowers-marketplace
-    compound-engineering@compound-engineering-plugin
-    ask-questions-if-underspecified@trailofbits
-  )
-  local _settings_file="$HOME/.claude/settings.json"
-  local _settings_content
-  _settings_content=$(cat "$_settings_file" 2>/dev/null || echo "{}")
-  for entry in "${_claude_plugins[@]}"; do
-    if echo "$_settings_content" | grep -q "\"$entry\""; then
-      echo " Claude plugin already installed: $entry"
-    else
-      echo " Installing Claude plugin: $entry"
-      claude plugin install "$entry" 2>/dev/null || true
-    fi
-  done
-
   # MCP servers at user scope (format: name command args...)
   local _claude_mcps=(
     "chrome-devtools npx chrome-devtools-mcp@latest --autoConnect"

@@ -45,7 +45,55 @@ settings.hooks = {
   ],
 };
 
+// --- Auto-update for all marketplaces ---
+
+const marketplaces = [
+  "skills",
+  "claude-plugins-official",
+  "towles-tool",
+  "superpowers-marketplace",
+  "compound-engineering-plugin",
+  "trailofbits",
+];
+
+settings.extraKnownMarketplaces ??= {};
+for (const name of marketplaces) {
+  if (settings.extraKnownMarketplaces[name]) {
+    settings.extraKnownMarketplaces[name].autoUpdate = true;
+  }
+}
+
 writeFileSync(settingsFile, JSON.stringify(settings, null, 2) + "\n");
+
+// --- Install plugins ---
+
+const plugins = [
+  "typescript-lsp@claude-plugins-official",
+  "claude-md-management@claude-plugins-official",
+  "frontend-design@claude-plugins-official",
+  "plugin-dev@claude-plugins-official",
+  "skill-creator@claude-plugins-official",
+  "discord@claude-plugins-official",
+  "tt@towles-tool",
+  "superpowers@superpowers-marketplace",
+  "compound-engineering@compound-engineering-plugin",
+  "ask-questions-if-underspecified@trailofbits",
+  "gh-cli@trailofbits",
+  "git-cleanup@trailofbits",
+  "insecure-defaults@trailofbits",
+  "let-fate-decide@trailofbits",
+  "sharp-edges@trailofbits",
+  "skill-improver@trailofbits",
+  "supply-chain-risk-auditor@trailofbits",
+  "workflow-skill-design@trailofbits",
+];
+
+const enabled = settings.enabledPlugins ?? {};
+for (const plugin of plugins) {
+  if (plugin in enabled) continue;
+  console.log(` Installing Claude plugin: ${plugin}`);
+  Bun.spawnSync(["claude", "plugin", "install", plugin], { stdio: ["ignore", "inherit", "inherit"] });
+}
 
 // --- Symlink CLAUDE.md ---
 
