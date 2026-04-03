@@ -137,24 +137,32 @@ tmux-help() {
 
 # Aliases
 alias tl='tmux list-sessions'
-# tk - Kill session by name, or pick from fzf if no args
+# tk - Kill session by name, or pick from fzf if no args (saves resurrect state after)
 tk() {
   if [ -n "$1" ]; then
     tmux kill-session -t "$1"
-    return
+  else
+    local session
+    session=$(tmux list-sessions -F '#{session_name}' 2>/dev/null | fzf --header "Kill which session? (ESC to cancel)")
+    if [ -z "$session" ]; then
+      echo "Cancelled"
+      return 1
+    fi
+    tmux kill-session -t "$session"
   fi
-  local session
-  session=$(tmux list-sessions -F '#{session_name}' 2>/dev/null | fzf --header "Kill which session? (ESC to cancel)")
-  if [ -z "$session" ]; then
-    echo "Cancelled"
-    return 1
-  fi
-  tmux kill-session -t "$session"
+  ~/.config/tmux/plugins/tmux-resurrect/scripts/save.sh 2>/dev/null
 }
-# tkc - Kill the current session
-alias tkc='tmux kill-session'
-# tka - Kill ALL sessions (kills the tmux server)
-alias tka='tmux kill-server'
+# tkc - Kill the current session (saves resurrect state after)
+tkc() {
+  tmux kill-session
+  ~/.config/tmux/plugins/tmux-resurrect/scripts/save.sh 2>/dev/null
+}
+# tka - Save sessions then kill tmux server
+tka() {
+  ~/.config/tmux/plugins/tmux-resurrect/scripts/save.sh 2>/dev/null
+  echo "Sessions saved. Killing tmux server..."
+  tmux kill-server
+}
 alias td='tmux detach'
 alias tw='tmux list-windows'
 alias tp='tmux list-panes'
