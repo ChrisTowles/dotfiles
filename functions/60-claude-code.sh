@@ -17,11 +17,7 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
     fi
   fi
 
-  # Configure settings, symlink CLAUDE.md, and rules
-  bun run "${0:a:h}/../config/claude/setup-settings.ts"
-  echo " Claude Code configured (settings, CLAUDE.md, rules)"
-
-  # Add custom marketplaces
+  # Add custom marketplaces (before setup-settings.ts so auto-update can find them)
   local _claude_marketplaces=(
     anthropics/skills
     anthropics/claude-plugins-official
@@ -39,6 +35,10 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
       echo " Claude marketplace already added: $marketplace_name"
     fi
   done
+
+  # Configure settings, symlink CLAUDE.md, install plugins, and rules
+  bun run "${0:a:h}/../config/claude/setup-settings.ts"
+  echo " Claude Code configured (settings, CLAUDE.md, plugins, rules)"
 
   # MCP servers at user scope (format: name command args...)
   local _claude_mcps=(

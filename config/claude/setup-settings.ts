@@ -47,20 +47,9 @@ settings.hooks = {
 
 // --- Auto-update for all marketplaces ---
 
-const marketplaces = [
-  "skills",
-  "claude-plugins-official",
-  "towles-tool",
-  "superpowers-marketplace",
-  "compound-engineering-plugin",
-  "trailofbits",
-];
-
 settings.extraKnownMarketplaces ??= {};
-for (const name of marketplaces) {
-  if (settings.extraKnownMarketplaces[name]) {
-    settings.extraKnownMarketplaces[name].autoUpdate = true;
-  }
+for (const name of Object.keys(settings.extraKnownMarketplaces)) {
+  settings.extraKnownMarketplaces[name].autoUpdate = true;
 }
 
 writeFileSync(settingsFile, JSON.stringify(settings, null, 2) + "\n");
@@ -88,9 +77,8 @@ const plugins = [
   "workflow-skill-design@trailofbits",
 ];
 
-const enabled = settings.enabledPlugins ?? {};
 for (const plugin of plugins) {
-  if (plugin in enabled) continue;
+  if (plugin in (settings.enabledPlugins ?? {})) continue;
   console.log(` Installing Claude plugin: ${plugin}`);
   Bun.spawnSync(["claude", "plugin", "install", plugin], { stdio: ["ignore", "inherit", "inherit"] });
 }
