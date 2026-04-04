@@ -9,7 +9,7 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
 fi
 
 i() {
-  cd ~/code/"$1" || return
+  cd ~/code/"$1"${2:+/"$2"} || return
 }
 
 # Tab completion for i() - completes first arg as ~/code/ subdirs, second arg as project within

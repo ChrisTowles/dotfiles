@@ -11,7 +11,7 @@ alias gca="git add . && git-ai-commit"
 
 # gmain - Switch to main/master branch and pull
 gmain() {
-  git stash || { echo "git stash failed"; return 1; }
+  git diff --quiet HEAD 2>/dev/null || git stash || { echo "git stash failed"; return 1; }
   local main_branch=$(git branch -l main)
   if [ -z "${main_branch}" ]; then
     echo "checking out master"
@@ -37,7 +37,13 @@ gclean() {
   echo ""
   read -q "confirm?Delete these branches? [y/N] " || { echo ""; return 0; }
   echo ""
+  local current_branch
+  current_branch=$(git branch --show-current)
   while IFS= read -r branch; do
+    if [[ "$branch" == "$current_branch" ]]; then
+      echo "  Skipping $branch (currently checked out)"
+      continue
+    fi
     git branch -D "$branch"
   done <<< "$gone_branches"
 }
