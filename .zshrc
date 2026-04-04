@@ -31,10 +31,10 @@ _zsh_plugin_update() {
   [[ "${DOTFILES_SETUP:-0}" -eq 1 ]] || return 0
   if [[ -d "$plugin_dir" ]]; then
     echo " Updating $2..."
-    git -C "$plugin_dir" pull
+    git -C "$plugin_dir" pull || { echo "git pull failed for $2"; return 1; }
   else
     echo " Installing from $repo_url"
-    git clone "$repo_url" "$plugin_dir"
+    git clone "$repo_url" "$plugin_dir" || { echo "git clone failed for $2"; return 1; }
   fi
 }
 

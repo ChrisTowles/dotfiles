@@ -16,13 +16,13 @@ i() {
 _i_complete() {
   if (( CURRENT == 2 )); then
     local -a dirs
-    dirs=(${(f)"$(command ls ~/code 2>/dev/null)"})
+    dirs=( ~/code/*(N/:t) )
     _describe 'code directory' dirs
   elif (( CURRENT == 3 )); then
     local base_dir="$HOME/code/${words[2]}"
     if [[ -d "$base_dir" ]]; then
       local -a projects
-      projects=(${(f)"$(command ls "$base_dir" 2>/dev/null)"})
+      projects=( "$base_dir"/*(N/:t) )
       _describe 'project' projects
     fi
   fi

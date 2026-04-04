@@ -37,9 +37,9 @@ gclean() {
   echo ""
   read -q "confirm?Delete these branches? [y/N] " || { echo ""; return 0; }
   echo ""
-  echo "$gone_branches" | while read -r branch; do
+  while IFS= read -r branch; do
     git branch -D "$branch"
-  done
+  done <<< "$gone_branches"
 }
 
 # git-ai-commit - Generate commit message with Claude AI
