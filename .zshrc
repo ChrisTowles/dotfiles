@@ -55,7 +55,6 @@ fi
 
 # meaning previous commands are suggested as you type
 if [[ "$DOTFILES_SETUP" -eq 1 ]] ; then
-  echo "⚠️  Running zshrc in setup mode..."
   if [[ -d ~/.zsh/zsh-autosuggestions ]]; then
     echo " Updating zsh-autosuggestions..."
     git -C ~/.zsh/zsh-autosuggestions pull
