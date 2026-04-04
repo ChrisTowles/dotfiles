@@ -12,6 +12,23 @@ i() {
   cd ~/code/"$1" || return
 }
 
+# Tab completion for i() - completes first arg as ~/code/ subdirs, second arg as project within
+_i_complete() {
+  if (( CURRENT == 2 )); then
+    local -a dirs
+    dirs=(${(f)"$(command ls ~/code 2>/dev/null)"})
+    _describe 'code directory' dirs
+  elif (( CURRENT == 3 )); then
+    local base_dir="$HOME/code/${words[2]}"
+    if [[ -d "$base_dir" ]]; then
+      local -a projects
+      projects=(${(f)"$(command ls "$base_dir" 2>/dev/null)"})
+      _describe 'project' projects
+    fi
+  fi
+}
+compdef _i_complete i
+
 # ii - fuzzy jump into a project directory using zoxide
 ii() {
   zi ~/code
