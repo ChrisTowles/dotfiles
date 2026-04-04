@@ -25,7 +25,18 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]] ; then
   echo "⚠️  Running zshrc in setup mode..."
 fi
 
-
+# Helper: clone or update a zsh plugin under ~/.zsh/
+_zsh_plugin_update() {
+  local repo_url="$1" plugin_dir="$HOME/.zsh/$2"
+  [[ "${DOTFILES_SETUP:-0}" -eq 1 ]] || return 0
+  if [[ -d "$plugin_dir" ]]; then
+    echo " Updating $2..."
+    git -C "$plugin_dir" pull
+  else
+    echo " Installing from $repo_url"
+    git clone "$repo_url" "$plugin_dir"
+  fi
+}
 
 ###############################
 # Debug Timing (must be early)
@@ -49,39 +60,23 @@ fi
 
 
 ################################################
-#   zsh-autosuggestions                          # 
+#   zsh-autosuggestions                          #
 ################################################
 
 
 # meaning previous commands are suggested as you type
-if [[ "$DOTFILES_SETUP" -eq 1 ]] ; then
-  if [[ -d ~/.zsh/zsh-autosuggestions ]]; then
-    echo " Updating zsh-autosuggestions..."
-    git -C ~/.zsh/zsh-autosuggestions pull
-  else
-    echo " Installing from https://github.com/zsh-users/zsh-autosuggestions"
-    git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosuggestions
-  fi
-fi
+_zsh_plugin_update "https://github.com/zsh-users/zsh-autosuggestions" "zsh-autosuggestions"
 
 source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 zsh_debug_section "zsh-autosuggestions"
 
 ################################################
-#   zsh-completions                            # 
+#   zsh-completions                            #
 ################################################
 
 # providing many additional completion definitions
 # try with "git -" and hit tab
-if [[ "$DOTFILES_SETUP" -eq 1 ]] ; then
-  if [[ -d ~/.zsh/zsh-completions ]]; then
-    echo " Updating zsh-completions..."
-    git -C ~/.zsh/zsh-completions pull
-  else
-    echo " Installing from https://github.com/zsh-users/zsh-completions"
-    git clone https://github.com/zsh-users/zsh-completions.git ~/.zsh/zsh-completions
-  fi
-fi
+_zsh_plugin_update "https://github.com/zsh-users/zsh-completions.git" "zsh-completions"
 
 fpath=(~/.zsh/zsh-completions/src $fpath)
 
@@ -113,19 +108,11 @@ fpath=(~/.zsh/completions $fpath)
 zsh_debug_section "zsh-completions"
 
 ################################################
-#   ZSH HISTORY SUBSTRING SEARCH               # 
+#   ZSH HISTORY SUBSTRING SEARCH               #
 ################################################
 
 
-if [[ "$DOTFILES_SETUP" -eq 1 ]] ; then
-  if [[ -d ~/.zsh/zsh-history-substring-search ]]; then
-    echo " Updating zsh-history-substring-search..."
-    git -C ~/.zsh/zsh-history-substring-search pull
-  else
-    echo " Installing from https://github.com/zsh-users/zsh-history-substring-search"
-    git clone https://github.com/zsh-users/zsh-history-substring-search.git ~/.zsh/zsh-history-substring-search
-  fi
-fi
+_zsh_plugin_update "https://github.com/zsh-users/zsh-history-substring-search.git" "zsh-history-substring-search"
 
 
 source ~/.zsh/zsh-history-substring-search/zsh-history-substring-search.zsh
@@ -159,15 +146,7 @@ zsh_debug_section "word-navigation"
 #   zsh-z (directory jumping)
 ################################################
 
-if [[ "$DOTFILES_SETUP" -eq 1 ]] ; then
-  if [[ -d ~/.zsh/zsh-z ]]; then
-    echo " Updating zsh-z..."
-    git -C ~/.zsh/zsh-z pull
-  else
-    echo " Installing from https://github.com/agkozak/zsh-z"
-    git clone https://github.com/agkozak/zsh-z.git ~/.zsh/zsh-z
-  fi
-fi
+_zsh_plugin_update "https://github.com/agkozak/zsh-z.git" "zsh-z"
 
 
 source ~/.zsh/zsh-z/zsh-z.plugin.zsh
@@ -179,15 +158,7 @@ zsh_debug_section "zsh-z"
 #   fast-syntax-highlighting
 ################################################
 
-if [[ "$DOTFILES_SETUP" -eq 1 ]] ; then
-  if [[ -d ~/.zsh/fast-syntax-highlighting ]]; then
-    echo " Updating fast-syntax-highlighting..."
-    git -C ~/.zsh/fast-syntax-highlighting pull
-  else
-    echo " Installing from https://github.com/zdharma-continuum/fast-syntax-highlighting"
-    git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git ~/.zsh/fast-syntax-highlighting
-  fi
-fi
+_zsh_plugin_update "https://github.com/zdharma-continuum/fast-syntax-highlighting.git" "fast-syntax-highlighting"
 
 
 source ~/.zsh/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
