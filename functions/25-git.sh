@@ -23,6 +23,25 @@ gmain() {
   git pull || { echo "git pull failed"; return 1; }
 }
 
+# gclean - Delete local branches whose remote tracking branch is gone
+gclean() {
+  git fetch --prune || { echo "git fetch failed"; return 1; }
+  local gone_branches
+  gone_branches=$(git for-each-ref --format '%(refname:short) %(upstream:track)' refs/heads | awk '/\[gone\]/ {print $1}')
+  if [[ -z "$gone_branches" ]]; then
+    echo "No stale branches to clean up."
+    return 0
+  fi
+  echo "Branches with gone remotes:"
+  echo "$gone_branches" | sed 's/^/  /'
+  echo ""
+  read -q "confirm?Delete these branches? [y/N] " || { echo ""; return 0; }
+  echo ""
+  echo "$gone_branches" | while read -r branch; do
+    git branch -D "$branch"
+  done
+}
+
 # git-ai-commit - Generate commit message with Claude AI
 #  this is wired up to lazygit as `c` keybinding for committing
 _GIT_CONFIG_DIR="${0:a:h}/../config/git"

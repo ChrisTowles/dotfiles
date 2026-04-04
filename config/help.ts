@@ -24,6 +24,7 @@ console.log(cmd("ga", "git add ."));
 console.log(cmd("gp", "git push"));
 console.log(cmd("gs", "git status"));
 console.log(cmd("gmain", "Switch to main/master + pull"));
+console.log(cmd("gclean", "Delete local branches with gone remotes"));
 console.log(cmd("dif <a> <b>", "Diff two files with syntax highlighting (delta)"));
 console.log();
 
