@@ -2,7 +2,7 @@
 # https://www.postgresql.org/docs/current/app-psql.html
 
 # PATH for Homebrew libpq (keg-only formula, client tools only)
-if [[ "$(uname -s)" == "Darwin" && -d "/opt/homebrew/opt/libpq/bin" ]]; then
+if [[ "$_DOTFILES_OS" == "Darwin" && -d "/opt/homebrew/opt/libpq/bin" ]]; then
   case ":$PATH:" in
     *":/opt/homebrew/opt/libpq/bin:"*) ;;
     *) export PATH="/opt/homebrew/opt/libpq/bin:$PATH" ;;

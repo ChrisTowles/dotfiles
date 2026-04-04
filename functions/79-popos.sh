@@ -1,13 +1,16 @@
 # Pop!_OS / COSMIC desktop setup
 # Only runs on Pop!_OS — configures keyd, screenshot shortcuts, and desktop tools
 
-_is_popos() {
-  [[ "$(uname -s)" == "Linux" && -f /etc/os-release ]] && grep -qi "pop" /etc/os-release
-}
+# Cache Pop!_OS detection (avoids re-reading /etc/os-release on every shell start)
+if [[ "$_DOTFILES_OS" == "Linux" && -f /etc/os-release ]] && grep -qi "pop" /etc/os-release; then
+  _IS_POPOS=true
+else
+  _IS_POPOS=false
+fi
 
 _POPOS_DOTFILES_DIR="${0:a:h}/.."
 
-if [[ "$DOTFILES_SETUP" -eq 1 ]] && _is_popos; then
+if [[ "$DOTFILES_SETUP" -eq 1 ]] && $_IS_POPOS; then
   echo " Setting up Pop!_OS / COSMIC..."
 
   # ── keyd — system-level key remapping daemon ──
@@ -55,11 +58,11 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]] && _is_popos; then
     mkdir -p "$shortcuts_dir"
 
     local desired
-    desired=$(cat <<'EORON'
+    desired=$(cat <<EORON
 {
     (modifiers: [Ctrl], key: "grave"): Spawn("bash -c 'cliphist-wofi-img | wl-copy && sleep 0.1 && wtype -M ctrl -M shift -k v'"),
     (modifiers: [Ctrl, Shift], key: "4"): Spawn("cosmic-screenshot"),
-    (modifiers: [Ctrl, Shift], key: "space"): Spawn("/home/ctowles/code/f/claude-stt/.venv/bin/python -m claude_stt.daemon toggle"),
+    (modifiers: [Ctrl, Shift], key: "space"): Spawn("$HOME/code/f/claude-stt/.venv/bin/python -m claude_stt.daemon toggle"),
 }
 EORON
 )
@@ -72,7 +75,7 @@ EORON
 fi
 
 # Pop!_OS helper aliases (only defined on Pop!_OS)
-if _is_popos; then
+if $_IS_POPOS; then
   # Interactive screenshot (opens COSMIC screenshot tool)
   screenshot() {
     cosmic-screenshot --interactive

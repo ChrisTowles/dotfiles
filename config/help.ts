@@ -79,8 +79,8 @@ console.log(cmd("Alt+C", "cd into directory"));
 console.log();
 
 console.log(h("Claude Code"));
-console.log(cmd("c", "claude --dangerously-skip-permissions"));
-console.log(cmd("cr", "claude --resume (skip permissions)"));
+console.log(cmd("c", "claude --dangerously-skip-permissions --chrome"));
+console.log(cmd("cr", "claude --resume --chrome (skip permissions)"));
 console.log();
 
 console.log(h("Claude STT"));

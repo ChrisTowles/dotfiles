@@ -29,13 +29,7 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
   fi
 
   # Clone or update the fork
-  if [[ ! -d "$_CLAUDE_STT_DIR" ]]; then
-    echo " Cloning claude-stt fork..."
-    git clone https://github.com/ChrisTowles/claude-stt.git "$_CLAUDE_STT_DIR"
-  else
-    echo " Updating claude-stt fork..."
-    git -C "$_CLAUDE_STT_DIR" pull --ff-only 2>/dev/null || true
-  fi
+  _git_clone_or_pull "https://github.com/ChrisTowles/claude-stt.git" "$_CLAUDE_STT_DIR"
 
   # Install Python dependencies via uv
   if command -v uv >/dev/null 2>&1; then
@@ -51,23 +45,11 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
 fi
 
 # Shell commands for managing the daemon
-stt-start() {
-  echo "Starting claude-stt daemon in background..."
-  uv run --directory "$_CLAUDE_STT_DIR" python -m claude_stt.daemon start --background
+_stt_daemon() {
+  uv run --directory "$_CLAUDE_STT_DIR" python -m claude_stt.daemon "$@"
 }
 
-stt-stop() {
-  echo "Stopping claude-stt daemon..."
-  uv run --directory "$_CLAUDE_STT_DIR" python -m claude_stt.daemon stop
-}
-
-stt-status() {
-  echo "Checking claude-stt daemon status..."
-  uv run --directory "$_CLAUDE_STT_DIR" python -m claude_stt.daemon status
-}
-
-stt-run() {
-  stt-stop 2>/dev/null
-  echo "Running claude-stt daemon in foreground (Ctrl+C to stop)..."
-  uv run --directory "$_CLAUDE_STT_DIR" python -m claude_stt.daemon run
-}
+stt-start() { echo "Starting claude-stt daemon in background..."; _stt_daemon start --background; }
+stt-stop() { echo "Stopping claude-stt daemon..."; _stt_daemon stop; }
+stt-status() { echo "Checking claude-stt daemon status..."; _stt_daemon status; }
+stt-run() { stt-stop 2>/dev/null; echo "Running claude-stt daemon in foreground (Ctrl+C to stop)..."; _stt_daemon run; }

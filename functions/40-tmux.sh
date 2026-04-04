@@ -27,13 +27,7 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
 
   # Install TPM (Tmux Plugin Manager) into XDG config dir
   local tpm_dir="$HOME/.config/tmux/plugins/tpm"
-  if [[ -d "$tpm_dir" ]]; then
-    echo " Updating TPM..."
-    git -C "$tpm_dir" pull
-  else
-    echo " Installing TPM..."
-    git clone https://github.com/tmux-plugins/tpm "$tpm_dir"
-  fi
+  _git_clone_or_pull "https://github.com/tmux-plugins/tpm" "$tpm_dir"
   # Install and update tmux plugins via TPM
   "$tpm_dir/bin/install_plugins"
   "$tpm_dir/bin/update_plugins" all

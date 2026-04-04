@@ -74,7 +74,7 @@ EOF
 fi
 
 # ── Linux helpers ──
-if [[ "$(uname -s)" == "Linux" ]]; then
+if [[ "$_DOTFILES_OS" == "Linux" ]]; then
   # Clipboard picker with image previews (Ctrl+` via COSMIC shortcut, or run manually)
   cliphist-pick() {
     cliphist-wofi-img | wl-copy

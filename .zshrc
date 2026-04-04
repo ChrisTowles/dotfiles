@@ -6,6 +6,9 @@
 
 DOTFILES_DIR="$HOME/code/p/dotfiles"
 
+# Cache platform once — avoids repeated uname subprocess calls across function files
+_DOTFILES_OS="$(uname -s)"
+
 alias ls='ls -al'
 # --wait makes VS Code block until the tab is closed, required for tools
 # that use $EDITOR (git commit, claude code ctrl+g prompt editing, etc.)
@@ -25,17 +28,23 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]] ; then
   echo "⚠️  Running zshrc in setup mode..."
 fi
 
-# Helper: clone or update a zsh plugin under ~/.zsh/
-_zsh_plugin_update() {
-  local repo_url="$1" plugin_dir="$HOME/.zsh/$2"
+# Helper: clone or pull a git repo (setup-only)
+_git_clone_or_pull() {
+  local repo_url="$1" target_dir="$2"
   [[ "${DOTFILES_SETUP:-0}" -eq 1 ]] || return 0
-  if [[ -d "$plugin_dir" ]]; then
-    echo " Updating $2..."
-    git -C "$plugin_dir" pull || { echo "git pull failed for $2"; return 1; }
+  local name="${target_dir##*/}"
+  if [[ -d "$target_dir" ]]; then
+    echo " Updating $name..."
+    git -C "$target_dir" pull || { echo "git pull failed for $name"; return 1; }
   else
-    echo " Installing from $repo_url"
-    git clone "$repo_url" "$plugin_dir" || { echo "git clone failed for $2"; return 1; }
+    echo " Installing $name from $repo_url"
+    git clone "$repo_url" "$target_dir" || { echo "git clone failed for $name"; return 1; }
   fi
+}
+
+# Convenience wrapper for zsh plugins under ~/.zsh/
+_zsh_plugin_update() {
+  _git_clone_or_pull "$1" "$HOME/.zsh/$2"
 }
 
 ###############################
@@ -44,8 +53,8 @@ _zsh_plugin_update() {
 # Debug alias - reload with timing
 alias zsh-load='ZSH_DEBUG_TIMING=1 exec zsh'
 
-zsh_start_time_total=$(date +%s.%N)
 if [[ -n "$ZSH_DEBUG_TIMING" ]]; then
+  zsh_start_time_total=$(date +%s.%N)
   zsh_debug_start_time=$(date +%s.%N)
   zsh_debug_section() {
     local current_time=$(date +%s.%N)
@@ -80,28 +89,16 @@ _zsh_plugin_update "https://github.com/zsh-users/zsh-completions.git" "zsh-compl
 
 fpath=(~/.zsh/zsh-completions/src $fpath)
 
-# Rust/Cargo completions
+# Rust/Cargo completions (cached to avoid rustc subprocess on every shell start)
+_rust_sysroot="$HOME/.cache/zsh-rust-sysroot"
 if command -v rustc >/dev/null 2>&1; then
-  fpath=("$(rustc --print sysroot)/share/zsh/site-functions" $fpath)
+  [[ -f "$_rust_sysroot" ]] || rustc --print sysroot > "$_rust_sysroot"
+  fpath=("$(<$_rust_sysroot)/share/zsh/site-functions" $fpath)
 fi
 
-# Generated completions
-mkdir -p ~/.zsh/completions
+# Generated completions (individual function files handle their own during DOTFILES_SETUP)
 if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
-  echo " Generating tool completions..."
-  command -v zellij >/dev/null && zellij setup --generate-completion zsh > ~/.zsh/completions/_zellij
-  command -v docker >/dev/null && docker completion zsh > ~/.zsh/completions/_docker
-  command -v gh >/dev/null && gh completion -s zsh > ~/.zsh/completions/_gh
-  command -v npm >/dev/null && npm completion > ~/.zsh/completions/_npm
-  command -v pnpm >/dev/null && pnpm completion zsh > ~/.zsh/completions/_pnpm
-  command -v rustup >/dev/null && rustup completions zsh > ~/.zsh/completions/_rustup
-  command -v uv >/dev/null && uv generate-shell-completion zsh > ~/.zsh/completions/_uv
-  command -v fnm >/dev/null && fnm completions --shell zsh > ~/.zsh/completions/_fnm
-  command -v bun >/dev/null && bun completions > ~/.zsh/completions/_bun
-  # aws uses a completer binary, not a generated file
-  if command -v aws_completer >/dev/null; then
-    echo "autoload -Uz bashcompinit && bashcompinit\ncomplete -C aws_completer aws" > ~/.zsh/completions/_aws
-  fi
+  mkdir -p ~/.zsh/completions
 fi
 fpath=(~/.zsh/completions $fpath)
 

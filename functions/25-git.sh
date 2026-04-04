@@ -6,7 +6,6 @@ alias ga="git add ."
 alias gp="git push"
 alias gs="git status"
 
-# Add all and commit with AI
 alias gca="git add . && git-ai-commit"
 
 # gmain - Switch to main/master branch and pull
@@ -48,8 +47,7 @@ gclean() {
   done <<< "$gone_branches"
 }
 
-# git-ai-commit - Generate commit message with Claude AI
-#  this is wired up to lazygit as `c` keybinding for committing
+# Wired up to lazygit as `c` keybinding for committing
 _GIT_CONFIG_DIR="${0:a:h}/../config/git"
 git-ai-commit() {
   bun run "$_GIT_CONFIG_DIR/ai-commit.ts"
@@ -66,18 +64,18 @@ grebase-preserve() {
   ' "$(git merge-base HEAD "$target")..HEAD"
 }
 
-# git-ignored - Show all files not included in Git
 git-ignored() {
-  echo "Showing all files not included in Git"
   git ls-files . --ignored --exclude-standard --others | grep -v node_modules
-  echo ""
-  echo "Example: you can remove some folders with the following using grep -v (inverse)"
-  echo "git ls-files . --ignored --exclude-standard --others | grep -v node_modules"
 }
 
 # gitk - Open Gitkraken to current repository
 gitk() {
-  dir="$(cd "$(dirname "$1")" && pwd -P)/$(basename "$1")"
+  local dir
+  dir="$(cd "$(dirname "${1:-.}")" && pwd -P)/$(basename "${1:-.}")"
   echo "open gitkraken to '$dir'"
-  open "gitkraken://repo/$dir"
+  if [[ "$_DOTFILES_OS" == "Darwin" ]]; then
+    open "gitkraken://repo/$dir"
+  else
+    xdg-open "gitkraken://repo/$dir"
+  fi
 }

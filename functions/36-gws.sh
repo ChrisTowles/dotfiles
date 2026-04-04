@@ -2,7 +2,7 @@
 # https://github.com/googleworkspace/cli
 # Requires: gcloud CLI (Google Cloud SDK)
 
-[[ "$(uname -s)" != "Linux" ]] && return
+[[ "$_DOTFILES_OS" != "Linux" ]] && return
 
 # PATH for gcloud
 _gcloud_sdk_dir="$HOME/google-cloud-sdk"

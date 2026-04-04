@@ -47,7 +47,6 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
 
   # Generate zsh completions
   echo " Generating starship completions..."
-  mkdir -p ~/.zsh/completions
   starship completions zsh > ~/.zsh/completions/_starship
 fi
 

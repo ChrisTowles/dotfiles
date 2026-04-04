@@ -18,7 +18,6 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
   # Generate zsh completions
   if command -v rustup >/dev/null 2>&1; then
     echo " Generating rustup completions..."
-    mkdir -p ~/.zsh/completions
     rustup completions zsh > ~/.zsh/completions/_rustup
     rustup completions zsh cargo > ~/.zsh/completions/_cargo
   fi

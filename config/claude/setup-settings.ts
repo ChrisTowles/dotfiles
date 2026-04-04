@@ -1,6 +1,6 @@
 #!/usr/bin/env bun
 
-import { readFileSync, writeFileSync, mkdirSync } from "fs";
+import { readFileSync, writeFileSync, mkdirSync, lstatSync, renameSync, symlinkSync, readdirSync } from "fs";
 import { join, dirname } from "path";
 
 const configSrc = dirname(Bun.main);
@@ -83,8 +83,6 @@ for (const plugin of plugins) {
 }
 
 // --- Symlink CLAUDE.md ---
-
-import { lstatSync, renameSync, symlinkSync, readdirSync } from "fs";
 
 const claudeMdSrc = join(configSrc, "global-claude-md.md");
 const claudeMdDest = join(process.env.HOME!, ".claude", "CLAUDE.md");

@@ -27,7 +27,6 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
   # Generate zsh completions
   if command -v bun >/dev/null 2>&1; then
     echo " Generating bun completions..."
-    mkdir -p ~/.zsh/completions
     bun completions > ~/.zsh/completions/_bun 2>/dev/null
   fi
 fi

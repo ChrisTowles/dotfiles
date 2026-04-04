@@ -93,7 +93,6 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
   gh-alias-setup
 
   echo " Generating gh completions..."
-  mkdir -p ~/.zsh/completions
   gh completion -s zsh > ~/.zsh/completions/_gh
 
   if ! gh auth status &>/dev/null; then

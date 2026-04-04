@@ -40,7 +40,6 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
   # Generate AWS CLI completions
   if command -v aws_completer >/dev/null; then
     echo " Generating AWS CLI completions..."
-    mkdir -p ~/.zsh/completions
     printf 'autoload -Uz bashcompinit && bashcompinit\ncomplete -C aws_completer aws\n' > ~/.zsh/completions/_aws
   fi
 fi

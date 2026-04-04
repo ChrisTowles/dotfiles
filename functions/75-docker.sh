@@ -42,7 +42,6 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
   # Generate zsh completions
   if command -v docker >/dev/null 2>&1; then
     echo " Generating docker completions..."
-    mkdir -p ~/.zsh/completions
     docker completion zsh > ~/.zsh/completions/_docker 2>/dev/null
   fi
 fi

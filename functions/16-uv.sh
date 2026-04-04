@@ -13,7 +13,6 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
   # Generate zsh completions
   if command -v uv >/dev/null 2>&1; then
     echo " Generating uv completions..."
-    mkdir -p ~/.zsh/completions
     uv generate-shell-completion zsh > ~/.zsh/completions/_uv
   fi
 fi
