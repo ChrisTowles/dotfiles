@@ -59,6 +59,22 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
       claude mcp add -s user "$mcp_name" -- ${=mcp_args} 2>/dev/null || true
     fi
   done
+
+  # Fix claude-in-chrome native host: use symlink so it survives version updates
+  local _native_host="$HOME/.claude/chrome/chrome-native-host"
+  local _claude_bin="$HOME/.local/bin/claude"
+  if [[ -f "$_native_host" ]] && [[ -L "$_claude_bin" ]]; then
+    local _current_target
+    _current_target=$(grep -o 'exec "[^"]*"' "$_native_host" 2>/dev/null | sed 's/exec "//;s/"$//')
+    local _symlink_target
+    _symlink_target=$(readlink -f "$_claude_bin")
+    if [[ "$_current_target" != "$_symlink_target" ]]; then
+      echo " Fixing claude-in-chrome native host: $_current_target -> $_symlink_target"
+      sed -i "s|exec \".*\"|exec \"$_symlink_target\"|" "$_native_host"
+    else
+      echo " Claude-in-chrome native host is up to date"
+    fi
+  fi
 fi
 
 # Fullscreen rendering: flicker-free alternate screen buffer with mouse support
@@ -66,9 +82,9 @@ fi
 export CLAUDE_CODE_NO_FLICKER=1
 export CLAUDE_CODE_NEW_INIT=1
 
-alias c="claude --dangerously-skip-permissions"
-alias cr="claude --dangerously-skip-permissions --resume"
-alias cc="claude --dangerously-skip-permissions --channels plugin:discord@claude-plugins-official"
-alias ccr="claude --dangerously-skip-permissions --channels plugin:discord@claude-plugins-official --resume"
+alias c="claude --dangerously-skip-permissions --chrome"
+alias cr="claude --dangerously-skip-permissions --chrome --resume"
+alias cc="claude --dangerously-skip-permissions --chrome --channels plugin:discord@claude-plugins-official"
+alias ccr="claude --dangerously-skip-permissions --chrome --channels plugin:discord@claude-plugins-official --resume"
 
 

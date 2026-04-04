@@ -82,8 +82,8 @@ gca   → git add . && git-ai-commit
 ga    → git add .
 gp    → git push
 gs    → git status
-c     → claude --dangerously-skip-permissions
-cr    → claude --dangerously-skip-permissions --resume
+c     → claude --dangerously-skip-permissions --chrome
+cr    → claude --dangerously-skip-permissions --chrome --resume
 code  → code-insiders
 ls    → ls -al
 ez    → exec zsh
