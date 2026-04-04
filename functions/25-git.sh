@@ -11,16 +11,16 @@ alias gca="git add . && git-ai-commit"
 
 # gmain - Switch to main/master branch and pull
 gmain() {
-  git stash
-  main_branch=$(git branch -l main)
+  git stash || { echo "git stash failed"; return 1; }
+  local main_branch=$(git branch -l main)
   if [ -z "${main_branch}" ]; then
     echo "checking out master"
-    git checkout master
+    git checkout master || { echo "checkout failed"; return 1; }
   else
     echo "checking out main"
-    git checkout main
+    git checkout main || { echo "checkout failed"; return 1; }
   fi
-  git pull
+  git pull || { echo "git pull failed"; return 1; }
 }
 
 # git-ai-commit - Generate commit message with Claude AI
