@@ -78,8 +78,7 @@ const plugins = [
 ];
 
 for (const plugin of plugins) {
-  if (plugin in (settings.enabledPlugins ?? {})) continue;
-  console.log(` Installing Claude plugin: ${plugin}`);
+  console.log(` Installing/updating Claude plugin: ${plugin}`);
   Bun.spawnSync(["claude", "plugin", "install", plugin], { stdio: ["ignore", "inherit", "inherit"] });
 }
 

@@ -2,6 +2,7 @@
 
 - Use a hard cutover approach and never implement backward compatibility.
 - Always verify changes work — run tests, typecheck, or build after implementation. Don't claim something is fixed without evidence.
+- When a larger refactor is out of scope, don't deny it — create a GitHub issue to address it later.
 
 ## Personal Repos
 
