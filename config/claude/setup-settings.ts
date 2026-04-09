@@ -85,6 +85,7 @@ const plugins = [
   "skill-improver@trailofbits",
   "supply-chain-risk-auditor@trailofbits",
   "workflow-skill-design@trailofbits",
+  "document-skills@anthropic-agent-skills",
 ];
 
 for (const plugin of plugins) {
