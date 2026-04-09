@@ -9,15 +9,28 @@ const input = await Bun.stdin.json();
 const message: string = input.last_assistant_message ?? "";
 
 const dismissivePatterns = [
-  /not (related|relevant) to (our|the|these|my) (changes|work|modifications)/i,
-  /pre-existing (issue|bug|error|problem)/i,
-  /outside (the |our |of )?scope/i,
-  /unrelated to (our|the|my) (work|changes|task)/i,
-  /not (caused|introduced) by (our|the|this|my)/i,
-  /existed before (our|the|this|my)/i,
-  /not something we (need to|should) (fix|address)/i,
-  /beyond (the |our )?scope/i,
-  /separate (issue|concern|problem|PR|ticket)/i,
+  // "not related/relevant to our [code] changes/work"
+  /not related to .{0,20}\b(changes|work|modifications|task)\b/i,
+  /not relevant to .{0,20}\b(changes|work|modifications|task)\b/i,
+  /unrelated to .{0,20}\b(changes|work|task)\b/i,
+
+  // "pre-existing issue/bug/error"
+  /pre-existing (issue|bug|error|problem|failure)/i,
+  /existed before .{0,20}\b(changes|work|commit)\b/i,
+
+  // "outside/beyond the scope of our work"
+  /outside .{0,20}\bscope\b/i,
+  /beyond .{0,20}\bscope\b/i,
+
+  // "not caused/introduced by our changes"
+  /not caused by .{0,20}\b(changes|work|commit|code)\b/i,
+  /not introduced by .{0,20}\b(changes|work|commit|code)\b/i,
+
+  // "not something we need to fix/address"
+  /not something we .{0,20}\b(fix|address|worry|handle)\b/i,
+
+  // "separate issue/PR/ticket" (dismissing to future work)
+  /separate (issue|problem|PR|ticket)\b/i,
 ];
 
 const match = dismissivePatterns.find((p) => p.test(message));
