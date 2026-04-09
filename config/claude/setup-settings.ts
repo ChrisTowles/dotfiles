@@ -43,6 +43,16 @@ settings.hooks = {
       ],
     },
   ],
+  Stop: [
+    {
+      hooks: [
+        {
+          type: "command",
+          command: `bun run ${configSrc}/stop-guard.ts`,
+        },
+      ],
+    },
+  ],
 };
 
 // --- Auto-update for all marketplaces ---
