@@ -74,7 +74,6 @@ const plugins = [
   "skill-creator@claude-plugins-official",
   "discord@claude-plugins-official",
   "tt@towles-tool",
-  "superpowers@superpowers-marketplace",
   "compound-engineering@compound-engineering-plugin",
   "ask-questions-if-underspecified@trailofbits",
   "gh-cli@trailofbits",
@@ -87,6 +86,20 @@ const plugins = [
   "workflow-skill-design@trailofbits",
   "document-skills@anthropic-agent-skills",
 ];
+
+// Plugins to remove. Move entries here from `plugins` to uninstall on next setup.
+const uninstallPlugins = [
+  "superpowers@superpowers-marketplace",
+];
+
+for (const plugin of uninstallPlugins) {
+  const result = Bun.spawnSync(["claude", "plugin", "uninstall", plugin], { stdout: "pipe", stderr: "pipe" });
+  if (result.success) {
+    console.log(` Uninstalled Claude plugin: ${plugin}`);
+  } else {
+    console.log(` Claude plugin already uninstalled: ${plugin}`);
+  }
+}
 
 for (const plugin of plugins) {
   console.log(` Installing/updating Claude plugin: ${plugin}`);

@@ -117,5 +117,8 @@ dist
 # Auto-claude artifacts
 .auto-claude/
 
+# Claude agent worktrees
+.claude/worktrees/
+
 # LazyVim lock file (generated on first run)
 config/nvim/lazy-lock.json
