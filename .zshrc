@@ -140,6 +140,18 @@ bindkey '^[f' forward-word        # Alt+f
 zsh_debug_section "word-navigation"
 
 ################################################
+#   Reset Kitty keyboard protocol at each prompt
+################################################
+# If a TUI (Claude Code, nvim, etc.) enables enhanced keys and crashes without
+# popping the mode, Ghostty sends sequences like ESC[1;29A for arrow keys and
+# zle leaks "29A" as literal text. Clearing flags on every prompt is defensive.
+_reset_keyboard_protocol() { printf '\e[=0u' }
+autoload -Uz add-zsh-hook
+add-zsh-hook precmd _reset_keyboard_protocol
+
+zsh_debug_section "keyboard-protocol-reset"
+
+################################################
 #   zsh-z (directory jumping)
 ################################################
 
