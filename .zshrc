@@ -233,6 +233,14 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
   DOTFILES_SETUP_MESSAGES=()
 fi
 
+###############################
+# Initialize Completions
+###############################
+
+# Must run before functions/*.sh are sourced so compdef is available
+autoload -Uz compinit && compinit
+zsh_debug_section "compinit"
+
 # Source custom functions
 for _fn in "$DOTFILES_DIR"/functions/*.sh(N); do
   if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
@@ -272,9 +280,7 @@ zsh_debug_section "starship"
 # Initialize Completions - do after almost everything
 ###############################
 
-# this should be done after adding to fpath, zstyles, and all plugins that add completions
-autoload -Uz compinit && compinit
-zsh_debug_section "compinit"
+# compinit already ran before functions/*.sh - see above
 
 
 ###############################

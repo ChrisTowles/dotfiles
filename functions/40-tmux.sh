@@ -151,10 +151,10 @@ tkc() {
   tmux kill-session
   ~/.config/tmux/plugins/tmux-resurrect/scripts/save.sh 2>/dev/null
 }
-# tka - Save sessions then kill tmux server
+# tka - Kill tmux server and clear saved sessions so nothing auto-restores
 tka() {
-  ~/.config/tmux/plugins/tmux-resurrect/scripts/save.sh 2>/dev/null
-  echo "Sessions saved. Killing tmux server..."
+  rm -f ~/.local/share/tmux/resurrect/last
+  echo "Cleared saved sessions. Killing tmux server..."
   tmux kill-server
 }
 alias td='tmux detach'
