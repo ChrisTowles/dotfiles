@@ -123,7 +123,11 @@ function ensureSymlink(src: string, dest: string) {
   }
 }
 
-ensureSymlink(claudeMdSrc, claudeMdDest);
+// Skip on macOS: work Mac uses a work-focused CLAUDE.md managed in ~/code/p/toolbox.
+// Linux (home) still gets the dotfiles-managed global CLAUDE.md.
+if (process.platform !== "darwin") {
+  ensureSymlink(claudeMdSrc, claudeMdDest);
+}
 
 // --- Symlink rules ---
 

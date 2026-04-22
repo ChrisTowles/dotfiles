@@ -80,7 +80,7 @@ Use the built-in `gh` CLI commands instead of the GitHub MCP server.
 Official Chrome DevTools MCP from Google - provides browser automation, debugging, performance analysis, and screenshot capabilities.
 
 ```bash
-claude mcp add chrome-devtools --scope user -- npx chrome-devtools-mcp@latest
+claude mcp add chrome-devtools --scope user -- bunx chrome-devtools-mcp@latest
 ```
 
 GitHub: https://github.com/ChromeDevTools/chrome-devtools-mcp

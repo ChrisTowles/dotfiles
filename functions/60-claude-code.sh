@@ -42,7 +42,7 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
 
   # MCP servers at user scope (format: name command args...)
   local _claude_mcps=(
-    "chrome-devtools npx chrome-devtools-mcp@latest --autoConnect"
+    "chrome-devtools bunx chrome-devtools-mcp@latest --autoConnect"
   )
   local _claude_json="$HOME/.claude.json"
   local _claude_json_content
