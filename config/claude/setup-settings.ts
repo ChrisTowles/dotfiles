@@ -1,6 +1,6 @@
 #!/usr/bin/env bun
 
-import { readFileSync, writeFileSync, mkdirSync, lstatSync, renameSync, symlinkSync, readdirSync } from "fs";
+import { readFileSync, writeFileSync, mkdirSync, lstatSync, renameSync, symlinkSync, readdirSync, existsSync } from "fs";
 import { join, dirname } from "path";
 
 const configSrc = dirname(Bun.main);
@@ -55,6 +55,41 @@ settings.hooks = {
   ],
 };
 
+// --- Marketplaces ---
+
+// [repo, registered marketplace name]. Name comes from each marketplace.json's `name` field
+// and is not always the repo basename (e.g. anthropics/skills → anthropic-agent-skills).
+const marketplaces: [string, string][] = [
+  ["anthropics/claude-plugins-official", "claude-plugins-official"],
+  ["anthropics/skills", "anthropic-agent-skills"],
+  ["ChrisTowles/towles-tool", "towles-tool"],
+  ["EveryInc/compound-engineering-plugin", "compound-engineering-plugin"],
+  ["trailofbits/skills", "trailofbits"],
+];
+
+// Marketplaces to remove. Move entries here from `marketplaces` to uninstall on next setup.
+const uninstallMarketplaces: string[] = [];
+
+const marketplacesDir = join(process.env.HOME!, ".claude", "plugins", "marketplaces");
+
+for (const [repo, name] of marketplaces) {
+  if (existsSync(join(marketplacesDir, name))) {
+    console.log(` Claude marketplace already added: ${name}`);
+  } else {
+    console.log(` Adding Claude marketplace: ${repo}`);
+    Bun.spawnSync(["claude", "plugin", "marketplace", "add", repo], { stdio: ["ignore", "inherit", "inherit"] });
+  }
+}
+
+for (const name of uninstallMarketplaces) {
+  const result = Bun.spawnSync(["claude", "plugin", "marketplace", "remove", name], { stdout: "pipe", stderr: "pipe" });
+  if (result.success) {
+    console.log(` Removed Claude marketplace: ${name}`);
+  } else {
+    console.log(` Claude marketplace already removed: ${name}`);
+  }
+}
+
 // --- Auto-update for all marketplaces ---
 
 settings.extraKnownMarketplaces ??= {};
@@ -72,8 +107,18 @@ const plugins = [
   "frontend-design@claude-plugins-official",
   "plugin-dev@claude-plugins-official",
   "skill-creator@claude-plugins-official",
-  "discord@claude-plugins-official",
   "tt@towles-tool",
+  "document-skills@anthropic-agent-skills",
+];
+
+// Plugins to remove. Move entries here from `plugins` to uninstall on next setup.
+const uninstallPlugins = [
+  "superpowers@superpowers-marketplace",
+  "discord@claude-plugins-official",
+  "feature-dev@claude-plugins-official",
+  "hookify@claude-plugins-official",
+  "postman@claude-plugins-official",
+  "code-simplifier@claude-plugins-official",
   "compound-engineering@compound-engineering-plugin",
   "ask-questions-if-underspecified@trailofbits",
   "gh-cli@trailofbits",
@@ -84,12 +129,6 @@ const plugins = [
   "skill-improver@trailofbits",
   "supply-chain-risk-auditor@trailofbits",
   "workflow-skill-design@trailofbits",
-  "document-skills@anthropic-agent-skills",
-];
-
-// Plugins to remove. Move entries here from `plugins` to uninstall on next setup.
-const uninstallPlugins = [
-  "superpowers@superpowers-marketplace",
 ];
 
 for (const plugin of uninstallPlugins) {
