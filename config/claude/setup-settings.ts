@@ -99,51 +99,118 @@ for (const name of Object.keys(settings.extraKnownMarketplaces)) {
 
 writeFileSync(settingsFile, JSON.stringify(settings, null, 2) + "\n");
 
-// --- Install plugins ---
+// --- Install plugins and npm skills ---
+// One declarative list with three backends:
+//   - kind: "github_marketplace"  → `claude plugin install <name>@<marketplace>` (Claude Code
+//                                   plugin system, marketplace registered from GitHub)
+//   - kind: "npm_skills_single"   → `bunx skills@latest add <repo> -g -a claude-code -s <name>`
+//                                   (one specific skill via skills.sh, the npm `skills` package)
+//   - kind: "npm_skills_plugin"   → `bunx skills@latest add <repo> -g -a claude-code -s '*'`
+//                                   (every skill from the repo). Has no uninstall counterpart by
+//                                   design: a wildcard-remove would clobber every user skill, not
+//                                   just this repo's. To stop tracking a bundle, delete the entry
+//                                   here; if you also want the files gone, list the specific names
+//                                   (as `npm_skills_single`) in `uninstalls` for one setup cycle.
 
-const plugins = [
-  "typescript-lsp@claude-plugins-official",
-  "claude-md-management@claude-plugins-official",
-  "frontend-design@claude-plugins-official",
-  "plugin-dev@claude-plugins-official",
-  "skill-creator@claude-plugins-official",
-  "tt@towles-tool",
-  "document-skills@anthropic-agent-skills",
+type Install =
+  | { kind: "github_marketplace"; name: string; marketplace: string }
+  | { kind: "npm_skills_single"; name: string; repo: string }
+  | { kind: "npm_skills_plugin"; repo: string };
+
+// Uninstall is a strict subset — plugin-bundle kind is excluded so the type system makes the
+// footgun unrepresentable, not just "documented as bad."
+type Uninstall = Exclude<Install, { kind: "npm_skills_plugin" }>;
+
+const installs: Install[] = [
+  { kind: "github_marketplace", name: "typescript-lsp",       marketplace: "claude-plugins-official" },
+  { kind: "github_marketplace", name: "claude-md-management", marketplace: "claude-plugins-official" },
+  { kind: "github_marketplace", name: "frontend-design",      marketplace: "claude-plugins-official" },
+  { kind: "github_marketplace", name: "plugin-dev",           marketplace: "claude-plugins-official" },
+  { kind: "github_marketplace", name: "skill-creator",        marketplace: "claude-plugins-official" },
+  { kind: "github_marketplace", name: "tt",                   marketplace: "towles-tool" },
+  { kind: "github_marketplace", name: "document-skills",      marketplace: "anthropic-agent-skills" },
+  { kind: "npm_skills_plugin",                                repo: "mattpocock/skills" },
 ];
 
-// Plugins to remove. Move entries here from `plugins` to uninstall on next setup.
-const uninstallPlugins = [
-  "superpowers@superpowers-marketplace",
-  "discord@claude-plugins-official",
-  "feature-dev@claude-plugins-official",
-  "hookify@claude-plugins-official",
-  "postman@claude-plugins-official",
-  "code-simplifier@claude-plugins-official",
-  "compound-engineering@compound-engineering-plugin",
-  "ask-questions-if-underspecified@trailofbits",
-  "gh-cli@trailofbits",
-  "git-cleanup@trailofbits",
-  "insecure-defaults@trailofbits",
-  "let-fate-decide@trailofbits",
-  "sharp-edges@trailofbits",
-  "skill-improver@trailofbits",
-  "supply-chain-risk-auditor@trailofbits",
-  "workflow-skill-design@trailofbits",
+// Move entries here from `installs` to remove them on next setup.
+const uninstalls: Uninstall[] = [
+  { kind: "github_marketplace", name: "superpowers",                    marketplace: "superpowers-marketplace" },
+  { kind: "github_marketplace", name: "discord",                        marketplace: "claude-plugins-official" },
+  { kind: "github_marketplace", name: "feature-dev",                    marketplace: "claude-plugins-official" },
+  { kind: "github_marketplace", name: "hookify",                        marketplace: "claude-plugins-official" },
+  { kind: "github_marketplace", name: "postman",                        marketplace: "claude-plugins-official" },
+  { kind: "github_marketplace", name: "code-simplifier",                marketplace: "claude-plugins-official" },
+  { kind: "github_marketplace", name: "compound-engineering",           marketplace: "compound-engineering-plugin" },
+  { kind: "github_marketplace", name: "ask-questions-if-underspecified", marketplace: "trailofbits" },
+  { kind: "github_marketplace", name: "gh-cli",                          marketplace: "trailofbits" },
+  { kind: "github_marketplace", name: "git-cleanup",                     marketplace: "trailofbits" },
+  { kind: "github_marketplace", name: "insecure-defaults",               marketplace: "trailofbits" },
+  { kind: "github_marketplace", name: "let-fate-decide",                 marketplace: "trailofbits" },
+  { kind: "github_marketplace", name: "sharp-edges",                     marketplace: "trailofbits" },
+  { kind: "github_marketplace", name: "skill-improver",                  marketplace: "trailofbits" },
+  { kind: "github_marketplace", name: "supply-chain-risk-auditor",       marketplace: "trailofbits" },
+  { kind: "github_marketplace", name: "workflow-skill-design",           marketplace: "trailofbits" },
 ];
 
-for (const plugin of uninstallPlugins) {
-  const result = Bun.spawnSync(["claude", "plugin", "uninstall", plugin], { stdout: "pipe", stderr: "pipe" });
-  if (result.success) {
-    console.log(` Uninstalled Claude plugin: ${plugin}`);
-  } else {
-    console.log(` Claude plugin already uninstalled: ${plugin}`);
+function describe(item: Install): string {
+  switch (item.kind) {
+    case "github_marketplace":  return `${item.name}@${item.marketplace}`;
+    case "npm_skills_single":   return `${item.name} (from ${item.repo})`;
+    case "npm_skills_plugin":   return `all skills from ${item.repo}`;
   }
 }
 
-for (const plugin of plugins) {
-  console.log(` Installing/updating Claude plugin: ${plugin}`);
-  Bun.spawnSync(["claude", "plugin", "install", plugin], { stdio: ["ignore", "inherit", "inherit"] });
+function install(item: Install): void {
+  switch (item.kind) {
+    case "github_marketplace": {
+      console.log(` Installing/updating Claude plugin: ${describe(item)}`);
+      Bun.spawnSync(
+        ["claude", "plugin", "install", `${item.name}@${item.marketplace}`],
+        { stdio: ["ignore", "inherit", "inherit"] },
+      );
+      return;
+    }
+    case "npm_skills_single": {
+      console.log(` Installing/updating npm skill: ${describe(item)}`);
+      Bun.spawnSync(
+        ["bunx", "skills@latest", "add", item.repo, "-g", "-a", "claude-code", "-s", item.name, "-y"],
+        { stdio: ["ignore", "inherit", "inherit"] },
+      );
+      return;
+    }
+    case "npm_skills_plugin": {
+      console.log(` Installing/updating npm skills plugin: ${describe(item)}`);
+      Bun.spawnSync(
+        ["bunx", "skills@latest", "add", item.repo, "-g", "-a", "claude-code", "-s", "*", "-y"],
+        { stdio: ["ignore", "inherit", "inherit"] },
+      );
+      return;
+    }
+  }
 }
+
+function uninstall(item: Uninstall): void {
+  if (item.kind === "github_marketplace") {
+    const result = Bun.spawnSync(
+      ["claude", "plugin", "uninstall", `${item.name}@${item.marketplace}`],
+      { stdout: "pipe", stderr: "pipe" },
+    );
+    console.log(result.success
+      ? ` Uninstalled Claude plugin: ${describe(item)}`
+      : ` Claude plugin already uninstalled: ${describe(item)}`);
+    return;
+  }
+  const result = Bun.spawnSync(
+    ["bunx", "skills@latest", "remove", item.name, "-g", "-a", "claude-code", "-y"],
+    { stdout: "pipe", stderr: "pipe" },
+  );
+  console.log(result.success
+    ? ` Uninstalled npm skill: ${describe(item)}`
+    : ` Npm skill already uninstalled: ${describe(item)}`);
+}
+
+for (const item of uninstalls) uninstall(item);
+for (const item of installs) install(item);
 
 // --- Symlink CLAUDE.md ---
 
