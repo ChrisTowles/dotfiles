@@ -100,25 +100,16 @@ for (const name of Object.keys(settings.extraKnownMarketplaces)) {
 writeFileSync(settingsFile, JSON.stringify(settings, null, 2) + "\n");
 
 // --- Install plugins and npm skills ---
-// One declarative list with three backends:
-//   - kind: "github_marketplace"  → `claude plugin install <name>@<marketplace>` (Claude Code
-//                                   plugin system, marketplace registered from GitHub)
-//   - kind: "npm_skills_single"   → `bunx skills@latest add <repo> -g -a claude-code -s <name>`
-//                                   (one specific skill via skills.sh, the npm `skills` package)
-//   - kind: "npm_skills_plugin"   → `bunx skills@latest add <repo> -g -a claude-code -s '*'`
-//                                   (every skill from the repo). Has no uninstall counterpart by
-//                                   design: a wildcard-remove would clobber every user skill, not
-//                                   just this repo's. To stop tracking a bundle, delete the entry
-//                                   here; if you also want the files gone, list the specific names
-//                                   (as `npm_skills_single`) in `uninstalls` for one setup cycle.
+// `npm_skills_plugin` has no uninstall counterpart by design: a wildcard-remove
+// would clobber every user skill, not just this repo's. To stop tracking a
+// bundle, delete the entry here; if you also want the files gone, list the
+// specific names (as `npm_skills_single`) in `uninstalls` for one setup cycle.
 
 type Install =
   | { kind: "github_marketplace"; name: string; marketplace: string }
   | { kind: "npm_skills_single"; name: string; repo: string }
   | { kind: "npm_skills_plugin"; repo: string };
 
-// Uninstall is a strict subset — plugin-bundle kind is excluded so the type system makes the
-// footgun unrepresentable, not just "documented as bad."
 type Uninstall = Exclude<Install, { kind: "npm_skills_plugin" }>;
 
 const installs: Install[] = [
@@ -190,23 +181,13 @@ function install(item: Install): void {
 }
 
 function uninstall(item: Uninstall): void {
-  if (item.kind === "github_marketplace") {
-    const result = Bun.spawnSync(
-      ["claude", "plugin", "uninstall", `${item.name}@${item.marketplace}`],
-      { stdout: "pipe", stderr: "pipe" },
-    );
-    console.log(result.success
-      ? ` Uninstalled Claude plugin: ${describe(item)}`
-      : ` Claude plugin already uninstalled: ${describe(item)}`);
-    return;
-  }
-  const result = Bun.spawnSync(
-    ["bunx", "skills@latest", "remove", item.name, "-g", "-a", "claude-code", "-y"],
-    { stdout: "pipe", stderr: "pipe" },
-  );
+  const { argv, label } = item.kind === "github_marketplace"
+    ? { argv: ["claude", "plugin", "uninstall", `${item.name}@${item.marketplace}`], label: "Claude plugin" }
+    : { argv: ["bunx", "skills@latest", "remove", item.name, "-g", "-a", "claude-code", "-y"], label: "npm skill" };
+  const result = Bun.spawnSync(argv, { stdout: "pipe", stderr: "pipe" });
   console.log(result.success
-    ? ` Uninstalled npm skill: ${describe(item)}`
-    : ` Npm skill already uninstalled: ${describe(item)}`);
+    ? ` Uninstalled ${label}: ${describe(item)}`
+    : ` ${label} already uninstalled: ${describe(item)}`);
 }
 
 for (const item of uninstalls) uninstall(item);
