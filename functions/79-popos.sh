@@ -55,21 +55,19 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]] && $_IS_POPOS; then
   if [[ "$XDG_CURRENT_DESKTOP" == "COSMIC" ]]; then
     local shortcuts_dir="$HOME/.config/cosmic/com.system76.CosmicSettings.Shortcuts/v1"
     local custom_file="$shortcuts_dir/custom"
+    local custom_src="$_POPOS_DOTFILES_DIR/config/cosmic/custom"
     mkdir -p "$shortcuts_dir"
 
-    local desired
-    desired=$(cat <<EORON
-{
-    (modifiers: [Ctrl], key: "grave"): Spawn("bash -c 'cliphist-wofi-img | wl-copy && sleep 0.1 && wtype -M ctrl -M shift -k v'"),
-    (modifiers: [Ctrl, Shift], key: "4"): Spawn("cosmic-screenshot"),
-    (modifiers: [Ctrl, Shift], key: "space"): Spawn("$HOME/code/f/claude-stt/.venv/bin/python -m claude_stt.daemon toggle"),
-}
-EORON
-)
-
-    if [[ ! -f "$custom_file" ]] || [[ "$(cat "$custom_file")" != "$desired" ]]; then
-      echo "  Updating COSMIC custom shortcuts..."
-      echo "$desired" > "$custom_file"
+    # The tracked template uses a literal $HOME — COSMIC's Spawn does not expand
+    # it, so substitute the real path before writing.
+    if [[ -f "$custom_src" ]]; then
+      local template desired
+      template=$(cat "$custom_src")
+      desired="${template//\$HOME/$HOME}"
+      if [[ ! -f "$custom_file" ]] || [[ "$(cat "$custom_file")" != "$desired" ]]; then
+        echo "  Updating COSMIC custom shortcuts..."
+        echo "$desired" > "$custom_file"
+      fi
     fi
   fi
 fi

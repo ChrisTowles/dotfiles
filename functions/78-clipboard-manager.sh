@@ -33,33 +33,14 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
       rm /tmp/cliphist-wofi-img
     fi
 
-    # Autostart: wl-paste --watch cliphist store (text)
+    # Autostart: cliphist watchers for text + images (tracked .desktop files)
     local autostart_dir="$HOME/.config/autostart"
+    local autostart_src="${0:a:h}/../config/autostart"
     mkdir -p "$autostart_dir"
-    if [[ ! -f "$autostart_dir/cliphist.desktop" ]]; then
-      echo " Adding cliphist to autostart..."
-      cat > "$autostart_dir/cliphist.desktop" <<'EOF'
-[Desktop Entry]
-Name=Cliphist
-Comment=Clipboard history for Wayland (text)
-Exec=wl-paste --watch cliphist store
-Type=Application
-X-GNOME-Autostart-enabled=true
-EOF
-    fi
-
-    # Autostart: wl-paste --type image --watch cliphist store (images)
-    if [[ ! -f "$autostart_dir/cliphist-image.desktop" ]]; then
-      echo " Adding cliphist image watcher to autostart..."
-      cat > "$autostart_dir/cliphist-image.desktop" <<'EOF'
-[Desktop Entry]
-Name=Cliphist Image
-Comment=Clipboard history for Wayland (images)
-Exec=wl-paste --type image --watch cliphist store
-Type=Application
-X-GNOME-Autostart-enabled=true
-EOF
-    fi
+    for desktop in cliphist.desktop cliphist-image.desktop; do
+      echo " Linking $desktop to autostart..."
+      ln -sf "$autostart_src/$desktop" "$autostart_dir/$desktop"
+    done
 
     # COSMIC shortcut for cliphist is managed in 79-popos.sh (Ctrl+`)
 

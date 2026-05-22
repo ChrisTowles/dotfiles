@@ -1,6 +1,6 @@
 #!/usr/bin/env bun
 
-import { readFileSync, writeFileSync, mkdirSync, lstatSync, renameSync, symlinkSync, readdirSync, existsSync } from "fs";
+import { readFileSync, writeFileSync, mkdirSync, lstatSync, renameSync, symlinkSync, readdirSync, existsSync, realpathSync } from "fs";
 import { join, dirname } from "path";
 
 const configSrc = dirname(Bun.main);
@@ -28,7 +28,7 @@ settings.env = {
 };
 
 // MCP servers are managed via `claude mcp add` (stored in ~/.claude.json),
-// not in settings.json. See 60-claude-code.sh for the setup.
+// not in settings.json — see the MCP section near the end of this file.
 
 settings.hooks = {
   ...settings.hooks,
@@ -225,3 +225,49 @@ mkdirSync(rulesDest, { recursive: true });
 for (const file of readdirSync(rulesSrc).filter((f) => f.endsWith(".md"))) {
   ensureSymlink(join(rulesSrc, file), join(rulesDest, file));
 }
+
+// --- MCP servers (user scope) ---
+// Registered via `claude mcp add` so they live in ~/.claude.json, not settings.json.
+
+const mcpServers: Record<string, string[]> = {
+  "chrome-devtools": ["bunx", "chrome-devtools-mcp@latest", "--autoConnect"],
+};
+
+let claudeJson: Record<string, any> = {};
+try {
+  claudeJson = JSON.parse(readFileSync(join(process.env.HOME!, ".claude.json"), "utf8"));
+} catch {}
+const registeredMcps = claudeJson.mcpServers ?? {};
+
+for (const [name, argv] of Object.entries(mcpServers)) {
+  if (name in registeredMcps) {
+    console.log(` Claude MCP already configured (user): ${name}`);
+  } else {
+    console.log(` Adding Claude MCP server (user): ${name}`);
+    Bun.spawnSync(["claude", "mcp", "add", "-s", "user", name, "--", ...argv], {
+      stdio: ["ignore", "inherit", "inherit"],
+    });
+  }
+}
+
+// --- claude-in-chrome native host ---
+// The native messaging host script hard-codes the path to the claude binary,
+// which goes stale on version updates. Point it at the resolved target of the
+// stable ~/.local/bin/claude symlink so it survives version bumps.
+
+const nativeHostFile = join(process.env.HOME!, ".claude", "chrome", "chrome-native-host");
+const claudeBin = join(process.env.HOME!, ".local", "bin", "claude");
+
+try {
+  if (lstatSync(claudeBin).isSymbolicLink() && existsSync(nativeHostFile)) {
+    const nativeHost = readFileSync(nativeHostFile, "utf8");
+    const currentTarget = nativeHost.match(/exec "([^"]*)"/)?.[1];
+    const symlinkTarget = realpathSync(claudeBin);
+    if (currentTarget !== symlinkTarget) {
+      console.log(` Fixing claude-in-chrome native host: ${currentTarget} -> ${symlinkTarget}`);
+      writeFileSync(nativeHostFile, nativeHost.replace(/exec "[^"]*"/, `exec "${symlinkTarget}"`));
+    } else {
+      console.log(" Claude-in-chrome native host is up to date");
+    }
+  }
+} catch {}
