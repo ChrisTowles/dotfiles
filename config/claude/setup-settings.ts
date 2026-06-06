@@ -120,7 +120,6 @@ const installs: Install[] = [
   { kind: "github_marketplace", name: "skill-creator",        marketplace: "claude-plugins-official" },
   { kind: "github_marketplace", name: "tt",                   marketplace: "towles-tool" },
   { kind: "github_marketplace", name: "document-skills",      marketplace: "anthropic-agent-skills" },
-  { kind: "npm_skills_plugin",                                repo: "mattpocock/skills" },
 ];
 
 // Move entries here from `installs` to remove them on next setup.
