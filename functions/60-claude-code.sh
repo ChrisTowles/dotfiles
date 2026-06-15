@@ -79,10 +79,26 @@ fi
 export CLAUDE_CODE_NO_FLICKER=1
 export CLAUDE_CODE_NEW_INIT=1
 
-alias c="claude --dangerously-skip-permissions --chrome"
-alias cr="claude --dangerously-skip-permissions --chrome --resume"
-alias ca="claude --dangerously-skip-permissions --chrome agents"
-alias cc="claude --dangerously-skip-permissions --chrome --channels plugin:discord@claude-plugins-official"
-alias ccr="claude --dangerously-skip-permissions --chrome --channels plugin:discord@claude-plugins-official --resume"
+# Claude Code leaves theme-change reporting (DECSET 2031) enabled on exit; the
+# terminal then answers theme queries with `ESC[?997;1n` reports that echo into
+# the shell as junk. Disable the mode and drain queued reports after each run.
+_claude_run() {
+  claude "$@"
+  local rc=$?
+  printf '\e[?2031l'
+  while read -rs -t 0.05 -k 1; do :; done
+  return $rc
+}
+
+# --chrome only on Linux; on macOS it's not wanted.
+_claude_flags=(--permission-mode auto)
+[[ "$(uname -s)" == "Linux" ]] && _claude_flags+=(--chrome)
+_claude_discord=("${_claude_flags[@]}" --channels plugin:discord@claude-plugins-official)
+
+c()   { _claude_run "${_claude_flags[@]}" "$@" }
+cr()  { _claude_run "${_claude_flags[@]}" --resume "$@" }
+ca()  { _claude_run "${_claude_flags[@]}" agents "$@" }
+cc()  { _claude_run "${_claude_discord[@]}" "$@" }
+ccr() { _claude_run "${_claude_discord[@]}" --resume "$@" }
 
 
