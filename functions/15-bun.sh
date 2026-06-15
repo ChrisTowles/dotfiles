@@ -8,6 +8,17 @@ case ":$PATH:" in
   *) export PATH="$BUN_INSTALL/bin:$PATH" ;;
 esac
 
+# tt-update - Install latest @towles/tool globally and restart agentboard
+tt-update() {
+  echo "tt $(tt --version 2>/dev/null || echo 'not installed')"
+  bun install --global @towles/tool@latest || { echo "install failed" >&2; return 1; }
+  echo "tt $(tt --version)"
+  if pgrep -f "agentboard server" >/dev/null 2>&1; then
+    echo "restarting agentboard..."
+    tt agentboard restart
+  fi
+}
+
 # Install bun in setup mode
 if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
   if command -v bun >/dev/null 2>&1; then
@@ -22,7 +33,9 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
 
   # Install @towles/tool globally
   echo " Installing @towles/tool..."
-  bun install --global @towles/tool
+  if ! bun install --global @towles/tool; then
+    echo " ⚠️  @towles/tool install FAILED — tt not updated (still $(tt --version 2>/dev/null || echo 'not installed'))" >&2
+  fi
 
   # Generate zsh completions
   if command -v bun >/dev/null 2>&1; then

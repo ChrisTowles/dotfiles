@@ -145,11 +145,67 @@ zsh_debug_section "word-navigation"
 # If a TUI (Claude Code, nvim, etc.) enables enhanced keys and crashes without
 # popping the mode, Ghostty sends sequences like ESC[1;29A for arrow keys and
 # zle leaks "29A" as literal text. Clearing flags on every prompt is defensive.
-_reset_keyboard_protocol() { printf '\e[=0u' }
+# Pop the kitty stack before clearing — ESC[=0u only zeroes the top entry, so
+# stale pushes underneath would resurface later. Also drop color-scheme
+# reporting (2031); TUIs re-enable it when they start.
+_reset_keyboard_protocol() {
+  printf '\e[<3u\e[=0u\e[?2031l'
+  # Inside tmux that only reaches the pane pty. A dead TUI can leave the kitty
+  # protocol stuck on the OUTER terminal too (Esc arrives as CSI 27u → dead Esc,
+  # phantom shortcuts). When this prompt is in the focused pane of an attached
+  # session, heal the Ghostty-facing client tty directly.
+  if [[ -n $TMUX && -n $TMUX_PANE ]]; then
+    # One call: the pane the client is currently viewing, and the client tty.
+    # Only the viewed pane's prompt may touch the outer terminal (sessions can
+    # share linked windows, so resolving via session names is unreliable).
+    local cur ctty
+    read -r cur ctty <<< "$(tmux display-message -p '#{pane_id} #{client_tty}' 2>/dev/null)"
+    [[ $cur == "$TMUX_PANE" && -w $ctty ]] && printf '\e[<3u\e[=0u' > "$ctty"
+  fi
+  return 0
+}
 autoload -Uz add-zsh-hook
 add-zsh-hook precmd _reset_keyboard_protocol
 
 zsh_debug_section "keyboard-protocol-reset"
+
+################################################
+#   Swallow stray terminal-query replies
+################################################
+# TUIs (Claude Code) probe terminal capabilities on startup: DECRQM for modes
+# 2026/2027/2031/1004/1016/2004, a kitty-graphics query (i=31337), and DA1.
+# If the app exits before reading Ghostty's replies, they land at the prompt as
+# garbage like "1016;2$y2027;1$y...Gi=31337;OK62;22;52c". These prefixes never
+# come from a keyboard, so bind them to widgets that drain the reply instead.
+
+# CSI replies (ESC [ ? ... ): DECRPM ends in $y, DA1 in c, kitty-kbd in u,
+# cursor position in R — all end at the first ASCII letter.
+_swallow_csi_reply() {
+  local c
+  while read -t 0.05 -k 1 c; do
+    [[ $c == [a-zA-Z] ]] && break
+  done
+}
+zle -N _swallow_csi_reply
+bindkey '\e[?' _swallow_csi_reply
+
+# String replies (APC kitty-graphics, DCS, OSC color queries): terminated by
+# ST (ESC \) or BEL. Compare char codes — a bare backslash misbehaves in
+# zsh pattern context ([[ $c == '\\' ]] fails to match it).
+_swallow_st_reply() {
+  local c prev=''
+  while read -t 0.05 -k 1 c; do
+    (( #prev == 27 && #c == 92 )) && break  # ESC \
+    (( #c == 7 )) && break                  # BEL
+    prev=$c
+  done
+}
+zle -N _swallow_st_reply
+bindkey '\e_' _swallow_st_reply   # APC (kitty graphics reply)
+bindkey '\eP' _swallow_st_reply   # DCS
+bindkey '\e]' _swallow_st_reply   # OSC (color/background query replies)
+
+zsh_debug_section "terminal-reply-guard"
 
 ################################################
 #   zsh-z (directory jumping)
