@@ -20,7 +20,7 @@ settings.statusLine = {
   command: `bun run ${configSrc}/statusline.ts`,
 };
 
-settings.teammateMode = "tmux";
+settings.teammateMode = "in-process";
 
 settings.env = {
   ...settings.env,
