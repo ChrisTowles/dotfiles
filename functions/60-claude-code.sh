@@ -29,7 +29,7 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
       fi
 
       echo " Updating Claude Desktop (apt)..."
-      sudo apt update -qq && sudo apt install -y claude-desktop 2>/dev/null || true
+      { sudo apt update -qq && sudo apt install -y claude-desktop 2>/dev/null; } || true
     fi
   fi
 
@@ -93,12 +93,9 @@ _claude_run() {
 # --chrome only on Linux; on macOS it's not wanted.
 _claude_flags=(--permission-mode auto)
 [[ "$(uname -s)" == "Linux" ]] && _claude_flags+=(--chrome)
-_claude_discord=("${_claude_flags[@]}" --channels plugin:discord@claude-plugins-official)
 
-c()   { _claude_run "${_claude_flags[@]}" "$@" }
-cr()  { _claude_run "${_claude_flags[@]}" --resume "$@" }
-ca()  { _claude_run "${_claude_flags[@]}" agents "$@" }
-cc()  { _claude_run "${_claude_discord[@]}" "$@" }
-ccr() { _claude_run "${_claude_discord[@]}" --resume "$@" }
+c()   { _claude_run "${_claude_flags[@]}" "$@"; }
+cr()  { _claude_run "${_claude_flags[@]}" --resume "$@"; }
+ca()  { _claude_run "${_claude_flags[@]}" agents "$@"; }
 
 
