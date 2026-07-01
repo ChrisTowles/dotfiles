@@ -11,7 +11,8 @@ alias gca="git add . && git-ai-commit"
 # gmain - Switch to main/master branch and pull
 gmain() {
   git diff --quiet HEAD 2>/dev/null || git stash || { echo "git stash failed"; return 1; }
-  local main_branch=$(git branch -l main)
+  local main_branch
+  main_branch=$(git branch -l main)
   if [ -z "${main_branch}" ]; then
     echo "checking out master"
     git checkout master || { echo "checkout failed"; return 1; }
@@ -32,8 +33,10 @@ gclean() {
     return 0
   fi
   echo "Branches with gone remotes:"
+  # shellcheck disable=SC2001  # sed prefixes each line with an indent; param expansion can't do per-line
   echo "$gone_branches" | sed 's/^/  /'
   echo ""
+  # shellcheck disable=SC2162  # zsh `read -q` reads a single y/n keypress; -r does not apply
   read -q "confirm?Delete these branches? [y/N] " || { echo ""; return 0; }
   echo ""
   local current_branch

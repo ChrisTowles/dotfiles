@@ -13,6 +13,7 @@ i() {
 }
 
 # Tab completion for i() - completes first arg as ~/code/ subdirs, second arg as project within
+# shellcheck disable=SC2034,SC2154  # zsh completion: `words` is a special array; `dirs`/`projects` are read by name via _describe
 _i_complete() {
   if (( CURRENT == 2 )); then
     local -a dirs

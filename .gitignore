@@ -117,6 +117,9 @@ dist
 # Auto-claude artifacts
 .auto-claude/
 
+# Agentboard prompts
+.agentboard/
+
 # Claude agent worktrees
 .claude/worktrees/
 
