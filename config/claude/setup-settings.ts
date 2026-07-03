@@ -47,18 +47,6 @@ settings.env = {
 
 settings.hooks = {
   ...settings.hooks,
-  PostToolUse: [
-    {
-      matcher: "Edit|Write",
-      hooks: [
-        {
-          type: "command",
-          command: `bun run ${configSrc}/format-on-edit.ts`,
-          timeout: 30,
-        },
-      ],
-    },
-  ],
   Notification: [
     {
       matcher: "",
