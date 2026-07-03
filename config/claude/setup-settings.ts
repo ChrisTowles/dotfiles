@@ -22,6 +22,21 @@ settings.statusLine = {
 
 settings.teammateMode = "in-process";
 
+// Guardrails for auto permission mode: never read secret material, even when
+// no prompt would otherwise appear. `deny` wins over every allow rule.
+settings.permissions = {
+  ...settings.permissions,
+  deny: [
+    "Read(**/.env)",
+    "Read(**/.env.local)",
+    "Read(**/.env.*.local)",
+    "Read(**/*.pem)",
+    "Read(~/.ssh/**)",
+    "Read(~/.aws/**)",
+    "Read(~/.claude/.credentials.json)",
+  ],
+};
+
 settings.env = {
   ...settings.env,
   CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS: "1",
@@ -32,6 +47,18 @@ settings.env = {
 
 settings.hooks = {
   ...settings.hooks,
+  PostToolUse: [
+    {
+      matcher: "Edit|Write",
+      hooks: [
+        {
+          type: "command",
+          command: `bun run ${configSrc}/format-on-edit.ts`,
+          timeout: 30,
+        },
+      ],
+    },
+  ],
   Notification: [
     {
       matcher: "",
