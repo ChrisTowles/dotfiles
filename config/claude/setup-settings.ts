@@ -64,11 +64,10 @@ const marketplaces: [string, string][] = [
   ["anthropics/skills", "anthropic-agent-skills"],
   ["ChrisTowles/towles-tool", "towles-tool"],
   ["EveryInc/compound-engineering-plugin", "compound-engineering-plugin"],
-  ["trailofbits/skills", "trailofbits"],
 ];
 
 // Marketplaces to remove. Move entries here from `marketplaces` to uninstall on next setup.
-const uninstallMarketplaces: string[] = [];
+const uninstallMarketplaces: string[] = ["trailofbits"];
 
 const marketplacesDir = join(process.env.HOME!, ".claude", "plugins", "marketplaces");
 
