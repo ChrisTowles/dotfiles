@@ -55,6 +55,29 @@ tsn() {
   tmux new-session -s "$session_name"
 }
 
+# tz - Fuzzy-pick a frecent dir (via z + fzf) and open/attach a tmux session there
+# Usage: tz [query]   query pre-seeds the fzf search; empty picks from the full list
+tz() {
+  local dir
+  dir=$(z -l 2>/dev/null \
+    | sed 's/^[0-9.]*[[:space:]]*//' \
+    | fzf --tac --query "$*" --header "Open tmux session in which dir? (ESC to cancel)")
+  if [ -z "$dir" ] || [ ! -d "$dir" ]; then
+    echo "Cancelled"
+    return 1
+  fi
+  local session_name
+  session_name=$(basename "$dir" | tr '.' '-')
+  if [ -n "$TMUX" ]; then
+    # Already inside tmux: create-if-missing (detached), then switch to it
+    tmux has-session -t "$session_name" 2>/dev/null || \
+      tmux new-session -d -s "$session_name" -c "$dir"
+    tmux switch-client -t "$session_name"
+  else
+    tmux new-session -A -s "$session_name" -c "$dir"
+  fi
+}
+
 # tss - Switch session with fzf
 tss() {
   local session
@@ -84,6 +107,7 @@ tmux-help() {
   echo "\033[1;36m── Starting a session ──\033[0m"
   echo "  ts         Start or reattach session named after current dir (most common)"
   echo "  tsn        Force a new session even if one exists for this dir"
+  echo "  tz [query] Fuzzy-pick a frecent dir (z + fzf) and open/attach a session there"
   echo ""
   echo "\033[1;36m── Navigating sessions ──\033[0m"
   echo "  ta         Reattach to a session (fzf picker, or ta <name>)"
