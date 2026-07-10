@@ -12,15 +12,15 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
     brew upgrade --cask claude 2>/dev/null || brew install --cask claude 2>/dev/null || true
   else
     if command -v apt >/dev/null 2>&1; then
-      # https://github.com/aaddrick/claude-desktop-debian
-      local _claude_keyring="/usr/share/keyrings/claude-desktop.gpg"
+      # https://support.claude.com/en/articles/10065433-install-claude-desktop
+      local _claude_keyring="/usr/share/keyrings/claude-desktop-archive-keyring.asc"
       local _claude_sources="/etc/apt/sources.list.d/claude-desktop.list"
-      local _claude_repo_url="https://pkg.claude-desktop-debian.dev"
-      local _claude_sources_line="deb [signed-by=$_claude_keyring arch=amd64,arm64] $_claude_repo_url stable main"
+      local _claude_repo_url="https://downloads.claude.ai/claude-desktop/apt/stable"
+      local _claude_sources_line="deb [signed-by=$_claude_keyring] $_claude_repo_url stable main"
 
       if [[ ! -f "$_claude_keyring" ]]; then
         echo " Adding Claude Desktop GPG key..."
-        curl -fsSL "$_claude_repo_url/KEY.gpg" | sudo gpg --dearmor -o "$_claude_keyring"
+        sudo curl -fsSLo "$_claude_keyring" https://downloads.claude.ai/claude-desktop/key.asc
       fi
 
       if [[ "$(cat "$_claude_sources" 2>/dev/null)" != "$_claude_sources_line" ]]; then
