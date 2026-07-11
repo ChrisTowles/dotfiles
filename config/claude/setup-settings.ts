@@ -64,6 +64,7 @@ const marketplaces: [string, string][] = [
   ["anthropics/skills", "anthropic-agent-skills"],
   ["ChrisTowles/towles-tool", "towles-tool"],
   ["EveryInc/compound-engineering-plugin", "compound-engineering-plugin"],
+  ["blader/humanizer", "humanizer"],
 ];
 
 // Marketplaces to remove. Move entries here from `marketplaces` to uninstall on next setup.
@@ -119,6 +120,7 @@ const installs: Install[] = [
   { kind: "github_marketplace", name: "skill-creator",        marketplace: "claude-plugins-official" },
   { kind: "github_marketplace", name: "tt",                   marketplace: "towles-tool" },
   { kind: "github_marketplace", name: "document-skills",      marketplace: "anthropic-agent-skills" },
+  { kind: "github_marketplace", name: "humanizer",            marketplace: "humanizer" },
 ];
 
 // Move entries here from `installs` to remove them on next setup.
