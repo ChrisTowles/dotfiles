@@ -121,6 +121,7 @@ const installs: Install[] = [
   { kind: "github_marketplace", name: "tt",                   marketplace: "towles-tool" },
   { kind: "github_marketplace", name: "document-skills",      marketplace: "anthropic-agent-skills" },
   { kind: "github_marketplace", name: "humanizer",            marketplace: "humanizer" },
+  { kind: "github_marketplace", name: "code-simplifier",      marketplace: "claude-plugins-official" },
 ];
 
 // Move entries here from `installs` to remove them on next setup.
@@ -130,7 +131,6 @@ const uninstalls: Uninstall[] = [
   { kind: "github_marketplace", name: "feature-dev",                    marketplace: "claude-plugins-official" },
   { kind: "github_marketplace", name: "hookify",                        marketplace: "claude-plugins-official" },
   { kind: "github_marketplace", name: "postman",                        marketplace: "claude-plugins-official" },
-  { kind: "github_marketplace", name: "code-simplifier",                marketplace: "claude-plugins-official" },
   { kind: "github_marketplace", name: "compound-engineering",           marketplace: "compound-engineering-plugin" },
   { kind: "github_marketplace", name: "ask-questions-if-underspecified", marketplace: "trailofbits" },
   { kind: "github_marketplace", name: "gh-cli",                          marketplace: "trailofbits" },
