@@ -5,9 +5,15 @@
 # Ctrl+T: paste files/dirs, Ctrl+R: history, Alt+C: cd into dir
 if [[ "$DOTFILES_SETUP" -eq 1 ]] ; then
   # Install fd (faster find, used by fzf)
-  if ! command -v fd >/dev/null 2>&1; then
+  # Probe with `fd --version`, not `command -v` — a broken npm fd-find shim
+  # (postinstall never fetched the binary) once shadowed fd and passed the
+  # existence check while failing every actual invocation
+  if ! fd --version >/dev/null 2>&1; then
     echo " Installing fd..."
     cargo install fd-find
+    if [[ "$(command -v fd)" != "$HOME/.cargo/bin/fd" ]]; then
+      DOTFILES_SETUP_MESSAGES+=("⚠️  fd on PATH is $(command -v fd), not ~/.cargo/bin/fd — a broken shim may be shadowing it")
+    fi
   fi
 
   if ! command -v fzf >/dev/null 2>&1; then
