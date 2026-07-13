@@ -1,14 +1,8 @@
-# Discord setup
+# Discord setup (Linux only — intentionally not installed on macOS)
 # https://discord.com
 
 if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
   case "$(uname -s)" in
-    Darwin)
-      if ! [[ -d "/Applications/Discord.app" ]]; then
-        echo " Installing Discord..."
-        brew install --cask discord
-      fi
-      ;;
     Linux)
       # Discord on Linux doesn't auto-update — resolve the latest .deb URL on
       # every setup run and reinstall when the version differs.
