@@ -82,8 +82,9 @@ gca   → git add . && git-ai-commit
 ga    → git add .
 gp    → git push
 gs    → git status
-c     → claude --permission-mode auto (--chrome on Linux)
-cr    → claude --permission-mode auto --resume (--chrome on Linux)
+c     → claude --permission-mode auto --model sonnet --effort high (--chrome on Linux)
+cf/cfa → same, but --model fable --effort medium/xhigh ("architect")
+cr/cfr/cfar → same as c/cf/cfa, plus --resume
 code  → code-insiders
 ls    → ls -al
 ez    → exec zsh

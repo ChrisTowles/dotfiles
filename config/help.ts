@@ -14,6 +14,7 @@ console.log(cmd("ez", "Reload shell (exec zsh)"));
 console.log(cmd("zsh-dotfiles-setup", "Bootstrap all tools (DOTFILES_SETUP=1)"));
 console.log(cmd("zsh-load", "Reload with timing debug"));
 console.log(cmd("ls", "ls -al"));
+console.log(cmd("histall | grep x", "Search full command history (bare `history` = last ~16)"));
 console.log();
 
 console.log(h("Git"));
@@ -79,8 +80,10 @@ console.log(cmd("Alt+C", "cd into directory"));
 console.log();
 
 console.log(h("Claude Code"));
-console.log(cmd("c", "claude --dangerously-skip-permissions --chrome"));
-console.log(cmd("cr", "claude --resume --chrome (skip permissions)"));
+console.log(cmd("c", "claude --permission-mode auto --model sonnet --effort high"));
+console.log(cmd("cf", "claude ... --model fable --effort medium"));
+console.log(cmd("cfa", "claude ... --model fable --effort xhigh (\"architect\")"));
+console.log(cmd("cr / cfr / cfar", "same as c / cf / cfa, plus --resume"));
 console.log();
 
 console.log(h("Claude STT"));

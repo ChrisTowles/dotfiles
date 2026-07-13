@@ -94,9 +94,10 @@ _claude_run() {
 _claude_flags=(--permission-mode auto)
 [[ "$(uname -s)" == "Linux" ]] && _claude_flags+=(--chrome)
 
-# c/cr/ca: Sonnet at high effort. cf/cfr: Fable at medium effort.
+# c/cr/ca: Sonnet at high effort. cf/cfr: Fable at medium effort. cfa/cfar: Fable at xhigh ("architect").
 _claude_flags_sonnet=("${_claude_flags[@]}" --model sonnet --effort high)
 _claude_flags_fable=("${_claude_flags[@]}" --model fable --effort medium)
+_claude_flags_fable_architect=("${_claude_flags[@]}" --model fable --effort xhigh)
 
 c()    { _claude_run "${_claude_flags_sonnet[@]}" "$@"; }
 cr()   { _claude_run "${_claude_flags_sonnet[@]}" --resume "$@"; }
@@ -104,5 +105,8 @@ ca()   { _claude_run "${_claude_flags_sonnet[@]}" agents "$@"; }
 
 cf()   { _claude_run "${_claude_flags_fable[@]}" "$@"; }
 cfr()  { _claude_run "${_claude_flags_fable[@]}" --resume "$@"; }
+
+cfa()  { _claude_run "${_claude_flags_fable_architect[@]}" "$@"; }
+cfar() { _claude_run "${_claude_flags_fable_architect[@]}" --resume "$@"; }
 
 

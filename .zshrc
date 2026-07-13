@@ -275,6 +275,11 @@ setopt HIST_IGNORE_SPACE      # Don't record commands starting with space
 setopt HIST_VERIFY            # Show command before executing from history
 setopt INC_APPEND_HISTORY     # Write immediately, not on shell exit
 setopt SHARE_HISTORY          # Share history between sessions
+
+# Bare `history` only shows the last ~16 events (zsh default, unlike bash) —
+# `histall | grep <term>` searches the whole file instead.
+alias histall='fc -il 1'
+
 zsh_debug_section "history-config"
 
 
