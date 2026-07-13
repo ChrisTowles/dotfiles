@@ -9,7 +9,7 @@ DOTFILES_DIR="$HOME/code/p/dotfiles"
 # Cache platform once — avoids repeated uname subprocess calls across function files
 _DOTFILES_OS="$(uname -s)"
 
-alias ls='ls -al'
+# ls is aliased in functions/22-eza.sh (eza when available, ls -al fallback)
 # --wait makes VS Code block until the tab is closed, required for tools
 # that use $EDITOR (git commit, claude code ctrl+g prompt editing, etc.)
 export EDITOR="code-insiders --wait"

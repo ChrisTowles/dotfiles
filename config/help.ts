@@ -13,7 +13,8 @@ console.log(h("Shell"));
 console.log(cmd("ez", "Reload shell (exec zsh)"));
 console.log(cmd("zsh-dotfiles-setup", "Bootstrap all tools (DOTFILES_SETUP=1)"));
 console.log(cmd("zsh-load", "Reload with timing debug"));
-console.log(cmd("ls", "ls -al"));
+console.log(cmd("ls", "eza -la (dirs first, git status, icons)"));
+console.log(cmd("lt [depth]", "Tree view (eza, default depth 2)"));
 console.log(cmd("histall | grep x", "Search full command history (bare `history` = last ~16)"));
 console.log();
 
@@ -71,6 +72,7 @@ console.log(cmd("zi", "Interactive directory picker (fzf)"));
 console.log(cmd("i p/w/f", "Quick cd to ~/code/{personal,work,fork}"));
 console.log(cmd("ii", "Interactive project picker (fzf)"));
 console.log(cmd("fh", "Fuzzy search home dir, open in $EDITOR"));
+console.log(cmd("lsf [query]", "Fuzzy-filter files in cwd, open in $EDITOR"));
 console.log();
 
 console.log(h("Fzf Keybindings"));
