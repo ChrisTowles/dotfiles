@@ -45,7 +45,7 @@ Each file in `functions/` is a self-contained module for one tool. Files follow 
 - **17-rust.sh** - Rust toolchain via rustup, generates zsh completions
 - **20-fzf.sh** - Fuzzy finder setup with `fd` integration, `fh()` for home search
 - **21-bat.sh** - Cat clone with syntax highlighting, installed via cargo
-- **22-zoxide.sh** - Smarter cd replacement, installed via cargo
+- **22-eza.sh** - Modern `ls` replacement via cargo; `ls`/`lt` aliases, `lsf()` fuzzy file filter
 - **25-git.sh** - `git-ai-commit()` for AI-powered commits, `gmain()`, common git aliases
 - **26-git-delta.sh** - Syntax-highlighted git diffs, installed via cargo
 - **30-lazygit.sh** - Terminal git UI, config symlink, `c` key mapped to `git-ai-commit`
@@ -86,7 +86,7 @@ c     → claude --permission-mode auto --model sonnet --effort high (--chrome o
 cf/cfa → same, but --model fable --effort medium/xhigh ("architect")
 cr/cfr/cfar → same as c/cf/cfa, plus --resume
 code  → code-insiders
-ls    → ls -al
+ls    → eza -la (dirs first, git status, icons; ls -al fallback)
 ez    → exec zsh
 dif   → delta (syntax-highlighted diff)
 gw    → gh browse
@@ -140,7 +140,7 @@ The work profile (`212787373_aero`) is the global default — this repo override
   gh release download --repo owner/repo --pattern "tool_*_Linux_x86_64.tar.gz" -D /tmp --clobber
   sudo install /tmp/tool /usr/local/bin/tool
   ```
-- Rust ecosystem tools (bat, fd, zoxide, delta, starship) install via `cargo install`
+- Rust ecosystem tools (bat, fd, eza, delta, starship) install via `cargo install`
 - Private/internal shell functions use underscore prefix (e.g. `_nerd_fonts_install`)
 - Claude Code MCP servers are registered via `claude mcp add -s user` (stored in `~/.claude.json`), NOT in `settings.json`. The `settings.json` `mcpServers` field should stay empty. Setup in `60-claude-code.sh` handles idempotent registration.
 - Chrome DevTools MCP uses `--autoConnect` which connects to an existing Chrome session via the user data directory pipe. Requires Chrome 144+ with remote debugging enabled at `chrome://inspect/#remote-debugging`.
