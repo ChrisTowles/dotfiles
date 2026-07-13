@@ -110,5 +110,23 @@
   {
     "key": "ctrl+f",
     "command": "actions.find"
+  },
+  // ctrl+r: pass through to terminal for Claude Code (reverse search, etc.)
+  {
+    "key": "ctrl+r",
+    "command": "-workbench.action.openRecent"
+  },
+  {
+    "key": "ctrl+r",
+    "command": "-workbench.action.terminal.runRecentCommand"
+  },
+  {
+    "key": "ctrl+r",
+    "command": "-workbench.action.reloadWindow"
+  },
+  {
+    "key": "ctrl+r",
+    "command": "workbench.action.openRecent",
+    "when": "!terminalFocus"
   }
 ]
