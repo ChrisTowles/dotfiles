@@ -41,10 +41,13 @@ git config --global user.email "you@example.com"
 | `gp` | `git push` |
 | `gs` | `git status` |
 | `gw` | `gh browse` |
-| `c` | `claude --dangerously-skip-permissions` |
-| `cr` | `claude --dangerously-skip-permissions --resume` |
+| `c` / `cr` | `claude --permission-mode auto --model sonnet --effort high` (`--chrome` on Linux); `cr` resumes |
+| `cf` / `cfr` | same, Fable model at medium effort ("fast draft"); `cfr` resumes |
+| `cfa` / `cfar` | same, Fable model at xhigh effort ("architect"); `cfar` resumes |
 | `code` | `code-insiders` |
-| `ls` | `ls -al` |
+| `ls` | `eza -la` (dirs first, git status, icons; falls back to `ls -al`) |
+| `lt` | `eza --tree` (tree view, `lt [depth]`) |
+| `lsf` | fuzzy-filter files under cwd and open the pick in `$EDITOR` |
 | `ez` | `exec zsh` |
 | `dif` | `delta` (syntax-highlighted diff) |
 
