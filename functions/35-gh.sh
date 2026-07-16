@@ -41,7 +41,32 @@ gib() {
   gh issue list --state open | fzf --header "Select issue" | awk '{print $1}' | xargs -I{} gh issue develop {} --checkout
 }
 
-# Push to origin and open GitHub PR creation
+# Find the nearest local ancestor branch (excluding main/master) that already
+# has an open PR, so a stacked branch's PR targets it instead of main.
+_pr_stacked_base() {
+  local branch=$1 trunk=main candidate count
+  git show-ref --verify --quiet refs/heads/main || trunk=master
+
+  local -a pairs
+  while IFS= read -r candidate; do
+    [[ "$candidate" == "$branch" || "$candidate" == "$trunk" ]] && continue
+    git merge-base --is-ancestor "$candidate" "$branch" 2>/dev/null || continue
+    count=$(git rev-list --count "$candidate..$branch")
+    pairs+=("$count $candidate")
+  done < <(git for-each-ref --format='%(refname:short)' refs/heads)
+
+  # Nearest ancestor first (fewest commits between it and the current branch)
+  while IFS= read -r candidate; do
+    [[ -z "$candidate" ]] && continue
+    if gh pr view "$candidate" --json state --jq '.state' 2>/dev/null | grep -q '^OPEN$'; then
+      echo "$candidate"
+      return
+    fi
+  done < <(printf '%s\n' "${pairs[@]}" | sort -n | cut -d' ' -f2-)
+}
+
+# Push to origin and open GitHub PR creation, targeting a stacked branch's
+# open PR instead of main when the current branch was forked from one
 pr() {
   local remote=origin
   local branch
@@ -52,7 +77,17 @@ pr() {
     return 1
   fi
 
-  git push "$remote" "$branch" && gh pr create --web
+  git push "$remote" "$branch" || return 1
+
+  local base
+  base=$(_pr_stacked_base "$branch")
+
+  if [[ -n "$base" ]]; then
+    echo "Stacked PR detected — targeting open PR branch '$base' instead of main"
+    gh pr create --web --base "$base"
+  else
+    gh pr create --web
+  fi
 }
 
 # Configure git global user.name and user.email from GitHub profile
