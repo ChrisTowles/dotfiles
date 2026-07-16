@@ -1,0 +1,4 @@
+# tt slot env template — this repo declares no ports/env vars for slots.
+# Add ${tt:port A-B} / ${tt:var NAME} / ${tt:slot-name} / ${tt:base} tokens
+# here (or commit a tokenized .env.example in the repo instead) if a slot
+# ever needs one.

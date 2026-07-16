@@ -1,34 +1,27 @@
 # Bambu Studio on Linux
 
-## Install via GitHub AppImage
+## Install / Update
+
+Managed by `functions/78-bambu-studio.sh`, which runs automatically as part of
+setup:
 
 ```bash
-./install/bambu-studio.sh
+DOTFILES_SETUP=1 exec zsh
 ```
 
-Downloads the latest **Public Beta** (GitHub pre-release) `ubuntu24.04` AppImage
-from the official [bambulab/BambuStudio](https://github.com/bambulab/BambuStudio)
-releases, installs it to `~/.local/bin/BambuStudio.AppImage`, and creates an
-app-menu launcher (`~/.local/share/applications/BambuStudio.desktop`) with the
-bundled icon. Removes any old Flatpak installation.
+Installs `com.bambulab.BambuStudio` from Flathub (`stable` branch), adding the
+Flathub remote first if it isn't already configured. Re-running updates it in
+place if already installed.
 
-### Install stable instead
+Also sets Bambu Studio as the default handler for `.stl`, `.3mf`, and `.step`
+files (e.g. downloads from MakerWorld), and restarts the COSMIC panel so a
+fresh install's icon shows up immediately.
 
-To get the latest stable release instead of the beta:
-
-```bash
-BAMBU_STABLE=1 ./install/bambu-studio.sh
-```
-
-### Update
-
-Re-run `./install/bambu-studio.sh` — it always fetches the newest release and
-overwrites the installed AppImage.
+Flathub only publishes a `stable` branch for this app — there's no Beta
+channel available via Flatpak.
 
 ### Uninstall
 
 ```bash
-rm ~/.local/bin/BambuStudio.AppImage \
-   ~/.local/share/applications/BambuStudio.desktop \
-   ~/.local/share/icons/bambu-studio.png
+flatpak uninstall -y com.bambulab.BambuStudio
 ```
