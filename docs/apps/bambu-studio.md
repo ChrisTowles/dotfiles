@@ -6,18 +6,18 @@
 ./install/bambu-studio.sh
 ```
 
-Downloads the latest **stable** `ubuntu24.04` AppImage from the official
-[bambulab/BambuStudio](https://github.com/bambulab/BambuStudio) releases,
-installs it to `~/.local/bin/BambuStudio.AppImage`, and creates an app-menu
-launcher (`~/.local/share/applications/BambuStudio.desktop`) with the bundled
-icon. Removes any old Flatpak installation.
+Downloads the latest **Public Beta** (GitHub pre-release) `ubuntu24.04` AppImage
+from the official [bambulab/BambuStudio](https://github.com/bambulab/BambuStudio)
+releases, installs it to `~/.local/bin/BambuStudio.AppImage`, and creates an
+app-menu launcher (`~/.local/share/applications/BambuStudio.desktop`) with the
+bundled icon. Removes any old Flatpak installation.
 
-### Install the beta
+### Install stable instead
 
-Bambu ships "Public Beta" builds as GitHub pre-releases (often ahead of stable):
+To get the latest stable release instead of the beta:
 
 ```bash
-BAMBU_PRERELEASE=1 ./install/bambu-studio.sh
+BAMBU_STABLE=1 ./install/bambu-studio.sh
 ```
 
 ### Update

@@ -3,9 +3,9 @@ set -euo pipefail
 
 # Install BambuStudio from the official GitHub AppImage release.
 #
-# Defaults to the latest *stable* release. To install the latest public beta
-# (a GitHub pre-release) instead, run:
-#   BAMBU_PRERELEASE=1 ./install/bambu-studio.sh
+# Defaults to the latest *Public Beta* (a GitHub pre-release), which is
+# typically ahead of stable. To install the latest stable release instead, run:
+#   BAMBU_STABLE=1 ./install/bambu-studio.sh
 
 REPO="bambulab/BambuStudio"
 UBUNTU="ubuntu24.04"                       # Pop!_OS 24.04 / noble base
@@ -22,16 +22,16 @@ if command -v flatpak &>/dev/null && flatpak info com.bambulab.BambuStudio &>/de
   flatpak uninstall -y com.bambulab.BambuStudio
 fi
 
-# Pick the newest release tag. `gh release download` defaults to the latest
-# stable release; opt into the newest pre-release with BAMBU_PRERELEASE=1.
-if [[ "${BAMBU_PRERELEASE:-0}" == "1" ]]; then
-  TAG="$(gh release list --repo "$REPO" --limit 20 \
-    --json tagName,isPrerelease --jq 'map(select(.isPrerelease))[0].tagName')"
-  echo "Installing latest pre-release: $TAG"
-  DL_TAG=(--tag "$TAG")
-else
+# Pick the newest release tag. Default to the latest pre-release (Public Beta);
+# opt into the latest stable release with BAMBU_STABLE=1 (gh's default).
+if [[ "${BAMBU_STABLE:-0}" == "1" ]]; then
   echo "Installing latest stable release..."
   DL_TAG=()
+else
+  TAG="$(gh release list --repo "$REPO" --limit 20 \
+    --json tagName,isPrerelease --jq 'map(select(.isPrerelease))[0].tagName')"
+  echo "Installing latest pre-release (Public Beta): $TAG"
+  DL_TAG=("$TAG")   # gh release download takes the tag as a positional arg
 fi
 
 TMP="$(mktemp -d)"
