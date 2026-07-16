@@ -88,6 +88,18 @@ if $_IS_POPOS; then
     cosmic-screenshot --interactive=false --save-dir "$dir"
   }
 
+  # Restart the COSMIC panel/dock without logging out.
+  # Fixes stale dock pins, missing icons, or a wedged panel — cosmic-panel
+  # is respawned automatically by the session, so this just refreshes it.
+  cosmic-panel-reset() {
+    if ! pgrep -x cosmic-panel >/dev/null 2>&1; then
+      echo "cosmic-panel not running (is this a COSMIC session?)"
+      return 1
+    fi
+    echo "Restarting cosmic-panel..."
+    pkill -x cosmic-panel
+  }
+
   # Restart COSMIC desktop (restarts display manager, will log you out)
   popos-restart-desktop() {
     echo "This will restart the display manager and LOG YOU OUT."
