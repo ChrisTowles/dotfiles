@@ -62,6 +62,7 @@ settings.hooks = {
 const marketplaces: [string, string][] = [
   ["anthropics/claude-plugins-official", "claude-plugins-official"],
   ["anthropics/skills", "anthropic-agent-skills"],
+  ["anthropics/knowledge-work-plugins", "knowledge-work-plugins"],
   ["ChrisTowles/towles-tool", "towles-tool"],
   ["EveryInc/compound-engineering-plugin", "compound-engineering-plugin"],
   ["blader/humanizer", "humanizer"],
@@ -122,6 +123,7 @@ const installs: Install[] = [
   { kind: "github_marketplace", name: "document-skills",      marketplace: "anthropic-agent-skills" },
   { kind: "github_marketplace", name: "humanizer",            marketplace: "humanizer" },
   { kind: "github_marketplace", name: "code-simplifier",      marketplace: "claude-plugins-official" },
+  { kind: "github_marketplace", name: "data",                 marketplace: "knowledge-work-plugins" },
 ];
 
 // Move entries here from `installs` to remove them on next setup.
