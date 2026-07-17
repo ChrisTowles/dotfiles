@@ -25,9 +25,23 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
           model/stl model/3mf model/step \
           application/vnd.ms-3mfdocument application/prs.wavefront-obj
 
-        # Refresh the COSMIC panel so a fresh install's icon shows immediately.
-        if [[ "$XDG_CURRENT_DESKTOP" == "COSMIC" ]] && pgrep -x cosmic-panel >/dev/null 2>&1; then
-          pkill -x cosmic-panel
+        # Fix COSMIC panel favorites: replace old non-Flatpak entry with Flatpak app ID,
+        # then restart the panel so the icon appears immediately.
+        if [[ "$XDG_CURRENT_DESKTOP" == "COSMIC" ]]; then
+          local favorites_file="$HOME/.config/cosmic/com.system76.CosmicAppList/v1/favorites"
+          if [[ -f "$favorites_file" ]]; then
+            if grep -q '"BambuStudio"' "$favorites_file" && ! grep -q "\"$_BAMBU_APP_ID\"" "$favorites_file"; then
+              sed -i "s/\"BambuStudio\"/\"$_BAMBU_APP_ID\"/" "$favorites_file"
+              echo "  Updated COSMIC favorites: BambuStudio → $_BAMBU_APP_ID"
+            elif ! grep -q "\"$_BAMBU_APP_ID\"" "$favorites_file"; then
+              sed -i "s/]$/    \"$_BAMBU_APP_ID\",\n]/" "$favorites_file"
+              echo "  Added $_BAMBU_APP_ID to COSMIC panel favorites"
+            fi
+          fi
+          if pgrep -x cosmic-panel >/dev/null 2>&1; then
+            pkill -x cosmic-panel
+            echo "  Restarted cosmic-panel to refresh icons"
+          fi
         fi
       else
         echo " flatpak not found, skipping Bambu Studio install"
