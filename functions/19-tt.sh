@@ -13,3 +13,9 @@ tt-update() {
   cargo install --path "$repo/crates-cli/tt-cli" --force || { echo "install failed" >&2; return 1; }
   echo "tt $(tt --version)"
 }
+
+# Generate zsh completions from `tt --help` (clap; no built-in generator)
+if [[ "$DOTFILES_SETUP" -eq 1 ]] && command -v tt >/dev/null 2>&1; then
+  echo " Generating tt completions..."
+  bun run "${0:a:h}/../config/generate-completions.ts" tt > ~/.zsh/completions/_tt
+fi

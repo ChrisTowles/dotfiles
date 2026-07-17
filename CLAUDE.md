@@ -54,7 +54,7 @@ Each file in `functions/` is a self-contained module for one tool. Files follow 
 - **45-nerd-fonts.sh** - Nerd Font install + VS Code font config
 - **50-vscode.sh** - VS Code Insiders install, keybindings symlink
 - **55-starship.sh** - Prompt init with git metrics display
-- **60-claude-code.sh** - Claude Code install, statusline/notification hooks, MCP server setup via `claude mcp add`
+- **60-claude-code.sh** - Claude Code install, statusline/notification hooks, MCP server setup via `claude mcp add`, zsh completions generated from `claude --help` (config/generate-completions.ts, shared with `tt` in 19-tt.sh)
 - **65-aws-cli.sh** - AWS CLI completions (manual install warning)
 - **70-i.sh** - Quick `cd` to project directories under `~/code/{p,w,f}`
 - **75-docker.sh** - Docker Engine install with completions

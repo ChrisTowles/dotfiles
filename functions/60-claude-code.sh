@@ -37,6 +37,11 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
   bun run "${0:a:h}/../config/claude/setup-settings.ts"
   echo " Claude Code configured (settings, CLAUDE.md, plugins, rules)"
 
+  # Generate zsh completions (claude has no built-in generator; parsed from --help
+  # each setup so they track CLI changes)
+  echo " Generating claude completions..."
+  bun run "${0:a:h}/../config/generate-completions.ts" claude > ~/.zsh/completions/_claude
+
   # MCP servers at user scope (format: name command args...)
   local _claude_mcps=(
     "chrome-devtools bunx chrome-devtools-mcp@latest --autoConnect"
@@ -109,5 +114,12 @@ cfr()  { _claude_run "${_claude_flags_fable[@]}" --resume "$@"; }
 
 cfa()  { _claude_run "${_claude_flags_fable_architect[@]}" "$@"; }
 cfar() { _claude_run "${_claude_flags_fable_architect[@]}" --resume "$@"; }
+
+# Complete the wrapper functions like `claude` itself. The _claude file is
+# generated during setup; compinit (which .zshrc runs before functions/) makes
+# it autoloadable, so only register when it exists.
+if [[ -f "$HOME/.zsh/completions/_claude" ]]; then
+  compdef _claude c cr ca cf cfr cfa cfar
+fi
 
 

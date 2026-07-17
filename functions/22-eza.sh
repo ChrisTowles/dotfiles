@@ -8,6 +8,11 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
     echo " Installing eza..."
     cargo install eza
   fi
+
+  # cargo install doesn't ship completions — fetch from the eza repo
+  echo " Fetching eza completions..."
+  curl -fsSL https://raw.githubusercontent.com/eza-community/eza/main/completions/zsh/_eza \
+    -o ~/.zsh/completions/_eza || true
 fi
 
 if command -v eza >/dev/null 2>&1; then

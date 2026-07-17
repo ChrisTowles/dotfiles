@@ -184,3 +184,12 @@ tka() {
 alias td='tmux detach'
 alias tw='tmux list-windows'
 alias tp='tmux list-panes'
+
+# Complete running session names for ta (attach) and tk (kill)
+_tmux_sessions_complete() {
+  local -a sessions
+  # shellcheck disable=SC2296,SC2206,SC2034  # zsh ${(f)...} line-split; sessions is read by _describe
+  sessions=(${(f)"$(tmux list-sessions -F '#{session_name}' 2>/dev/null)"})
+  _describe -t sessions 'tmux session' sessions
+}
+compdef _tmux_sessions_complete ta tk
