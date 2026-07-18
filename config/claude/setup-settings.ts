@@ -55,6 +55,12 @@ settings.hooks = {
   ],
 };
 
+type Install =
+  | { kind: "github_marketplace"; name: string; marketplace: string }
+  | { kind: "npm_skills_single"; name: string; repo: string }
+  | { kind: "npm_skills_plugin"; repo: string };
+
+
 // --- Marketplaces ---
 
 // [repo, registered marketplace name]. Name comes from each marketplace.json's `name` field
@@ -64,12 +70,37 @@ const marketplaces: [string, string][] = [
   ["anthropics/skills", "anthropic-agent-skills"],
   ["anthropics/knowledge-work-plugins", "knowledge-work-plugins"],
   ["ChrisTowles/towles-tool", "towles-tool"],
-  ["EveryInc/compound-engineering-plugin", "compound-engineering-plugin"],
-  ["blader/humanizer", "humanizer"],
+];
+
+
+
+type Uninstall = Exclude<Install, { kind: "npm_skills_plugin" }>;
+
+const installs: Install[] = [
+  { kind: "github_marketplace", name: "typescript-lsp",       marketplace: "claude-plugins-official" },
+  { kind: "github_marketplace", name: "claude-md-management", marketplace: "claude-plugins-official" },
+  { kind: "github_marketplace", name: "frontend-design",      marketplace: "claude-plugins-official" },
+  { kind: "github_marketplace", name: "plugin-dev",           marketplace: "claude-plugins-official" },
+  { kind: "github_marketplace", name: "skill-creator",        marketplace: "claude-plugins-official" },
+  { kind: "github_marketplace", name: "tt",                   marketplace: "towles-tool-rs" },
+  { kind: "github_marketplace", name: "document-skills",      marketplace: "anthropic-agent-skills" },
+  { kind: "github_marketplace", name: "humanizer",            marketplace: "humanizer" },
+  { kind: "github_marketplace", name: "code-simplifier",      marketplace: "claude-plugins-official" },
+  { kind: "github_marketplace", name: "data",                 marketplace: "knowledge-work-plugins" },
+];
+
+// Move entries here from `installs` to remove them on next setup.
+const uninstalls: Uninstall[] = [
+  { kind: "github_marketplace", name: "superpowers",                    marketplace: "superpowers-marketplace" },
+  { kind: "github_marketplace", name: "discord",                        marketplace: "claude-plugins-official" },
+  { kind: "github_marketplace", name: "feature-dev",                    marketplace: "claude-plugins-official" },
+  { kind: "github_marketplace", name: "hookify",                        marketplace: "claude-plugins-official" },
+  { kind: "github_marketplace", name: "postman",                        marketplace: "claude-plugins-official" },
+  { kind: "github_marketplace", name: "compound-engineering",           marketplace: "compound-engineering-plugin" },
 ];
 
 // Marketplaces to remove. Move entries here from `marketplaces` to uninstall on next setup.
-const uninstallMarketplaces: string[] = ["trailofbits"];
+const uninstallMarketplaces: string[] = [];
 
 const marketplacesDir = join(process.env.HOME!, ".claude", "plugins", "marketplaces");
 
@@ -106,44 +137,6 @@ writeFileSync(settingsFile, JSON.stringify(settings, null, 2) + "\n");
 // bundle, delete the entry here; if you also want the files gone, list the
 // specific names (as `npm_skills_single`) in `uninstalls` for one setup cycle.
 
-type Install =
-  | { kind: "github_marketplace"; name: string; marketplace: string }
-  | { kind: "npm_skills_single"; name: string; repo: string }
-  | { kind: "npm_skills_plugin"; repo: string };
-
-type Uninstall = Exclude<Install, { kind: "npm_skills_plugin" }>;
-
-const installs: Install[] = [
-  { kind: "github_marketplace", name: "typescript-lsp",       marketplace: "claude-plugins-official" },
-  { kind: "github_marketplace", name: "claude-md-management", marketplace: "claude-plugins-official" },
-  { kind: "github_marketplace", name: "frontend-design",      marketplace: "claude-plugins-official" },
-  { kind: "github_marketplace", name: "plugin-dev",           marketplace: "claude-plugins-official" },
-  { kind: "github_marketplace", name: "skill-creator",        marketplace: "claude-plugins-official" },
-  { kind: "github_marketplace", name: "tt",                   marketplace: "towles-tool" },
-  { kind: "github_marketplace", name: "document-skills",      marketplace: "anthropic-agent-skills" },
-  { kind: "github_marketplace", name: "humanizer",            marketplace: "humanizer" },
-  { kind: "github_marketplace", name: "code-simplifier",      marketplace: "claude-plugins-official" },
-  { kind: "github_marketplace", name: "data",                 marketplace: "knowledge-work-plugins" },
-];
-
-// Move entries here from `installs` to remove them on next setup.
-const uninstalls: Uninstall[] = [
-  { kind: "github_marketplace", name: "superpowers",                    marketplace: "superpowers-marketplace" },
-  { kind: "github_marketplace", name: "discord",                        marketplace: "claude-plugins-official" },
-  { kind: "github_marketplace", name: "feature-dev",                    marketplace: "claude-plugins-official" },
-  { kind: "github_marketplace", name: "hookify",                        marketplace: "claude-plugins-official" },
-  { kind: "github_marketplace", name: "postman",                        marketplace: "claude-plugins-official" },
-  { kind: "github_marketplace", name: "compound-engineering",           marketplace: "compound-engineering-plugin" },
-  { kind: "github_marketplace", name: "ask-questions-if-underspecified", marketplace: "trailofbits" },
-  { kind: "github_marketplace", name: "gh-cli",                          marketplace: "trailofbits" },
-  { kind: "github_marketplace", name: "git-cleanup",                     marketplace: "trailofbits" },
-  { kind: "github_marketplace", name: "insecure-defaults",               marketplace: "trailofbits" },
-  { kind: "github_marketplace", name: "let-fate-decide",                 marketplace: "trailofbits" },
-  { kind: "github_marketplace", name: "sharp-edges",                     marketplace: "trailofbits" },
-  { kind: "github_marketplace", name: "skill-improver",                  marketplace: "trailofbits" },
-  { kind: "github_marketplace", name: "supply-chain-risk-auditor",       marketplace: "trailofbits" },
-  { kind: "github_marketplace", name: "workflow-skill-design",           marketplace: "trailofbits" },
-];
 
 function describe(item: Install): string {
   switch (item.kind) {
