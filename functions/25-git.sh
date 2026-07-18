@@ -1,5 +1,11 @@
 # git.sh - Git aliases and helper functions
 
+# Setup: global git config preferences
+if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
+  # Silence "skipped previously applied commit" notices during rebase
+  git config --global advice.skippedCherryPicks false
+fi
+
 alias gc="git-ai-commit"
 alias gcm="git-ai-commit"
 alias ga="git add ."
@@ -69,6 +75,33 @@ grebase-preserve() {
 
 git-ignored() {
   git ls-files . --ignored --exclude-standard --others | grep -v node_modules
+}
+
+# gwt - List worktrees across all repos found under cwd (fzf); selecting one cd's into it
+# Run inside a repo to list just its worktrees, or in a parent dir (e.g. ~/code) to list all
+gwt() {
+  local git_dirs
+  git_dirs=$(find . -maxdepth 6 \( -name node_modules -o -name .cache \) -prune -o -name .git -print 2>/dev/null)
+  if [ -z "$git_dirs" ]; then
+    echo "No git repositories found under $(pwd)"
+    return 1
+  fi
+  local worktrees
+  worktrees=$(echo "$git_dirs" | while IFS= read -r gitdir; do
+    git -C "$(dirname "$gitdir")" worktree list 2>/dev/null
+  done | sort -u)
+  if [ -z "$worktrees" ]; then
+    echo "No worktrees found"
+    return 1
+  fi
+  local line dir
+  line=$(echo "$worktrees" | fzf --header "Select worktree (ESC to cancel)")
+  if [ -z "$line" ]; then
+    echo "Cancelled"
+    return 1
+  fi
+  dir=$(echo "$line" | awk '{print $1}')
+  cd "$dir" || return 1
 }
 
 # gitk - Open Gitkraken to current repository
