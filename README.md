@@ -41,7 +41,9 @@ git config --global user.email "you@example.com"
 | `gp` | `git push` |
 | `gs` | `git status` |
 | `gw` | `gh browse` |
-| `c` / `cr` | `claude --permission-mode auto --model sonnet --effort high` (`--chrome` on Linux); `cr` resumes |
+| `c` / `cr` | `claude --permission-mode auto --model opus --effort high` (`--chrome` on Linux); `cr` resumes |
+| `co` / `cor` | same as `c`, explicit Opus name; `cor` resumes, overriding model/effort (unlike `cr`) |
+| `cs` / `csr` | same, Sonnet model at high effort; `csr` resumes, overriding model/effort |
 | `cf` / `cfr` | same, Fable model at medium effort ("fast draft"); `cfr` resumes |
 | `cfa` / `cfar` | same, Fable model at xhigh effort ("architect"); `cfar` resumes |
 | `code` | `code-insiders` |
@@ -75,11 +77,3 @@ VSCode terminal font (`settings.json`):
 - [zsh-z](https://github.com/agkozak/zsh-z) -- directory jumping
 - [zoxide](https://github.com/ajeetdsouza/zoxide) -- smarter cd replacement (installed via cargo)
 - [fast-syntax-highlighting](https://github.com/zdharma-continuum/fast-syntax-highlighting)
-
-## Debugging Shell Load Time
-
-```bash
-ZSH_DEBUG_TIMING=1 exec zsh
-```
-
-Prints millisecond timestamps at each loading stage.

@@ -82,7 +82,9 @@ gca   → git add . && git-ai-commit
 ga    → git add .
 gp    → git push
 gs    → git status
-c     → claude --permission-mode auto --model sonnet --effort high (--chrome on Linux)
+c     → claude --permission-mode auto --model opus --effort high (--chrome on Linux)
+co/cor → same as c, explicit Opus name (cor resumes, overriding model/effort unlike cr)
+cs/csr → same, but --model sonnet --effort high (csr resumes, overriding model/effort)
 cf/cfa → same, but --model fable --effort medium/xhigh ("architect")
 cr/cfr/cfar → same as c/cf/cfa, plus --resume
 code  → code-insiders

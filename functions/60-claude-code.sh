@@ -99,15 +99,23 @@ _claude_run() {
 _claude_flags=(--permission-mode auto)
 [[ "$(uname -s)" == "Linux" ]] && _claude_flags+=(--chrome)
 
-# c/ca: Sonnet at high effort. cr: resume, no model/effort override (keeps the resumed session's own settings).
-# cf/cfr: Fable at medium effort. cfa/cfar: Fable at xhigh ("architect").
+# c/ca: Opus at high effort. cr: resume, no model/effort override (keeps the resumed session's own settings).
+# co/cor: Opus at high effort, explicit (cor overrides model/effort on resume, unlike cr).
+# cs/csr: Sonnet at high effort. cf/cfr: Fable at medium effort. cfa/cfar: Fable at xhigh ("architect").
+_claude_flags_opus=("${_claude_flags[@]}" --model opus --effort high)
 _claude_flags_sonnet=("${_claude_flags[@]}" --model sonnet --effort high)
 _claude_flags_fable=("${_claude_flags[@]}" --model fable --effort medium)
 _claude_flags_fable_architect=("${_claude_flags[@]}" --model fable --effort xhigh)
 
-c()    { _claude_run "${_claude_flags_sonnet[@]}" "$@"; }
+c()    { _claude_run "${_claude_flags_opus[@]}" "$@"; }
 cr()   { _claude_run "${_claude_flags[@]}" --resume "$@"; }
-ca()   { _claude_run "${_claude_flags_sonnet[@]}" agents "$@"; }
+ca()   { _claude_run "${_claude_flags_opus[@]}" agents "$@"; }
+
+co()   { _claude_run "${_claude_flags_opus[@]}" "$@"; }
+cor()  { _claude_run "${_claude_flags_opus[@]}" --resume "$@"; }
+
+cs()   { _claude_run "${_claude_flags_sonnet[@]}" "$@"; }
+csr()  { _claude_run "${_claude_flags_sonnet[@]}" --resume "$@"; }
 
 cf()   { _claude_run "${_claude_flags_fable[@]}" "$@"; }
 cfr()  { _claude_run "${_claude_flags_fable[@]}" --resume "$@"; }
@@ -119,7 +127,7 @@ cfar() { _claude_run "${_claude_flags_fable_architect[@]}" --resume "$@"; }
 # generated during setup; compinit (which .zshrc runs before functions/) makes
 # it autoloadable, so only register when it exists.
 if [[ -f "$HOME/.zsh/completions/_claude" ]]; then
-  compdef _claude c cr ca cf cfr cfa cfar
+  compdef _claude c cr ca co cor cs csr cf cfr cfa cfar
 fi
 
 

@@ -83,10 +83,12 @@ console.log(cmd("Alt+C", "cd into directory"));
 console.log();
 
 console.log(h("Claude Code"));
-console.log(cmd("c", "claude --permission-mode auto --model sonnet --effort high"));
+console.log(cmd("c", "claude --permission-mode auto --model opus --effort high"));
+console.log(cmd("co", "same as c, explicit Opus name"));
+console.log(cmd("cs", "claude ... --model sonnet --effort high"));
 console.log(cmd("cf", "claude ... --model fable --effort medium"));
 console.log(cmd("cfa", "claude ... --model fable --effort xhigh (\"architect\")"));
-console.log(cmd("cr / cfr / cfar", "same as c / cf / cfa, plus --resume"));
+console.log(cmd("cr / cor / csr / cfr / cfar", "same as c / co / cs / cf / cfa, plus --resume"));
 console.log();
 
 console.log(h("Claude STT"));
