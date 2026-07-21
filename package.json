@@ -9,7 +9,9 @@
     "input-test": "bun run config/terminal-input-test.ts",
     "commit": "bun run config/git/ai-commit.ts",
     "claude:setup": "bun run config/claude/setup-settings.ts",
-    "lint:shell": "shellcheck install.sh scripts/*.sh functions/*.sh"
+    "lint": "bun run lint:shell && bun run lint:zsh",
+    "lint:shell": "shellcheck install.sh scripts/*.sh",
+    "lint:zsh": "zsh -c 'for f in .zshrc functions/*.sh; do zsh -n $f || exit 1; done'"
   },
   "packageManager": "pnpm@10.28.0",
   "dependencies": {

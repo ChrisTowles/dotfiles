@@ -89,6 +89,7 @@ console.log(cmd("cs", "claude ... --model sonnet --effort high"));
 console.log(cmd("cf", "claude ... --model fable --effort medium"));
 console.log(cmd("cfa", "claude ... --model fable --effort xhigh (\"architect\")"));
 console.log(cmd("cr / cor / csr / cfr / cfar", "same as c / co / cs / cf / cfa, plus --resume"));
+console.log(cmd("cprompts", "Browse skills/prompts baked into the claude binary (fzf)"));
 console.log();
 
 console.log(h("Claude STT"));

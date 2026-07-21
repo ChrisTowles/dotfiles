@@ -55,7 +55,9 @@ fh() {
   else
     file=$(find ~ -type f 2>/dev/null | fzf --preview "$preview_cmd")
   fi
-  [[ -n "$file" ]] && $EDITOR "$file" >/dev/null 2>&1 &
+  # ${(z)...}: $EDITOR carries flags ("code-insiders --wait"); zsh doesn't
+  # word-split unquoted params, so it would be run as one command name.
+  [[ -n "$file" ]] && ${(z)EDITOR} "$file" >/dev/null 2>&1 &
 }
 
 

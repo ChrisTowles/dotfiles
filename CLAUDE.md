@@ -46,6 +46,7 @@ Each file in `functions/` is a self-contained module for one tool. Files follow 
 - **20-fzf.sh** - Fuzzy finder setup with `fd` integration, `fh()` for home search
 - **21-bat.sh** - Cat clone with syntax highlighting, installed via cargo
 - **22-eza.sh** - Modern `ls` replacement via cargo; `ls`/`lt` aliases, `lsf()` fuzzy file filter
+- **23-claude-prompts.sh** - `claude-prompts()`/`cprompts` — fzf browser over the skills & prompt strings extracted from the Claude Code binary (extractor: config/claude/dump-prompts.ts)
 - **25-git.sh** - `git-ai-commit()` for AI-powered commits, `gmain()`, common git aliases
 - **26-git-delta.sh** - Syntax-highlighted git diffs, installed via cargo
 - **30-lazygit.sh** - Terminal git UI, config symlink, `c` key mapped to `git-ai-commit`
@@ -66,7 +67,7 @@ Each file in `functions/` is a self-contained module for one tool. Files follow 
 ### config/ Directory
 
 - **help.ts** - Colored help output for all shell aliases and functions
-- **claude/** - TypeScript scripts for Claude Code hooks (statusline, notifications, settings setup)
+- **claude/** - TypeScript scripts for Claude Code hooks (statusline, notifications, settings setup) and `dump-prompts.ts` (extracts embedded skills/prompts from the claude binary)
 - **git/** - `ai-commit.ts` — interactive AI commit message generator with built-in fuzzy selector
 - **lazygit/** - `config.yml` — custom keybindings (`c` → `git-ai-commit`)
 - **tmux/tmux.conf** - Symlinked to `~/.config/tmux/tmux.conf` during setup
@@ -135,6 +136,7 @@ The work profile (`212787373_aero`) is the global default — this repo override
 - TypeScript files use `bun run` (not `npx tsx`) — Bun is the primary TS runtime
 - One `package.json` at repo root — all `config/**/*.ts` files share dependencies
 - Type-check with `bunx tsc --noEmit` — `tsconfig.json` covers `config/**/*.ts` with `@types/bun`
+- Lint shells with `bun run lint`. Note the split: `install.sh` and `scripts/*.sh` are bash and get `shellcheck`; `.zshrc` and `functions/*.sh` are **zsh** and get `zsh -n` instead. shellcheck has no zsh mode, so running it over the zsh files reports false errors on valid syntax (`${(z)var}`, `${=var}`) — don't add them back to `lint:shell`
 - lazygit custom commands need `zsh -ic '...'` to access shell functions (lazygit uses a plain shell by default)
 - `install.sh` is **bash** (not zsh) since it runs before zsh is installed — avoid zsh-isms in that file
 - Linux installs for GitHub-hosted CLIs use `gh release download` (not curl+grep):
