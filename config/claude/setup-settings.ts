@@ -69,7 +69,7 @@ const marketplaces: [string, string][] = [
   ["anthropics/claude-plugins-official", "claude-plugins-official"],
   ["anthropics/skills", "anthropic-agent-skills"],
   ["anthropics/knowledge-work-plugins", "knowledge-work-plugins"],
-  ["ChrisTowles/towles-tool", "towles-tool"],
+  ["ChrisTowles/towles-tool-rs", "towles-tool"],
 ];
 
 
@@ -82,7 +82,7 @@ const installs: Install[] = [
   { kind: "github_marketplace", name: "frontend-design",      marketplace: "claude-plugins-official" },
   { kind: "github_marketplace", name: "plugin-dev",           marketplace: "claude-plugins-official" },
   { kind: "github_marketplace", name: "skill-creator",        marketplace: "claude-plugins-official" },
-  { kind: "github_marketplace", name: "tt",                   marketplace: "towles-tool-rs" },
+  { kind: "github_marketplace", name: "tt",                   marketplace: "towles-tool" },
   { kind: "github_marketplace", name: "document-skills",      marketplace: "anthropic-agent-skills" },
   { kind: "github_marketplace", name: "humanizer",            marketplace: "humanizer" },
   { kind: "github_marketplace", name: "code-simplifier",      marketplace: "claude-plugins-official" },
@@ -100,18 +100,13 @@ const uninstalls: Uninstall[] = [
 ];
 
 // Marketplaces to remove. Move entries here from `marketplaces` to uninstall on next setup.
-const uninstallMarketplaces: string[] = [];
+// Also use this for a same-name repo swap (e.g. towles-tool -> towles-tool-rs): the
+// `existsSync` check below only keys on the registered name, so if a name already
+// points at an old repo it will never be refreshed to the new source unless removed
+// first. Removal runs before the add loop so the swap completes in a single run.
+const uninstallMarketplaces: string[] = ["towles-tool"];
 
 const marketplacesDir = join(process.env.HOME!, ".claude", "plugins", "marketplaces");
-
-for (const [repo, name] of marketplaces) {
-  if (existsSync(join(marketplacesDir, name))) {
-    console.log(` Claude marketplace already added: ${name}`);
-  } else {
-    console.log(` Adding Claude marketplace: ${repo}`);
-    Bun.spawnSync(["claude", "plugin", "marketplace", "add", repo], { stdio: ["ignore", "inherit", "inherit"] });
-  }
-}
 
 for (const name of uninstallMarketplaces) {
   const result = Bun.spawnSync(["claude", "plugin", "marketplace", "remove", name], { stdout: "pipe", stderr: "pipe" });
@@ -119,6 +114,15 @@ for (const name of uninstallMarketplaces) {
     console.log(` Removed Claude marketplace: ${name}`);
   } else {
     console.log(` Claude marketplace already removed: ${name}`);
+  }
+}
+
+for (const [repo, name] of marketplaces) {
+  if (existsSync(join(marketplacesDir, name))) {
+    console.log(` Claude marketplace already added: ${name}`);
+  } else {
+    console.log(` Adding Claude marketplace: ${repo}`);
+    Bun.spawnSync(["claude", "plugin", "marketplace", "add", repo], { stdio: ["ignore", "inherit", "inherit"] });
   }
 }
 
