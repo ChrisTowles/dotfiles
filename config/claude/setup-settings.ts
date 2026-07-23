@@ -70,6 +70,7 @@ const marketplaces: [string, string][] = [
   ["anthropics/skills", "anthropic-agent-skills"],
   ["anthropics/knowledge-work-plugins", "knowledge-work-plugins"],
   ["ChrisTowles/towles-tool-rs", "towles-tool"],
+  ["backnotprop/plannotator", "plannotator"],
 ];
 
 
@@ -87,6 +88,7 @@ const installs: Install[] = [
   { kind: "github_marketplace", name: "humanizer",            marketplace: "humanizer" },
   { kind: "github_marketplace", name: "code-simplifier",      marketplace: "claude-plugins-official" },
   { kind: "github_marketplace", name: "data",                 marketplace: "knowledge-work-plugins" },
+  { kind: "github_marketplace", name: "plannotator",          marketplace: "plannotator" },
 ];
 
 // Move entries here from `installs` to remove them on next setup.
