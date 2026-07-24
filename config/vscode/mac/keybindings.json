@@ -1,5 +1,17 @@
 [
-  // ctrl+cmd+c: send SIGINT to terminal (kill process) - use this since Karabiner maps ctrl+c to cmd+c
+  // ctrl+shift+c (Karabiner passes it through as shift+cmd+c): send SIGINT to
+  // the terminal, since ctrl+c is remapped to cmd+c (copy) inside VS Code.
+  // The default shift+cmd+c opens an external terminal — unbind it first or it
+  // fires instead of the sendSequence below (see ../CLAUDE.md).
+  {
+    "key": "shift+cmd+c",
+    "command": "-workbench.action.terminal.openNativeConsole"
+  },
+  {
+    "key": "shift+cmd+c",
+    "command": "workbench.action.terminal.openNativeConsole",
+    "when": "!terminalFocus"
+  },
   {
     "key": "shift+cmd+c",
     "command": "workbench.action.terminal.sendSequence",

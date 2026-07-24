@@ -115,6 +115,7 @@
                                             "^org\\.alacritty$",
                                             "^net\\.kovidgoyal\\.kitty$",
                                             "^com\\.mitchellh\\.ghostty$",
+                                            "^dev\\.towles\\.tool$",
                                             "^org\\.mozilla\\.firefox$",
                                             "^org\\.mozilla\\.firefoxdeveloperedition$",
                                             "^org\\.mozilla\\.nightly$",
@@ -210,6 +211,7 @@
                                             "^org\\.alacritty$",
                                             "^net\\.kovidgoyal\\.kitty$",
                                             "^com\\.mitchellh\\.ghostty$",
+                                            "^dev\\.towles\\.tool$",
                                             "^cz\\.or\\.repo\\.git-gui$",
                                             "^com\\.jetbrains\\.",
                                             "^org\\.gnu\\.Emacs$",
@@ -272,6 +274,7 @@
                                             "^org\\.alacritty$",
                                             "^net\\.kovidgoyal\\.kitty$",
                                             "^com\\.mitchellh\\.ghostty$",
+                                            "^dev\\.towles\\.tool$",
                                             "^org\\.mozilla\\.firefox$",
                                             "^org\\.mozilla\\.firefoxdeveloperedition$",
                                             "^org\\.mozilla\\.nightly$",
@@ -367,6 +370,7 @@
                                             "^org\\.alacritty$",
                                             "^net\\.kovidgoyal\\.kitty$",
                                             "^com\\.mitchellh\\.ghostty$",
+                                            "^dev\\.towles\\.tool$",
                                             "^cz\\.or\\.repo\\.git-gui$",
                                             "^com\\.jetbrains\\.",
                                             "^org\\.gnu\\.Emacs$",
@@ -518,6 +522,7 @@
                                             "^org\\.alacritty$",
                                             "^net\\.kovidgoyal\\.kitty$",
                                             "^com\\.mitchellh\\.ghostty$",
+                                            "^dev\\.towles\\.tool$",
                                             "^org\\.gnu\\.Emacs$",
                                             "^org\\.gnu\\.AquamacsEmacs$",
                                             "^org\\.gnu\\.Aquamacs$",
@@ -578,6 +583,7 @@
                                             "^org\\.alacritty$",
                                             "^net\\.kovidgoyal\\.kitty$",
                                             "^com\\.mitchellh\\.ghostty$",
+                                            "^dev\\.towles\\.tool$",
                                             "^org\\.gnu\\.Emacs$",
                                             "^org\\.gnu\\.AquamacsEmacs$",
                                             "^org\\.gnu\\.Aquamacs$",
@@ -638,6 +644,7 @@
                                             "^org\\.alacritty$",
                                             "^net\\.kovidgoyal\\.kitty$",
                                             "^com\\.mitchellh\\.ghostty$",
+                                            "^dev\\.towles\\.tool$",
                                             "^org\\.gnu\\.Emacs$",
                                             "^org\\.gnu\\.AquamacsEmacs$",
                                             "^org\\.gnu\\.Aquamacs$",
@@ -698,6 +705,7 @@
                                             "^org\\.alacritty$",
                                             "^net\\.kovidgoyal\\.kitty$",
                                             "^com\\.mitchellh\\.ghostty$",
+                                            "^dev\\.towles\\.tool$",
                                             "^org\\.gnu\\.Emacs$",
                                             "^org\\.gnu\\.AquamacsEmacs$",
                                             "^org\\.gnu\\.Aquamacs$",
@@ -763,6 +771,7 @@
                                             "^org\\.alacritty$",
                                             "^net\\.kovidgoyal\\.kitty$",
                                             "^com\\.mitchellh\\.ghostty$",
+                                            "^dev\\.towles\\.tool$",
                                             "^org\\.gnu\\.Emacs$",
                                             "^org\\.gnu\\.AquamacsEmacs$",
                                             "^org\\.gnu\\.Aquamacs$",
@@ -823,6 +832,7 @@
                                             "^org\\.alacritty$",
                                             "^net\\.kovidgoyal\\.kitty$",
                                             "^com\\.mitchellh\\.ghostty$",
+                                            "^dev\\.towles\\.tool$",
                                             "^org\\.gnu\\.Emacs$",
                                             "^org\\.gnu\\.AquamacsEmacs$",
                                             "^org\\.gnu\\.Aquamacs$",
@@ -883,6 +893,7 @@
                                             "^org\\.alacritty$",
                                             "^net\\.kovidgoyal\\.kitty$",
                                             "^com\\.mitchellh\\.ghostty$",
+                                            "^dev\\.towles\\.tool$",
                                             "^org\\.gnu\\.Emacs$",
                                             "^org\\.gnu\\.AquamacsEmacs$",
                                             "^org\\.gnu\\.Aquamacs$",
@@ -914,6 +925,27 @@
                             {
                                 "conditions": [
                                     {
+                                        "bundle_identifiers": ["^dev\\.towles\\.tool$"],
+                                        "type": "frontmost_application_if"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "c",
+                                    "modifiers": {
+                                        "mandatory": ["control", "shift"]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "c",
+                                        "modifiers": ["left_command", "left_shift"]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
                                         "bundle_identifiers": [
                                             "^com\\.apple\\.Terminal$",
                                             "^com\\.googlecode\\.iterm2$",
@@ -952,7 +984,8 @@
                                             "^io\\.alacritty$",
                                             "^org\\.alacritty$",
                                             "^net\\.kovidgoyal\\.kitty$",
-                                            "^com\\.mitchellh\\.ghostty$"
+                                            "^com\\.mitchellh\\.ghostty$",
+                                            "^dev\\.towles\\.tool$"
                                         ],
                                         "type": "frontmost_application_if"
                                     }
@@ -982,7 +1015,8 @@
                                             "^io\\.alacritty$",
                                             "^org\\.alacritty$",
                                             "^net\\.kovidgoyal\\.kitty$",
-                                            "^com\\.mitchellh\\.ghostty$"
+                                            "^com\\.mitchellh\\.ghostty$",
+                                            "^dev\\.towles\\.tool$"
                                         ],
                                         "type": "frontmost_application_if"
                                     }
@@ -1043,6 +1077,7 @@
                                             "^org\\.alacritty$",
                                             "^net\\.kovidgoyal\\.kitty$",
                                             "^com\\.mitchellh\\.ghostty$",
+                                            "^dev\\.towles\\.tool$",
                                             "^org\\.gnu\\.Emacs$",
                                             "^org\\.gnu\\.AquamacsEmacs$",
                                             "^org\\.gnu\\.Aquamacs$",
@@ -1108,6 +1143,7 @@
                                             "^org\\.alacritty$",
                                             "^net\\.kovidgoyal\\.kitty$",
                                             "^com\\.mitchellh\\.ghostty$",
+                                            "^dev\\.towles\\.tool$",
                                             "^org\\.gnu\\.Emacs$",
                                             "^org\\.gnu\\.AquamacsEmacs$",
                                             "^org\\.gnu\\.Aquamacs$",
@@ -1173,6 +1209,7 @@
                                             "^org\\.alacritty$",
                                             "^net\\.kovidgoyal\\.kitty$",
                                             "^com\\.mitchellh\\.ghostty$",
+                                            "^dev\\.towles\\.tool$",
                                             "^com\\.microsoft\\.VSCode$",
                                             "^com\\.microsoft\\.VSCodeInsiders$",
                                             "^org\\.gnu\\.Emacs$",
@@ -1240,6 +1277,7 @@
                                             "^org\\.alacritty$",
                                             "^net\\.kovidgoyal\\.kitty$",
                                             "^com\\.mitchellh\\.ghostty$",
+                                            "^dev\\.towles\\.tool$",
                                             "^org\\.gnu\\.Emacs$",
                                             "^org\\.gnu\\.AquamacsEmacs$",
                                             "^org\\.gnu\\.Aquamacs$",
@@ -1305,6 +1343,7 @@
                                             "^org\\.alacritty$",
                                             "^net\\.kovidgoyal\\.kitty$",
                                             "^com\\.mitchellh\\.ghostty$",
+                                            "^dev\\.towles\\.tool$",
                                             "^org\\.gnu\\.Emacs$",
                                             "^org\\.gnu\\.AquamacsEmacs$",
                                             "^org\\.gnu\\.Aquamacs$",
@@ -1370,6 +1409,7 @@
                                             "^org\\.alacritty$",
                                             "^net\\.kovidgoyal\\.kitty$",
                                             "^com\\.mitchellh\\.ghostty$",
+                                            "^dev\\.towles\\.tool$",
                                             "^org\\.gnu\\.Emacs$",
                                             "^org\\.gnu\\.AquamacsEmacs$",
                                             "^org\\.gnu\\.Aquamacs$",
@@ -1430,6 +1470,7 @@
                                             "^org\\.alacritty$",
                                             "^net\\.kovidgoyal\\.kitty$",
                                             "^com\\.mitchellh\\.ghostty$",
+                                            "^dev\\.towles\\.tool$",
                                             "^org\\.gnu\\.Emacs$",
                                             "^org\\.gnu\\.AquamacsEmacs$",
                                             "^org\\.gnu\\.Aquamacs$",
@@ -1492,6 +1533,7 @@
                                             "^org\\.alacritty$",
                                             "^net\\.kovidgoyal\\.kitty$",
                                             "^com\\.mitchellh\\.ghostty$",
+                                            "^dev\\.towles\\.tool$",
                                             "^org\\.gnu\\.Emacs$",
                                             "^org\\.gnu\\.AquamacsEmacs$",
                                             "^org\\.gnu\\.Aquamacs$",
@@ -1559,6 +1601,7 @@
                                             "^org\\.alacritty$",
                                             "^net\\.kovidgoyal\\.kitty$",
                                             "^com\\.mitchellh\\.ghostty$",
+                                            "^dev\\.towles\\.tool$",
                                             "^org\\.gnu\\.Emacs$",
                                             "^org\\.gnu\\.AquamacsEmacs$",
                                             "^org\\.gnu\\.Aquamacs$",
@@ -1621,6 +1664,7 @@
                                             "^org\\.alacritty$",
                                             "^net\\.kovidgoyal\\.kitty$",
                                             "^com\\.mitchellh\\.ghostty$",
+                                            "^dev\\.towles\\.tool$",
                                             "^org\\.gnu\\.Emacs$",
                                             "^org\\.gnu\\.AquamacsEmacs$",
                                             "^org\\.gnu\\.Aquamacs$",
@@ -1687,6 +1731,7 @@
                                             "^org\\.alacritty$",
                                             "^net\\.kovidgoyal\\.kitty$",
                                             "^com\\.mitchellh\\.ghostty$",
+                                            "^dev\\.towles\\.tool$",
                                             "^org\\.gnu\\.Emacs$",
                                             "^org\\.gnu\\.AquamacsEmacs$",
                                             "^org\\.gnu\\.Aquamacs$",
@@ -1752,6 +1797,7 @@
                                             "^org\\.alacritty$",
                                             "^net\\.kovidgoyal\\.kitty$",
                                             "^com\\.mitchellh\\.ghostty$",
+                                            "^dev\\.towles\\.tool$",
                                             "^org\\.gnu\\.Emacs$",
                                             "^org\\.gnu\\.AquamacsEmacs$",
                                             "^org\\.gnu\\.Aquamacs$",
@@ -1812,6 +1858,7 @@
                                             "^org\\.alacritty$",
                                             "^net\\.kovidgoyal\\.kitty$",
                                             "^com\\.mitchellh\\.ghostty$",
+                                            "^dev\\.towles\\.tool$",
                                             "^org\\.gnu\\.Emacs$",
                                             "^org\\.gnu\\.AquamacsEmacs$",
                                             "^org\\.gnu\\.Aquamacs$",
@@ -1872,6 +1919,7 @@
                                             "^org\\.alacritty$",
                                             "^net\\.kovidgoyal\\.kitty$",
                                             "^com\\.mitchellh\\.ghostty$",
+                                            "^dev\\.towles\\.tool$",
                                             "^org\\.gnu\\.Emacs$",
                                             "^org\\.gnu\\.AquamacsEmacs$",
                                             "^org\\.gnu\\.Aquamacs$",
@@ -1939,6 +1987,7 @@
                                             "^org\\.alacritty$",
                                             "^net\\.kovidgoyal\\.kitty$",
                                             "^com\\.mitchellh\\.ghostty$",
+                                            "^dev\\.towles\\.tool$",
                                             "^org\\.gnu\\.Emacs$",
                                             "^org\\.gnu\\.AquamacsEmacs$",
                                             "^org\\.gnu\\.Aquamacs$",
@@ -2890,6 +2939,7 @@
                                             "^org\\.alacritty$",
                                             "^net\\.kovidgoyal\\.kitty$",
                                             "^com\\.mitchellh\\.ghostty$",
+                                            "^dev\\.towles\\.tool$",
                                             "^org\\.gnu\\.Emacs$",
                                             "^org\\.gnu\\.AquamacsEmacs$",
                                             "^org\\.gnu\\.Aquamacs$",
@@ -2954,7 +3004,8 @@
                                             "^io\\.alacritty$",
                                             "^org\\.alacritty$",
                                             "^net\\.kovidgoyal\\.kitty$",
-                                            "^com\\.mitchellh\\.ghostty$"
+                                            "^com\\.mitchellh\\.ghostty$",
+                                            "^dev\\.towles\\.tool$"
                                         ],
                                         "type": "frontmost_application_unless"
                                     }
@@ -3016,6 +3067,7 @@
                                             "^org\\.alacritty$",
                                             "^net\\.kovidgoyal\\.kitty$",
                                             "^com\\.mitchellh\\.ghostty$",
+                                            "^dev\\.towles\\.tool$",
                                             "^org\\.gnu\\.Emacs$",
                                             "^org\\.gnu\\.AquamacsEmacs$",
                                             "^org\\.gnu\\.Aquamacs$",

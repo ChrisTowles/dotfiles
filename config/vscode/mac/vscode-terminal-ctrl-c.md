@@ -6,9 +6,19 @@ Karabiner remaps `Ctrl+C` → `Cmd+C` for PC-style copy behavior. This happens s
 
 ## Solution: Use Ctrl+Shift+C
 
-Added keybinding in VS Code to send SIGINT via `shift+cmd+c`:
+Karabiner passes `Ctrl+Shift+C` through as `shift+cmd+c` (the copy rule keeps optional
+modifiers). VS Code binds that by default to `workbench.action.terminal.openNativeConsole`
+("Open New External Terminal") — which is what fires if you only *add* a sendSequence
+binding: the process keeps running and an external Terminal window opens instead. Unbind
+the default, re-add it outside the terminal, then bind SIGINT:
 
 ```json
+{ "key": "shift+cmd+c", "command": "-workbench.action.terminal.openNativeConsole" },
+{
+  "key": "shift+cmd+c",
+  "command": "workbench.action.terminal.openNativeConsole",
+  "when": "!terminalFocus"
+},
 {
   "key": "shift+cmd+c",
   "command": "workbench.action.terminal.sendSequence",
