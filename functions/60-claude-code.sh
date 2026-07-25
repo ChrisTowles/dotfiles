@@ -51,7 +51,7 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
   _claude_json_content=$(cat "$_claude_json" 2>/dev/null || echo "{}")
   for entry in "${_claude_mcps[@]}"; do
     local mcp_name="${entry%% *}"
-    if echo "$_claude_json_content" | python3 -c "import sys,json; d=json.load(sys.stdin); sys.exit(0 if '$mcp_name' in d.get('mcpServers',{}) else 1)" 2>/dev/null; then
+    if echo "$_claude_json_content" | MCP_NAME="$mcp_name" bun -e 'const d = JSON.parse(await Bun.stdin.text()); process.exit(d.mcpServers?.[process.env.MCP_NAME] ? 0 : 1)' 2>/dev/null; then
       echo " Claude MCP already configured (user): $mcp_name"
     else
       echo " Adding Claude MCP server (user): $mcp_name"

@@ -62,7 +62,6 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]] && $_IS_POPOS; then
 {
     (modifiers: [Ctrl], key: "grave"): Spawn("bash -c 'cliphist-wofi-img | wl-copy && sleep 0.1 && wtype -M ctrl -M shift -k v'"),
     (modifiers: [Ctrl, Shift], key: "4"): Spawn("cosmic-screenshot"),
-    (modifiers: [Ctrl, Shift], key: "space"): Spawn("$HOME/code/f/claude-stt/.venv/bin/python -m claude_stt.daemon toggle"),
 }
 EORON
 )
