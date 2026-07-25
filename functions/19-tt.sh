@@ -7,7 +7,7 @@
 # uninstalled at the ttr->tt cutover (2026-07-13, see towles-tool-rs
 # docs/CUTOVER.md); its tmux AgentBoard lives on separately as `ttt`.
 tt-update() {
-  local repo="$HOME/code/p/towles-tool-repos/towles-tool-rs-primary"
+  local repo="$HOME/code/p/towles-tool-rs"
   echo "tt $(tt --version 2>/dev/null || echo 'not installed')"
   git -C "$repo" pull --ff-only || { echo "git pull failed" >&2; return 1; }
   cargo install --path "$repo/crates-cli/tt-cli" --force || { echo "install failed" >&2; return 1; }
