@@ -2,7 +2,8 @@
 # https://github.com/ChrisTowles/towles-tool (archived; superseded by towles-tool-rs)
 
 # ttt-update - Pull and relink the legacy TS CLI (@towles/tool, bun-global,
-# bin renamed tt -> ttt post-cutover) from the checkout via `bun link`.
+# bins `towles-tool-tmux`/`ttt` post-cutover — the `towles-tool` and `tt`
+# names both belong to the Rust CLI now) from the checkout via `bun link`.
 # Provides `ttt agentboard` (tmux sidebar TUI) — `tt agentboard` (Rust)
 # only manages the watched-repo list, it has no tmux TUI. See
 # functions/19-tt.sh for the daily-driver `tt` CLI.
