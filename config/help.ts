@@ -92,11 +92,10 @@ console.log(cmd("cr / cor / csr / cfr / cfar", "same as c / co / cs / cf / cfa, 
 console.log(cmd("cprompts", "Browse skills/prompts baked into the claude binary (fzf)"));
 console.log();
 
-console.log(h("Claude STT"));
-console.log(cmd("stt-start", "Start speech-to-text daemon (background)"));
-console.log(cmd("stt-stop", "Stop speech-to-text daemon"));
-console.log(cmd("stt-status", "Check daemon status"));
-console.log(cmd("stt-run", "Run daemon in foreground (Ctrl+C to stop)"));
+console.log(h("Claude Session Backups") + dim("  (restic; needs $CLAUDE_BACKUP_REPO)"));
+console.log(cmd("cbk <restic args>", "Run restic against the session backup repo"));
+console.log(cmd("cbk-now", "Back up ~/.claude/projects now"));
+console.log(cmd("cbk-restore [glob]", "Restore latest snapshot to a temp dir"));
 console.log();
 
 console.log(h("Other"));
