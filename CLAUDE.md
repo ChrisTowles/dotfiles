@@ -57,6 +57,7 @@ Each file in `functions/` is a self-contained module for one tool. Files follow 
 - **55-starship.sh** - Prompt init with git metrics display
 - **60-claude-code.sh** - Claude Code install, statusline/notification hooks, MCP server setup via `claude mcp add`, zsh completions generated from `claude --help` (config/generate-completions.ts, shared with `tt` in 19-tt.sh)
 - **65-aws-cli.sh** - AWS CLI completions (manual install warning)
+- **68-restic.sh** - Encrypted backups of `~/.claude/projects` via restic; `cbk`/`cbk-now`/`cbk-restore`, generates + enables the `restic-claude-sessions` systemd user timer. Requires `CLAUDE_BACKUP_REPO` to be set explicitly (no default — see docs/linux-setup-notes.md#restic)
 - **70-i.sh** - Quick `cd` to project directories under `~/code/{p,w,f}`
 - **75-docker.sh** - Docker Engine install with completions
 - **76-chrome.sh** - Google Chrome install via apt repo / brew cask
@@ -135,6 +136,8 @@ The work profile (`212787373_aero`) is the global default — this repo override
 - Functions files are numbered by 5s (05, 10, 15...) to allow inserting new files without renaming
 - TypeScript files use `bun run` (not `npx tsx`) — Bun is the primary TS runtime
 - One `package.json` at repo root — all `config/**/*.ts` files share dependencies
+- **Bun is the only package manager for this repo.** `bun.lock` is the sole lockfile; there is no `packageManager` field and no `pnpm-lock.yaml`. Use `bun install`, never `pnpm install`/`npm install` here. (`functions/10-pnpm.sh` still installs pnpm as a *system* tool for other projects — that is unrelated to this repo's own dependencies.)
+- No Python in shell modules — parse JSON and generate values with `bun -e` or a `config/**/*.ts` script, not `python3 -c`
 - Type-check with `bunx tsc --noEmit` — `tsconfig.json` covers `config/**/*.ts` with `@types/bun`
 - Lint shells with `bun run lint`. Note the split: `install.sh` and `scripts/*.sh` are bash and get `shellcheck`; `.zshrc` and `functions/*.sh` are **zsh** and get `zsh -n` instead. shellcheck has no zsh mode, so running it over the zsh files reports false errors on valid syntax (`${(z)var}`, `${=var}`) — don't add them back to `lint:shell`
 - lazygit custom commands need `zsh -ic '...'` to access shell functions (lazygit uses a plain shell by default)
