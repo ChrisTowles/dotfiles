@@ -1,0 +1,5 @@
+# Ghostty config
+# https://ghostty.org/docs/config
+
+# Copy selected text straight to the system clipboard (no Ctrl+Shift+C needed).
+copy-on-select = clipboard
