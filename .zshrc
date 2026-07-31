@@ -263,6 +263,13 @@ zstyle ':completion:*' group-name ''
 
 
 ###############################
+# Shell Options
+###############################
+# Off by default in interactive zsh — without it, pasting a command with a
+# trailing `# comment` errors out instead of ignoring the comment.
+setopt INTERACTIVE_COMMENTS
+
+###############################
 # History Configuration
 ###############################
 HISTFILE=~/.zsh_history
