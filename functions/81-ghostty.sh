@@ -15,6 +15,19 @@ if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
         ;;
     esac
   fi
+
+  local config_src="${0:a:h}/../config/ghostty/config"
+  if [[ -f "$config_src" ]]; then
+    echo " Linking Ghostty config..."
+    local config_dir
+    if [[ "$(uname)" == "Darwin" ]]; then
+      config_dir="$HOME/Library/Application Support/com.mitchellh.ghostty"
+    else
+      config_dir="$HOME/.config/ghostty"
+    fi
+    mkdir -p "$config_dir"
+    ln -sf "$config_src" "$config_dir/config"
+  fi
 fi
 
 # ghostty-help - Print Ghostty tips and workarounds
@@ -26,6 +39,9 @@ ghostty-help() {
   echo "  Cmd+Shift+D        Split down"
   echo "  Cmd+Shift+Enter    Toggle fullscreen"
   echo "  Cmd+Shift+,        Open config"
+  echo ""
+  echo "\033[1;36mConfig:\033[0m"
+  echo "  copy-on-select = clipboard  (selecting text copies it automatically)"
   echo ""
   echo "\033[1;36mKnown issues:\033[0m"
   echo "  Right-click menu in tmux is broken (follows cursor)"
