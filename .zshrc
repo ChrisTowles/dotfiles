@@ -208,6 +208,37 @@ bindkey '\e]' _swallow_st_reply   # OSC (color/background query replies)
 zsh_debug_section "terminal-reply-guard"
 
 ################################################
+#   Decode CSI-u encoded Escape
+################################################
+# tmux `extended-keys on` and TUIs that enable the kitty keyboard protocol make
+# the terminal re-encode Escape as CSI-u (ESC [ 27 u, with optional modifier and
+# event sub-parameters). zle never asked for that protocol, so the key is
+# unbound and silently dropped — and the ESC that *opens* a bracketed paste is
+# the usual casualty: the marker's tail leaks into the buffer as literal text
+# ("[200~cloudflared tunnel login[201~"). `zle -U` pushes a real ESC back onto
+# the input stack ahead of the bytes still pending, so ESC + "[200~" rematches
+# the bracketed-paste widget and the paste is handled normally.
+_csi_u_escape() { zle -U $'\e' }
+zle -N _csi_u_escape
+
+# Press (:1) and repeat (:2) events, with and without the sub-parameter, plus
+# the legacy modifyOtherKeys form. Modifier 1 = no modifiers; a modified Escape
+# (Alt+Esc etc.) is not what pastes emit, so only the unmodified forms map back.
+bindkey '\e[27u'      _csi_u_escape
+bindkey '\e[27;1u'    _csi_u_escape
+bindkey '\e[27;1:1u'  _csi_u_escape
+bindkey '\e[27;1:2u'  _csi_u_escape
+bindkey '\e[27;1;27~' _csi_u_escape   # modifyOtherKeys=2
+
+# Key-release events must not produce a second Escape — swallow them instead of
+# letting them fall through to the buffer.
+_csi_u_ignore() { : }
+zle -N _csi_u_ignore
+bindkey '\e[27;1:3u' _csi_u_ignore
+
+zsh_debug_section "csi-u-escape"
+
+################################################
 #   zsh-z (directory jumping)
 ################################################
 
