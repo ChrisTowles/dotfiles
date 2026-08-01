@@ -148,6 +148,6 @@ The work profile (`212787373_aero`) is the global default — this repo override
   sudo install /tmp/tool /usr/local/bin/tool
   ```
 - Rust ecosystem tools (bat, fd, eza, delta, starship) install via `cargo install`
-- Private/internal shell functions use underscore prefix (e.g. `_nerd_fonts_install`)
+- Private/internal shell functions use underscore prefix (e.g. `_nerd_fonts_install`). Caveat: Claude Code's shell snapshot (which seeds its Bash tool sessions with your interactive functions) drops all underscore-prefixed functions — so a public function that calls a `_helper` at runtime will hit "command not found" inside Claude sessions. If a helper must exist wherever its public caller does, define it nested inside the caller (see `pr()` in `functions/35-gh.sh`); top-level underscore helpers are fine for setup-gated code and completions
 - Claude Code MCP servers are registered via `claude mcp add -s user` (stored in `~/.claude.json`), NOT in `settings.json`. The `settings.json` `mcpServers` field should stay empty. Setup in `60-claude-code.sh` handles idempotent registration.
 - Chrome DevTools MCP uses `--autoConnect` which connects to an existing Chrome session via the user data directory pipe. Requires Chrome 144+ with remote debugging enabled at `chrome://inspect/#remote-debugging`.
