@@ -98,6 +98,11 @@ console.log(cmd("cbk-now", "Back up ~/.claude/projects now"));
 console.log(cmd("cbk-restore [glob]", "Restore latest snapshot to a temp dir"));
 console.log();
 
+console.log(h("AWS") + dim("  (granted.dev)"));
+console.log(cmd("assumef", "assume --no-cache (pick a profile)"));
+console.log(cmd("granted-populate", "Regenerate all local profiles from SSO (prunes stale)"));
+console.log();
+
 console.log(h("Other"));
 console.log(cmd("code", "VS Code Insiders"));
 console.log(cmd("bat", "Syntax-highlighted cat (cat stays plain)"));
