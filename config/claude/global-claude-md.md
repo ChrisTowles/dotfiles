@@ -1,6 +1,7 @@
 ## Workflow
 
 - Use a hard cutover approach and never implement backward compatibility.
+- I run a clipboard manager, so the clipboard keeps a history rather than a single slot. Copy several values in a row without pausing to ask — I can pick any of them out of the history. Just say what was copied and in what order.
 
 ## Personal Repos
 

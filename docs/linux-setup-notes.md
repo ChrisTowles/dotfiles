@@ -54,8 +54,8 @@ personal machine must not share a repo. Add the choice to `~/.zshrc_local.sh`
 (untracked, per-machine — on this box it's a symlink into the toolbox repo):
 
 ```bash
-# personal machine — transcripts go to the personal toolbox repo
-export CLAUDE_BACKUP_REPO="$HOME/code/p/toolbox/backups/claude-sessions"
+# personal machine — outside any git repo, alongside the other service state
+export CLAUDE_BACKUP_REPO="$HOME/srv/backups/claude-sessions"
 ```
 
 Then run `zsh-dotfiles-setup`. It installs restic, generates the encryption key
