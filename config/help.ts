@@ -102,7 +102,7 @@ console.log(h("AWS") + dim("  (granted)"));
 console.log(cmd("assume [profile]", "Assume an AWS profile (fzf picker if no args)"));
 console.log(cmd("assumef", "Same, bypassing the credential cache"));
 console.log(cmd("assume -c", "Open the AWS console in the browser"));
-console.log(cmd("granted sso populate", "Generate ~/.aws/config profiles from SSO"));
+console.log(cmd("granted-populate", "Regenerate all ~/.aws/config profiles from SSO"));
 console.log();
 
 console.log(h("Other"));
