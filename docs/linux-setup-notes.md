@@ -12,6 +12,7 @@ Wayland
 - [Claude Code](https://claude.ai/code) - `npm install -g @anthropic-ai/claude-code`
 - [GitHub CLI](https://cli.github.com/) - `sudo apt install gh`
 - [restic](https://restic.net/) - encrypted, deduplicating backups - see [restic](#restic)
+- [Bitwarden CLI](https://bitwarden.com/help/cli/) - `bw` - installed from the latest `cli-v*` GitHub release by `functions/69-bitwarden.sh` (Linux only)
 
 ## Screenshot Shortcut
 

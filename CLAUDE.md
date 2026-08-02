@@ -59,6 +59,7 @@ Each file in `functions/` is a self-contained module for one tool. Files follow 
 - **64-granted.sh** - granted.dev AWS SSO profile switcher; `assume`/`assumef` aliases (`assume` must be *sourced* to export AWS_* into the shell), plus `granted-populate` to regenerate every local profile from SSO (`granted sso populate --prune`, backs up `~/.aws/config` first). Config file `~/.granted/config` is symlinked from `~/code/p/toolbox` via that repo's sync manifest, not from here
 - **65-aws-cli.sh** - AWS CLI completions (manual install warning)
 - **68-restic.sh** - Encrypted backups of `~/.claude/projects` via restic; `cbk`/`cbk-now`/`cbk-restore`, generates + enables the `restic-claude-sessions` systemd user timer. Requires `CLAUDE_BACKUP_REPO` to be set explicitly (no default — see docs/linux-setup-notes.md#restic)
+- **69-bitwarden.sh** - Bitwarden CLI (`bw`), **Linux only** (macOS: `brew install bitwarden-cli` by hand). Resolves the newest `cli-v*` tag in `bitwarden/clients` (that repo also ships browser/desktop/web releases, so `--latest` is unreliable), downloads `bw-linux-<version>.zip`, installs to `/usr/local/bin`, generates completions
 - **70-i.sh** - Quick `cd` to project directories under `~/code/{p,w,f}`
 - **75-docker.sh** - Docker Engine install with completions
 - **76-chrome.sh** - Google Chrome install via apt repo / brew cask
