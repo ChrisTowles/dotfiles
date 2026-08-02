@@ -56,7 +56,8 @@ Each file in `functions/` is a self-contained module for one tool. Files follow 
 - **50-vscode.sh** - VS Code Insiders install, keybindings symlink
 - **55-starship.sh** - Prompt init with git metrics display
 - **60-claude-code.sh** - Claude Code install, statusline/notification hooks, MCP server setup via `claude mcp add`, zsh completions generated from `claude --help` (config/generate-completions.ts, shared with `tt` in 19-tt.sh)
-- **65-aws-cli.sh** - AWS CLI + SAM install and completions; granted.dev aliases — `assumef`, and `granted-populate` to regenerate every local profile from SSO (`granted sso populate --prune`, backs up `~/.aws/config` first)
+- **64-granted.sh** - granted.dev AWS SSO profile switcher; `assume`/`assumef` aliases (`assume` must be *sourced* to export AWS_* into the shell), plus `granted-populate` to regenerate every local profile from SSO (`granted sso populate --prune`, backs up `~/.aws/config` first). Config file `~/.granted/config` is symlinked from `~/code/p/toolbox` via that repo's sync manifest, not from here
+- **65-aws-cli.sh** - AWS CLI completions (manual install warning)
 - **68-restic.sh** - Encrypted backups of `~/.claude/projects` via restic; `cbk`/`cbk-now`/`cbk-restore`, generates + enables the `restic-claude-sessions` systemd user timer. Requires `CLAUDE_BACKUP_REPO` to be set explicitly (no default — see docs/linux-setup-notes.md#restic)
 - **70-i.sh** - Quick `cd` to project directories under `~/code/{p,w,f}`
 - **75-docker.sh** - Docker Engine install with completions
