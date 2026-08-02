@@ -98,6 +98,13 @@ console.log(cmd("cbk-now", "Back up ~/.claude/projects now"));
 console.log(cmd("cbk-restore [glob]", "Restore latest snapshot to a temp dir"));
 console.log();
 
+console.log(h("AWS") + dim("  (granted)"));
+console.log(cmd("assume [profile]", "Assume an AWS profile (fzf picker if no args)"));
+console.log(cmd("assumef", "Same, bypassing the credential cache"));
+console.log(cmd("assume -c", "Open the AWS console in the browser"));
+console.log(cmd("granted sso populate", "Generate ~/.aws/config profiles from SSO"));
+console.log();
+
 console.log(h("Other"));
 console.log(cmd("code", "VS Code Insiders"));
 console.log(cmd("bat", "Syntax-highlighted cat (cat stays plain)"));

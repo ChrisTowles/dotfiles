@@ -46,4 +46,4 @@ fi
 
 # AWS aliases
 # alias awsp='aws --profile'
-alias assumef='assume --no-cache'
+# `assume` / `assumef` live in 64-granted.sh
