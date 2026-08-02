@@ -86,9 +86,10 @@ console.log(h("Claude Code"));
 console.log(cmd("c", "claude --permission-mode auto --model opus --effort high"));
 console.log(cmd("co", "same as c, explicit Opus name"));
 console.log(cmd("cs", "claude ... --model sonnet --effort high"));
-console.log(cmd("cf", "claude ... --model fable --effort medium"));
-console.log(cmd("cfa", "claude ... --model fable --effort xhigh (\"architect\")"));
-console.log(cmd("cr / cor / csr / cfr / cfar", "same as c / co / cs / cf / cfa, plus --resume"));
+console.log(cmd("cfb", "claude ... --model fable --effort medium"));
+console.log(cmd("cfba", "claude ... --model fable --effort xhigh (\"architect\")"));
+console.log(cmd("cr", "--resume, keeping the session's own model/effort"));
+console.log(cmd("cor/csr/cfbr/cfbar", "--resume, overriding model/effort"));
 console.log(cmd("cprompts", "Browse skills/prompts baked into the claude binary (fzf)"));
 console.log();
 
@@ -103,6 +104,12 @@ console.log(cmd("assume [profile]", "Assume an AWS profile (fzf picker if no arg
 console.log(cmd("assumef", "Same, bypassing the credential cache"));
 console.log(cmd("assume -c", "Open the AWS console in the browser"));
 console.log(cmd("granted-populate", "Regenerate all ~/.aws/config profiles from SSO"));
+console.log();
+
+console.log(h("Cloudflare") + dim("  (cf; technical preview)"));
+console.log(cmd("cf", "The Cloudflare CLI (zones, dns, deploy, dev, ...)"));
+console.log(cmd("cf auth login", "Authenticate with Cloudflare"));
+console.log(cmd("cf auth whoami", "Show current user and auth status"));
 console.log();
 
 console.log(h("Other"));

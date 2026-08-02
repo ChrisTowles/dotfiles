@@ -39,7 +39,10 @@ alias assumef="assume --no-cache"
 # Usage: granted-populate [sso-start-url]
 #   Start URL / region resolve in order: argument, $AWS_SSO_START_URL /
 #   $AWS_SSO_REGION (set these in ~/.zshrc_local.sh), then the first
-#   sso_start_url / sso_region already in ~/.aws/config.
+#   sso_start_url / sso_region already in ~/.aws/config. Profiles that granted
+#   generated spell those keys `granted_sso_*` — auth runs through
+#   credential_process, so a bare sso_start_url would make the CLI try SSO
+#   itself — hence the optional prefix in both patterns.
 granted-populate() {
   if ! command -v granted >/dev/null 2>&1; then
     echo "granted not installed - run: DOTFILES_SETUP=1 exec zsh" >&2
@@ -51,10 +54,10 @@ granted-populate() {
   local sso_region="$AWS_SSO_REGION"
 
   if [ -z "$start_url" ] && [ -f "$aws_config" ]; then
-    start_url=$(awk -F'=' '/^[[:space:]]*sso_start_url[[:space:]]*=/ {gsub(/^[[:space:]]+|[[:space:]]+$/, "", $2); print $2; exit}' "$aws_config")
+    start_url=$(awk -F'=' '/^[[:space:]]*(granted_)?sso_start_url[[:space:]]*=/ {gsub(/^[[:space:]]+|[[:space:]]+$/, "", $2); print $2; exit}' "$aws_config")
   fi
   if [ -z "$sso_region" ] && [ -f "$aws_config" ]; then
-    sso_region=$(awk -F'=' '/^[[:space:]]*sso_region[[:space:]]*=/ {gsub(/^[[:space:]]+|[[:space:]]+$/, "", $2); print $2; exit}' "$aws_config")
+    sso_region=$(awk -F'=' '/^[[:space:]]*(granted_)?sso_region[[:space:]]*=/ {gsub(/^[[:space:]]+|[[:space:]]+$/, "", $2); print $2; exit}' "$aws_config")
   fi
 
   if [ -z "$start_url" ]; then
