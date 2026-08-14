@@ -15,6 +15,7 @@ console.log(cmd("zsh-dotfiles-setup", "Bootstrap all tools (DOTFILES_SETUP=1)"))
 console.log(cmd("zsh-load", "Reload with timing debug"));
 console.log(cmd("ls", "eza -la (dirs first, git status, icons)"));
 console.log(cmd("lt [depth]", "Tree view (eza, default depth 2)"));
+console.log(cmd("br", "broot - tree view + fuzzy search, cd on exit"));
 console.log(cmd("histall | grep x", "Search full command history (bare `history` = last ~16)"));
 console.log();
 

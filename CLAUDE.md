@@ -50,6 +50,7 @@ Each file in `functions/` is a self-contained module for one tool. Files follow 
 - **25-git.sh** - `git-ai-commit()` for AI-powered commits, `gmain()`, common git aliases
 - **26-git-delta.sh** - Syntax-highlighted git diffs, installed via cargo
 - **30-lazygit.sh** - Terminal git UI, config symlink, `c` key mapped to `git-ai-commit`
+- **32-broot.sh** - broot tree-view/fuzzy-search navigator; `br` wrapper (evals `--outcmd` output so cd sticks in the parent shell), config via `BROOT_CONFIG_DIR` pointing at `config/broot/` — no symlink
 - **35-gh.sh** - GitHub CLI aliases, `pr()` push+PR, `gib()` issue browsing, `gh-git-config()` git user from GitHub API
 - **40-tmux.sh** - Session management (`ts`, `tsn`, `tss`, `ta`), TPM installation
 - **45-nerd-fonts.sh** - Nerd Font install + VS Code font config
