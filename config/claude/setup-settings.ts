@@ -22,11 +22,11 @@ settings.statusLine = {
 
 settings.teammateMode = "in-process";
 
-// Cap the context at 200K: Claude Code auto-compacts on reaching this instead of
+// Cap the context at 400K: Claude Code auto-compacts on reaching this instead of
 // letting a session grow toward the 1M window. Long contexts burn tokens fast even
-// when cached, and ~90% of my usage was sessions past 150K. `/autocompact` writes
+// when cached, but 200K was compacting mid-task too often. `/autocompact` writes
 // the same key, but this file wins on the next setup run.
-settings.autoCompactWindow = 200_000;
+settings.autoCompactWindow = 400_000;
 
 settings.env = {
   ...settings.env,
