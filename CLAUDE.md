@@ -47,6 +47,7 @@ Each file in `functions/` is a self-contained module for one tool. Files follow 
 - **21-bat.sh** - Cat clone with syntax highlighting, installed via cargo
 - **22-eza.sh** - Modern `ls` replacement via cargo; `ls`/`lt` aliases, `lsf()` fuzzy file filter
 - **23-claude-prompts.sh** - `claude-prompts()`/`cprompts` — fzf browser over the skills & prompt strings extracted from the Claude Code binary (extractor: config/claude/dump-prompts.ts)
+- **24-just.sh** - `just` command runner (brew on macOS, `cargo install --locked` on Linux), completions from `just --completions zsh`; `just-file` (path of the justfile in effect), `jf` (`just-fzf`, fzf recipe picker w/ `--show` preview — runs parameterless recipes, `print -z`s parameterised ones onto the prompt; Ctrl+E edits the justfile), `jn` (`just-new`, append a recipe: `jn [-d doc] <name> [cmd...]`, creates `./justfile` if none)
 - **25-git.sh** - `git-ai-commit()` for AI-powered commits, `gmain()`, common git aliases
 - **26-git-delta.sh** - Syntax-highlighted git diffs, installed via cargo
 - **30-lazygit.sh** - Terminal git UI, config symlink, `c` key mapped to `git-ai-commit`
@@ -98,6 +99,8 @@ code  → code-insiders
 ls    → eza -la (dirs first, git status, icons; ls -al fallback)
 ez    → exec zsh
 dif   → delta (syntax-highlighted diff)
+jf    → just-fzf (fzf picker over justfile recipes)
+jn    → just-new (append a recipe to the justfile)
 gw    → gh browse
 ```
 

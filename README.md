@@ -50,6 +50,8 @@ git config --global user.email "you@example.com"
 | `ls` | `eza -la` (dirs first, git status, icons; falls back to `ls -al`) |
 | `lt` | `eza --tree` (tree view, `lt [depth]`) |
 | `lsf` | fuzzy-filter files under cwd and open the pick in `$EDITOR` |
+| `jf` | `just-fzf` — fuzzy-pick a justfile recipe and run it (preview via `just --show`) |
+| `jn` | `just-new` — append a recipe to the justfile (`jn [-d doc] <name> [cmd...]`) |
 | `ez` | `exec zsh` |
 | `dif` | `delta` (syntax-highlighted diff) |
 
