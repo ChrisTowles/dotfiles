@@ -77,6 +77,12 @@ console.log(cmd("fh", "Fuzzy search home dir, open in $EDITOR"));
 console.log(cmd("lsf [query]", "Fuzzy-filter files in cwd, open in $EDITOR"));
 console.log();
 
+console.log(h("Just") + dim("  (command runner)"));
+console.log(cmd("jf [query]", "Fuzzy-pick a recipe and run it (Ctrl+E: edit justfile)"));
+console.log(cmd("jn <name> [cmd]", "Append a recipe (-d \"doc\"; creates ./justfile if none)"));
+console.log(cmd("just-file", "Print the justfile in effect for cwd"));
+console.log();
+
 console.log(h("Fzf Keybindings"));
 console.log(cmd("Ctrl+T", "Paste file/dir path"));
 console.log(cmd("Ctrl+R", "Search command history"));
