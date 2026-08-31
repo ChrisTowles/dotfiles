@@ -3,3 +3,8 @@
 
 # Copy selected text straight to the system clipboard (no Ctrl+Shift+C needed).
 copy-on-select = clipboard
+
+# Left Option acts as Alt so terminal Alt-bindings fire (fzf's Alt+C cd widget,
+# zsh word-motions). Right Option still composes accented characters (é, ç, –),
+# which `true` would break.
+macos-option-as-alt = left

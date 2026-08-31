@@ -60,6 +60,24 @@ fh() {
   [[ -n "$file" ]] && ${(z)EDITOR} "$file" >/dev/null 2>&1 &
 }
 
+# Fuzzy-cd into a directory under the current one: zcd [query]
+# Same job as fzf's Alt+C widget, but as a command — works in any terminal and
+# over ssh, where Alt may not reach the shell as a meta key.
+zcd() {
+  local dir preview_cmd
+  if command -v eza >/dev/null 2>&1; then
+    preview_cmd='eza -la --icons --color=always {}'
+  else
+    preview_cmd='ls -la {}'
+  fi
+  if command -v fd >/dev/null 2>&1; then
+    dir=$(fd --type d --hidden --follow ${=_FD_EXCLUDES} | fzf --query "$*" --preview "$preview_cmd")
+  else
+    dir=$(find . -type d 2>/dev/null | fzf --query "$*" --preview "$preview_cmd")
+  fi
+  [[ -n "$dir" ]] && cd "$dir"
+}
+
 
 
 

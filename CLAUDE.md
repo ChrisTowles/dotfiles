@@ -68,6 +68,7 @@ Each file in `functions/` is a self-contained module for one tool. Files follow 
 - **76-chrome.sh** - Google Chrome install via apt repo / brew cask
 - **77-slack.sh** - Slack Desktop install
 - **78-cliphist.sh** - Wayland clipboard manager with wofi picker, COSMIC hotkey setup
+- **81-ghostty.sh** - Ghostty terminal install, config symlink, `ghostty-help` tips
 - **99-help.sh** - `zsh-dotfiles-help` command displaying all aliases/functions
 
 ### config/ Directory
@@ -79,6 +80,7 @@ Each file in `functions/` is a self-contained module for one tool. Files follow 
 - **tmux/tmux.conf** - Symlinked to `~/.config/tmux/tmux.conf` during setup
 - **vscode/** - `setup-settings.ts`, plus `linux/` and `mac/` keybindings
 - **karabiner/** - macOS keyboard remapping (home/end keys)
+- **ghostty/config** - Symlinked to `~/.config/ghostty/config`. `macos-option-as-alt = left` is required for fzf's `Alt+C` cd widget to fire — Ghostty's default leaves Option as a macOS compose key, so Option+C emits `ç` and never reaches zsh as `^[c`. `left` keeps the right Option composing accented characters
 
 ## Key Aliases
 
@@ -102,6 +104,8 @@ dif   → delta (syntax-highlighted diff)
 jf    → just-fzf (fzf picker over justfile recipes)
 jn    → just-new (append a recipe to the justfile)
 gw    → gh browse
+zcd   → fuzzy-cd into a dir under cwd (same job as fzf's Alt+C, callable by name)
+ii    → fuzzy-cd into a ~/code/{p,w,f} project
 ```
 
 ## Debugging Shell Load Time

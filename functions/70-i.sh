@@ -30,7 +30,17 @@ _i_complete() {
 }
 compdef _i_complete i
 
-# ii - fuzzy jump into a project directory using zoxide
+# ii - fuzzy jump into a project directory under ~/code: ii [query]
 ii() {
-  zi ~/code
+  local dir preview_cmd
+  if command -v eza >/dev/null 2>&1; then
+    preview_cmd="eza -la --icons --color=always $HOME/code/{}"
+  else
+    preview_cmd="ls -la $HOME/code/{}"
+  fi
+  # ~/code/*/*(N/) == ~/code/<p|w|f>/<project>; trim the prefix so fzf shows "p/dotfiles"
+  local -a projects
+  projects=( ~/code/*/*(N/) )
+  dir=$(print -rl -- ${projects#$HOME/code/} | fzf --query "$*" --preview "$preview_cmd")
+  [[ -n "$dir" ]] && cd ~/code/"$dir"
 }
