@@ -32,20 +32,17 @@ export AWS_REGION=us-east-1  # or your preferred region
 
 ### Audio Notification Hook
 
-Play audio when Claude is ready for more input:
+`notify.ts` plays a sound per hook event: one clip when Claude finishes a turn
+(`Stop`), another when it needs attention (`Notification`). Register it on both:
 
 ```jsonc
 {
   "hooks": {
+    "Notification": [
+      { "hooks": [{ "type": "command", "command": "bun run \"$HOME/code/p/dotfiles/config/claude/notify.ts\"" }] }
+    ],
     "Stop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bun run \"$HOME/code/p/dotfiles/config/claude/notify.ts\""
-          }
-        ]
-      }
+      { "hooks": [{ "type": "command", "command": "bun run \"$HOME/code/p/dotfiles/config/claude/notify.ts\"" }] }
     ]
   }
 }

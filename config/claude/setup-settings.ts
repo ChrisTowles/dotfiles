@@ -56,6 +56,10 @@ settings.hooks = {
           type: "command",
           command: `bun run ${configSrc}/stop-guard.ts`,
         },
+        {
+          type: "command",
+          command: `bun run ${configSrc}/notify.ts`,
+        },
       ],
     },
   ],
