@@ -41,3 +41,22 @@ Symlink this directory to the Karabiner config location:
 ```bash
 ln -sf ~/code/p/dotfiles/config/karabiner ~/.config/karabiner
 ```
+
+## Devices (`ignore: false`)
+
+Karabiner **ignores game pads by default**. The Keychron Q6 HE 8K advertises
+`is_game_pad: true` alongside `is_keyboard`/`is_pointing_device`, so out of the box
+Karabiner sees it (`caps lock is found on Keychron Q6 HE 8K` in the log) but never
+grabs it — every PC-Style rule silently does nothing while the keyboard still types
+fine. The `devices` block in `karabiner.json` pins `ignore: false` for it.
+
+Symptom check when a new keyboard's remaps don't apply:
+
+```bash
+karabiner_cli --list-connected-devices | grep -A 8 -i '<keyboard name>'   # look for is_game_pad
+grep '<keyboard name>' /var/log/karabiner/core_service.log                # want "(grabbed)"
+```
+
+`karabiner_cli` lives at
+`/Library/Application Support/org.pqrs/Karabiner-Elements/bin/karabiner_cli`.
+The equivalent GUI action is Settings → Devices → check **Modify events** for the device.
