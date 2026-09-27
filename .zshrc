@@ -140,6 +140,32 @@ bindkey '^[f' forward-word        # Alt+f
 zsh_debug_section "word-navigation"
 
 ################################################
+#   Ctrl+V pastes the clipboard
+################################################
+# Terminals (Ghostty, towles-tool) paste on Ctrl+Shift+V and send plain Ctrl+V
+# through as ^V, which zle binds to quoted-insert. Muscle memory from macOS
+# (Karabiner turns Ctrl+V into Cmd+V) expects a paste, so take the clipboard's
+# text here instead. `--type text` keeps an image-only clipboard from dumping
+# binary into the buffer. With no clipboard tool (SSH, TTY) fall back to
+# quoted-insert.
+_clipboard_paste() {
+  local clip
+  if [[ -n $WAYLAND_DISPLAY ]] && (( $+commands[wl-paste] )); then
+    clip=$(wl-paste --no-newline --type text 2>/dev/null)
+  elif (( $+commands[pbpaste] )); then
+    clip=$(pbpaste)
+  else
+    zle quoted-insert
+    return
+  fi
+  LBUFFER+=$clip
+}
+zle -N _clipboard_paste
+bindkey '^V' _clipboard_paste
+
+zsh_debug_section "clipboard-paste"
+
+################################################
 #   Reset Kitty keyboard protocol at each prompt
 ################################################
 # If a TUI (Claude Code, nvim, etc.) enables enhanced keys and crashes without
