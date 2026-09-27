@@ -28,6 +28,14 @@ settings.teammateMode = "in-process";
 // the same key, but this file wins on the next setup run.
 settings.autoCompactWindow = 400_000;
 
+// Linux only: start the Remote Control bridge in every session, so any session can
+// be picked up from claude.ai/code or the mobile app. Same key as /config's
+// "Enable Remote Control for all sessions". macOS is left untouched (off unless
+// toggled by hand there).
+if (process.platform === "linux") {
+  settings.remoteControlAtStartup = true;
+}
+
 settings.env = {
   ...settings.env,
   CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS: "1",
