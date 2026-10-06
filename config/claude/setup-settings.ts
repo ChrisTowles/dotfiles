@@ -90,6 +90,7 @@ const marketplaces: [string, string][] = [
   ["anthropics/skills", "anthropic-agent-skills"],
   ["anthropics/knowledge-work-plugins", "knowledge-work-plugins"],
   ["ChrisTowles/towles-tool-rs", "towles-tool"],
+  ["anthropics/claude-plugins-community", "claude-community"],
 ];
 
 
@@ -108,6 +109,7 @@ const installs: Install[] = [
   { kind: "github_marketplace", name: "humanizer",            marketplace: "humanizer" },
   { kind: "github_marketplace", name: "code-simplifier",      marketplace: "claude-plugins-official" },
   { kind: "github_marketplace", name: "data",                 marketplace: "knowledge-work-plugins" },
+  { kind: "github_marketplace", name: "html-plan",            marketplace: "claude-community" },
   // Just the one skill, not the whole mattpocock/skills bundle (~40 skills, several
   // of which assume his ticket/spec workflow). Installs globally so it is always on.
   {
