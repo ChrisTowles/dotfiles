@@ -109,7 +109,6 @@ const installs: Install[] = [
   { kind: "github_marketplace", name: "tt",                   marketplace: "towles-tool" },
   { kind: "github_marketplace", name: "towles-tool-app",      marketplace: "towles-tool" },
   { kind: "github_marketplace", name: "document-skills",      marketplace: "anthropic-agent-skills" },
-  { kind: "github_marketplace", name: "humanizer",            marketplace: "humanizer" },
   { kind: "github_marketplace", name: "code-simplifier",      marketplace: "claude-plugins-official" },
   { kind: "github_marketplace", name: "data",                 marketplace: "knowledge-work-plugins" },
   { kind: "github_marketplace", name: "html-plan",            marketplace: "claude-community" },
@@ -137,6 +136,7 @@ const uninstalls: Uninstall[] = [
   { kind: "github_marketplace", name: "postman",                        marketplace: "claude-plugins-official" },
   { kind: "github_marketplace", name: "compound-engineering",           marketplace: "compound-engineering-plugin" },
   { kind: "github_marketplace", name: "plannotator",                    marketplace: "plannotator" },
+  { kind: "github_marketplace", name: "humanizer",                      marketplace: "humanizer" },
 ];
 
 // Marketplaces to remove. Move entries here from `marketplaces` to uninstall on next setup.
@@ -147,7 +147,7 @@ const uninstalls: Uninstall[] = [
 // Clear this after that run: removing a marketplace uninstalls every plugin it
 // owns, so leaving an entry here re-clones it and drops those plugins on each
 // setup — only the ones listed in `installs` come back.
-const uninstallMarketplaces: string[] = ["plannotator"];
+const uninstallMarketplaces: string[] = ["plannotator", "humanizer"];
 
 const marketplacesDir = join(process.env.HOME!, ".claude", "plugins", "marketplaces");
 
