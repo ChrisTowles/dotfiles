@@ -1,6 +1,5 @@
 # towles-tool (tt) — personal CLI, built from source via cargo
 # https://github.com/ChrisTowles/towles-tool-rs
-# See also: functions/19-tt-tmux.sh for the legacy tmux-based AgentBoard (`ttt`).
 
 # tt-update - Pull and reinstall the tt CLI (Rust, crates-cli/tt-cli) from
 # the main checkout via cargo. The TS CLI (@towles/tool, bun-global) was
