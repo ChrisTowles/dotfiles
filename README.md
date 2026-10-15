@@ -4,19 +4,28 @@ Personal setup notes and documentation for my development environment.
 
 ## Quick Start
 
-Bootstrap a fresh machine (Linux x86_64 or macOS Intel/Apple Silicon):
+Bootstrap a fresh machine. Linux (x86_64) or macOS (Intel/Apple Silicon):
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/ChrisTowles/dotfiles/main/install.sh | bash
 ```
 
-This installs git and zsh if missing, clones the repo to `~/code/p/dotfiles`, symlinks `~/.zshrc`, sets zsh as the default shell, and runs the full dotfiles setup.
+Windows (PowerShell 7, with Developer Mode on — see [Windows Setup Notes](./docs/windows-setup-notes.md)):
 
-To re-run setup on an existing machine (install new tools, update plugins):
+```powershell
+irm https://raw.githubusercontent.com/ChrisTowles/dotfiles/main/install.ps1 | iex
+```
+
+Both install Bun, the only prerequisite, then run `bootstrap.ts`: it installs git if missing, clones the repo to `~/code/p/dotfiles`, and runs `ttd setup`, which installs every tool, links the configs (including `~/.zshrc` / `$PROFILE`) and generates the shell init.
+
+Everything else goes through `ttd` (towles tool dotfiles). Run it bare for an fzf picker over every command:
 
 ```bash
-zsh-dotfiles-setup
-# or: DOTFILES_SETUP=1 exec zsh
+ttd                 # pick a command
+ttd setup           # install, link, configure; ez-setup = ttd setup && exec zsh
+ttd setup tmux fzf  # just these modules
+ttd doctor          # config links that are missing or were replaced by a regular file
+ttd help <command>
 ```
 
 ## Post-Install
@@ -35,13 +44,13 @@ git config --global user.email "you@example.com"
 | Alias | Command |
 |-------|---------|
 | `g` | `lazygit` |
-| `gc` / `gcm` | `git-ai-commit` (AI-powered commit via Claude) |
+| `gc` / `gcm` | `ttd git-ai-commit` (AI-powered commit via Claude) |
 | `gca` | `git add . && git-ai-commit` |
 | `ga` | `git add .` |
 | `gp` | `git push` |
 | `gs` | `git status` |
 | `gw` | `gh browse` |
-| `c` / `cr` | `claude --permission-mode auto --model opus --effort high` (`--chrome` on Linux); `cr` resumes |
+| `c` / `cr` | `ttd claude opus`: `claude --permission-mode auto --model opus --effort high` (`--chrome` on Linux); `cr` resumes |
 | `co` / `cor` | same as `c`, explicit Opus name; `cor` resumes, overriding model/effort (unlike `cr`) |
 | `cs` / `csr` | same, Sonnet model at high effort; `csr` resumes, overriding model/effort |
 | `cf` / `cfr` | same, Fable model at medium effort ("fast draft"); `cfr` resumes |
@@ -59,6 +68,7 @@ git config --global user.email "you@example.com"
 
 - [Linux Setup Notes](./docs/linux-setup-notes.md)
 - [Mac Setup Notes](./docs/mac-setup-notes.md)
+- [Windows Setup Notes](./docs/windows-setup-notes.md)
 - App-specific guides in [`docs/apps/`](./docs/apps/)
 
 ## Nerd Font
@@ -77,5 +87,5 @@ VSCode terminal font (`settings.json`):
 - [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions) -- history-based inline suggestions
 - [zsh-history-substring-search](https://github.com/zsh-users/zsh-history-substring-search) -- search history by substring
 - [zsh-z](https://github.com/agkozak/zsh-z) -- directory jumping
-- [zoxide](https://github.com/ajeetdsouza/zoxide) -- smarter cd replacement (installed via cargo)
+- [zoxide](https://github.com/ajeetdsouza/zoxide) -- `z` for PowerShell on Windows (zsh uses zsh-z)
 - [fast-syntax-highlighting](https://github.com/zdharma-continuum/fast-syntax-highlighting)

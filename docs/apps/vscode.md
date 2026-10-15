@@ -11,7 +11,7 @@ Setup Ctrl+G in claude code, and then just use editor key bindings for dictation
 
 ### Key bindings
 
-Location: [keybindings.json](../../config/vscode/keybindings.json)
+Location: [keybindings.json](../../modules/vscode/linux/keybindings.json) (also `mac/`, `win/`)
 
 
 

@@ -39,10 +39,10 @@ export AWS_REGION=us-east-1  # or your preferred region
 {
   "hooks": {
     "Notification": [
-      { "hooks": [{ "type": "command", "command": "bun run \"$HOME/code/p/dotfiles/config/claude/notify.ts\"" }] }
+      { "hooks": [{ "type": "command", "command": "bun run \"$HOME/code/p/dotfiles/modules/claude/notify.ts\"" }] }
     ],
     "Stop": [
-      { "hooks": [{ "type": "command", "command": "bun run \"$HOME/code/p/dotfiles/config/claude/notify.ts\"" }] }
+      { "hooks": [{ "type": "command", "command": "bun run \"$HOME/code/p/dotfiles/modules/claude/notify.ts\"" }] }
     ]
   }
 }
@@ -57,7 +57,7 @@ Display model and git branch information in the status line:
 {
   "statusLine": {
     "type": "command",
-    "command": "bun run \"$HOME/code/p/dotfiles/config/claude/statusline.ts\""
+    "command": "bun run \"$HOME/code/p/dotfiles/modules/claude/statusline.ts\""
   },
 }
 ```
@@ -107,7 +107,7 @@ See [Braintrust Claude Code documentation](https://www.braintrust.dev/docs/integ
 Run the Braintrust setup on site, after the curl installation of braintrust. it tell you to run something like.
 
 ```bash
-bun run ~/code/p/dotfiles/config/claude/braintrust-setup.ts
+bun run ~/code/p/dotfiles/modules/claude/braintrust-setup.ts
 ```
 
 This configures hooks in `.claude/settings.local.json`:
