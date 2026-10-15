@@ -9,5 +9,5 @@
     "skipLibCheck": true,
     "types": ["@types/bun"]
   },
-  "include": ["config/**/*.ts"]
+  "include": ["bin/**/*.ts", "lib/**/*.ts", "modules/**/*.ts", "config/**/*.ts", "bootstrap.ts"]
 }
