@@ -140,6 +140,9 @@ const uninstalls: Uninstall[] = [
   { kind: "github_marketplace", name: "typescript-lsp",                 marketplace: "claude-plugins-official" },
   // Superseded by the built-in /simplify.
   { kind: "github_marketplace", name: "code-simplifier",                marketplace: "claude-plugins-official" },
+  // Its diagnostics stopped arriving in Aug 2026 (0 in 35 sessions with .rs edits since), and
+  // half of the earlier ones were inactive-#[cfg] / not-in-crate noise. cargo check covers it.
+  { kind: "github_marketplace", name: "rust-analyzer-lsp",              marketplace: "claude-plugins-official" },
 ];
 
 // Marketplaces to remove. Move entries here from `marketplaces` to uninstall on next setup.
