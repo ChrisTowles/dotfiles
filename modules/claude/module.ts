@@ -3,8 +3,10 @@ import { join } from "node:path";
 import { defineModule } from "../../lib/module";
 
 // MCP servers at user scope (stored in ~/.claude.json, not settings.json)
-const MCPS: Record<string, string[]> = {
-  "chrome-devtools": ["bunx", "chrome-devtools-mcp@latest", "--autoConnect"],
+const MCPS: Record<string, { stdio: string[] } | { http: string }> = {
+  "chrome-devtools": { stdio: ["bunx", "chrome-devtools-mcp@latest", "--autoConnect"] },
+  // OAuth: authenticate once per machine via /mcp
+  workos: { http: "https://mcp.workos.com/mcp" },
 };
 
 // Claude Code CLI. The c/cr/cf/… aliases run `ttd claude <variant>`, which
@@ -47,10 +49,11 @@ export default defineModule({
     try {
       configured = JSON.parse(readFileSync(join(ctx.home, ".claude.json"), "utf8")).mcpServers ?? {};
     } catch {}
-    for (const [name, argv] of Object.entries(MCPS)) {
+    for (const [name, server] of Object.entries(MCPS)) {
       if (name in configured) continue;
       ctx.log(`adding MCP server (user): ${name}`);
-      await ctx.exec(["claude", "mcp", "add", "-s", "user", name, "--", ...argv]);
+      const add = ["claude", "mcp", "add", "-s", "user"];
+      await ctx.exec("http" in server ? [...add, "--transport", "http", name, server.http] : [...add, name, "--", ...server.stdio]);
     }
 
     // claude-in-chrome native host: point it at the resolved binary so it survives version updates

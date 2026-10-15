@@ -45,7 +45,7 @@ settings.env = {
 };
 
 // MCP servers are managed via `claude mcp add` (stored in ~/.claude.json),
-// not in settings.json. See 60-claude-code.sh for the setup.
+// not in settings.json. See MCPS in module.ts.
 
 settings.hooks = {
   ...settings.hooks,

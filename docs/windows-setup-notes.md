@@ -20,7 +20,7 @@ The rule: a tool that is not installed on the Mac is not installed on Windows ei
 
 - **Same as macOS:** fnm, pnpm, bun, uv, rust, fd, fzf (+ PSFzf key bindings), bat, eza, just, git, delta, lazygit, broot, gh, starship, nerd font, VS Code Insiders, Claude Code + Claude Desktop, aws, cloudflare, restic (no scheduled task), docker, chrome, slack, handy, tt.
 - **Windows only:** zoxide (`z`), since zsh-z is a zsh plugin.
-- **Off on Windows:** tmux, ghostty, karabiner (no Windows build or no need), discord, bambu, bitwarden, gws/gcloud, android/mise, cliphist, popos/keyd, sudo-askpass, granted, psql.
+- **Off on Windows:** tmux, ghostty, karabiner (no Windows build or no need), discord, bambu, bitwarden, android/mise, cliphist, popos/keyd, sudo-askpass, granted, psql.
 
 ## Clipboard history on Ctrl+`
 
