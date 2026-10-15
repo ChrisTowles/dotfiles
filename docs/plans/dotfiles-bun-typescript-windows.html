@@ -1945,7 +1945,7 @@ scripts/git-push.sh      gh account switch for the work profile
 <doc-claim>
   <p>One <code>ttd setup</code> command installs and links all modules.</p>
   <doc-mock frame="terminal" title="ttd setup --dry-run" w="480"><template><span class="dim">$</span> ttd setup --dry-run
-<b>linux</b> · 41 modules · order from needs
+<b>linux</b> · 42 of 44 modules · order from needs
 <span class="g">✓</span> rust      cargo 1.90 present
 <span class="g">✓</span> fzf       needs gh · present
 <span class="y">+</span> lazygit   gh-release jesseduffield/lazygit
@@ -1988,10 +1988,9 @@ export default defineModule({
     darwin: { via: "brew", pkg: "lazygit" },
     win32: { via: "winget", id: "JesseDuffield.lazygit" },
   },
-  links: [{ from: "config.yml", to: {
-    linux: "~/.config/lazygit/config.yml",
-    darwin: "~/Library/Application Support/lazygit/config.yml",
-    win32: "%LOCALAPPDATA%/lazygit/config.yml" } }],
+  // the Platform resolves "config:" per OS: ~/.config,
+  // ~/Library/Application Support, %LOCALAPPDATA%
+  links: [{ from: "config.yml", to: "config:lazygit/config.yml" }],
   aliases: { g: "lazygit" },
 })
 </script>
@@ -2004,13 +2003,12 @@ export default defineModule({
     <doc-code title="lib/graph.ts · sketch" lang="ts">
 <script type="text/plain">
 export function order(mods: Module[], os: OS): Module[] {
-  const live = mods.filter((m) => (m.os ?? ALL_OS).includes(os))
-  const byId = new Map(live.map((m) => [m.id, m]))
+  const ids = new Set(mods.map((m) => m.id))
   for (const m of mods) for (const n of m.needs ?? [])
-    if (!mods.some((x) => x.id === n)) throw new Error(`${m.id} needs unknown ${n}`)
-  // Kahn's algorithm; ties break by id, so the order is stable
-  // a need that is off on this OS is dropped, not an error
-  return kahn(live, byId) // throws "cycle: a -> b -> a"
+    if (!ids.has(n)) throw new Error(`${m.id} needs unknown ${n}`)
+  // Kahn's algorithm, ties break by id; a need that is off on this OS
+  // is dropped, not an error. lint:graph calls this function.
+  return kahn(mods.filter((m) => osOf(m).includes(os))) // throws on a cycle
 }
 </script>
       </doc-code>
@@ -2022,14 +2020,25 @@ export function order(mods: Module[], os: OS): Module[] {
 <script type="text/plain">
 + **setup**(argv)                              @ bin/ttd.ts:1
 +   **order**(modules, os)                     @ lib/graph.ts:1
-+   **installSpec**(ctx, spec)                 @ lib/install.ts:1
-+     **apt** / **brew** / **winget**          @ lib/backends/pkg.ts:1
++   **installSpec**(ctx, spec)                 @ lib/install.ts:1  -- probe is Bun.which(bin), no spawn
++     **apt** / **brew** / **winget**          @ lib/backends/pkg.ts:1   -- one batched call for each layer
 +     **cargo** / **ghRelease** / **script**   @ lib/backends/portable.ts:1
-+   **link**(from, to)                         @ lib/link.ts:1   -- symlink on all OSes
++     **flatpak** / **pnpmGlobal**             @ lib/backends/portable.ts:1
++   **link**(from, to)                         @ lib/link.ts:1   -- ensureSymlink() from config/claude/setup-settings.ts
 +   module.setup?(ctx)                         @ lib/module.ts:1  -- restic units, MCP, COSMIC
+~     claude: setup-settings.ts                @ config/claude/setup-settings.ts:1  -- called, not rewritten
 +   **gen**(shell)                             @ lib/emit.ts:1
 </script>
-    </doc-calls>
+    
+<script type="text/plain" data-excerpt="config/claude/setup-settings.ts:1" data-start="1" data-sha="2ef1dd2">
+#!/usr/bin/env bun
+
+import { readFileSync, writeFileSync, mkdirSync, lstatSync, renameSync, symlinkSync, readdirSync, existsSync } from "fs";
+import { join, dirname } from "path";
+
+const configSrc = dirname(Bun.main);
+const settingsFile = join(process.env.HOME!, ".claude", "settings.json");
+</script></doc-calls>
     <doc-note tone="warn"><strong>Rule change</strong> CLAUDE.md allows only <code>brew</code> and <code>apt</code>. The plan adds <code>winget</code> as the third and last package manager.</doc-note>
   </doc-claim>
 
@@ -2051,7 +2060,7 @@ export function order(mods: Module[], os: OS): Module[] {
 +   link .zshrc / $PROFILE; chsh or WT default
 </script>
     
-<script type="text/plain" data-excerpt="install.sh:1" data-start="1" data-sha="b223536">
+<script type="text/plain" data-excerpt="install.sh:1" data-start="1" data-sha="2ef1dd2">
 #!/usr/bin/env bash
 # install.sh - Bootstrap dotfiles on a fresh machine
 # Usage: curl -fsSL https://raw.githubusercontent.com/ChrisTowles/dotfiles/main/install.sh | bash
@@ -2085,8 +2094,8 @@ plain alias       g gs ga gp gw gco gi ghci ls lt dif code
 <script type="text/plain">
 DOTFILES_DIR="$HOME/code/p/dotfiles"
 _ttd_init="$HOME/.cache/dotfiles/init.zsh"
-# newest file under modules/ and lib/; approximately 1 ms for 150 files
-_ttd_new=( $DOTFILES_DIR/{modules,lib}/**/*(.Nom[1]) )
+# newest file that feeds the emitter; linked configs are not in the glob
+_ttd_new=( $DOTFILES_DIR/{modules,lib}/**/*.(ts|zsh)(.Nom[1]) )
 if [[ ! -r $_ttd_init || $_ttd_new[1] -nt $_ttd_init ]]; then
   ttd gen zsh || print -u2 "ttd gen failed: using the old init"
 fi
@@ -2112,12 +2121,12 @@ source <(fzf --zsh)                           Import-Module PSFzf; Set-PsFzfOpti
 fh() { ... }        # from init.zsh           function fh { ... }   # from init.ps1
 </script>
     </doc-code>
-    <doc-note tone="info">The emitter bakes in the OS and what is installed at <code>gen</code> time. The old <code>command -v</code> guards go. <code>ttd setup</code> always runs <code>gen</code> at the end.</doc-note>
+    <doc-note tone="info">The emitter bakes in the OS and what is installed at <code>gen</code> time. The old <code>command -v</code> guards go. It also captures static init output, such as <code>fzf --zsh</code> and <code>starship init</code>, so startup does not fork them. <code>ttd setup</code> always runs <code>gen</code> at the end.</doc-note>
   </doc-claim>
 
   <doc-claim>
     <p><code>DOTFILES_SETUP=1</code> goes. Setup never runs inside shell startup.</p>
-    <doc-code src=".zshrc" lines="369-377" title=".zshrc today: source each file, setup inline" file=".zshrc" start="369" sha="b223536"><script type="text/plain"># Source custom functions
+    <doc-code src=".zshrc" lines="369-377" title=".zshrc today: source each file, setup inline" file=".zshrc" start="369" sha="2ef1dd2"><script type="text/plain"># Source custom functions
 for _fn in "$DOTFILES_DIR"/functions/*.sh(N); do
   if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
     echo "\033[2m──\033[0m \033[36m${_fn:t}\033[0m \033[2m──\033[0m"
@@ -2142,7 +2151,7 @@ zsh_debug_section "autoload-functions"</script>
 - scripts/git-push.sh                          @ scripts/git-push.sh:1
 </script>
     
-<script type="text/plain" data-excerpt="config/git/ai-commit.ts:1" data-start="1" data-sha="b223536">
+<script type="text/plain" data-excerpt="config/git/ai-commit.ts:1" data-start="1" data-sha="2ef1dd2">
 #!/usr/bin/env bun
 
 import pc from "picocolors";
@@ -2151,7 +2160,7 @@ const MESSAGE_COUNT = 5;
 
 // Terminal control sequences (not colors — picocolors doesn't cover these)
 </script>
-<script type="text/plain" data-excerpt="scripts/git-push.sh:1" data-start="1" data-sha="b223536">
+<script type="text/plain" data-excerpt="scripts/git-push.sh:1" data-start="1" data-sha="2ef1dd2">
 #!/usr/bin/env bash
 # git-push.sh — push to this repo, handling gh account switching on macOS
 set -euo pipefail
@@ -2164,7 +2173,7 @@ if [[ "$(uname -s)" == "Darwin" ]]; then
 
   <doc-claim>
     <p>The claude wrappers come from one table of flags.</p>
-    <doc-code src="functions/60-claude-code.sh" lines="99-121" title="60-claude-code.sh today" file="functions/60-claude-code.sh" start="99" sha="b223536"><script type="text/plain">_claude_flags=(--permission-mode auto)
+    <doc-code src="functions/60-claude-code.sh" lines="99-121" title="60-claude-code.sh today" file="functions/60-claude-code.sh" start="99" sha="2ef1dd2"><script type="text/plain">_claude_flags=(--permission-mode auto)
 [[ "$(uname -s)" == "Linux" ]] && _claude_flags+=(--chrome)
 
 # c/ca: Opus at high effort. cr: resume, no model/effort override (keeps the resumed session's own settings).
@@ -2299,7 +2308,7 @@ functions/ → modules/
   78-clipboard-manager                 → clipboard/
   80-sudo-askpass 81-ghostty 82-handy  → sudo-askpass/ ghostty/ handy/
   99-help                              → ttd help
-  - 18 19-tt-tmux 35-neovim 42 62 63 83   # pruned, claim 1
+  - 18 19-tt-tmux 35-neovim 42 62 63 83   # pruned, see the first claim
 .zshrc                → modules/zsh/init.zsh + 10-line stub
 config/sudo-askpass.sh → modules/sudo-askpass/askpass.ts  (bun shebang)
 config/<tool>/         → modules/<tool>/   (lazygit tmux ghostty karabiner keyd sysctl broot)
@@ -2324,11 +2333,14 @@ tsconfig.json  include: bin, lib, modules, bootstrap.ts, config
                paths filter: modules lib bin config bootstrap.ts install.*
                              package.json bun.lock tsconfig.json ci.yml
                steps: bun install, tsc, bun test, lint, ttd setup --dry-run
+               lint:graph runs on ubuntu only; it is a pure data check
 CLAUDE.md      new layout, needs, ttd, winget, Dev Mode, no DOTFILES_SETUP
 README.md      two one-liners; ttd commands replace zsh-dotfiles-setup
 docs/          linux, mac notes; new windows-setup-notes.md
-help.ts        becomes ttd help; reads aliases from module data
-config/claude  notify.ts: win32 player; paths use os.homedir(), not HOME
+help.ts        ttd help runs it; keeps its layout, reads aliases from modules
+config/claude  setup-settings.ts is the claude setup hook; ensureSymlink moves to lib/link.ts
+               notify.ts: win32 player; paths use os.homedir(), not HOME
+generate-completions.ts  stays; claude and tt completions argv call it
 config/vscode  setup-settings.ts: win32 %APPDATA% path
 </script>
     </doc-code>
@@ -2339,7 +2351,7 @@ config/vscode  setup-settings.ts: win32 %APPDATA% path
 <!-- ═════ shared · not changing ═════ -->
 <doc-claim aux="shared">
   <p>Shared: the <code>Module</code> type, used by all claims.</p>
-  <doc-schema id="module" lang="ts" title="lib/module.ts · sketch" caption="All fields but id are optional. os defaults to all three.">
+  <doc-schema id="module" lang="ts" title="lib/module.ts · sketch" caption="All fields but id are optional.">
 <script type="text/plain">
 type OS = "linux" | "darwin" | "win32"
 type Shell = "zsh" | "pwsh"
@@ -2357,15 +2369,15 @@ type Install =
 interface Module {
   id: string
   needs?: string[]                       // replaces the NN- prefixes
-  os?: OS[]
-  bin?: string                           // probe: `bin --version` exits 0
+  os?: OS[]                              // default: the keys of install
+  bin?: string                           // default: id; probe is Bun.which(bin)
   install?: PerOS<Install | Install[]>
-  links?: { from: string; to: PerOS<string> }[]
+  links?: { from: string; to: string }[]  // "config:x", "data:x", "home:x"; Platform resolves
   env?: Record<string, string | PerOS<string>>
   path?: (string | PerOS<string>)[]
   aliases?: Record<string, string | Partial<Record<Shell, string>>>
   commands?: Record<string, (ctx: Ctx, argv: string[]) => Promise<number>>
-  completions?: Partial<Record<Shell, string[]>>   // argv that prints the script
+  completions?: { argv: string[]; as?: string }[]  // as: rename, for cf → cloudflare
   setup?: (ctx: Ctx) => Promise<void>    // ctx.notice() replaces DOTFILES_SETUP_MESSAGES
 }
 </script>
@@ -2375,7 +2387,7 @@ interface Module {
 <doc-claim aux="scope">
   <p>Not changing: tool choices, Claude hooks, the other repos.</p>
   <ul>
-    <li>No tool swaps, except zsh-z if decision 3.4 picks zoxide.</li>
+    <li>No tool swaps, except zsh-z if the <code>z</code> decision picks zoxide.</li>
     <li>The Claude hook scripts (statusline, stop-guard, notify) keep their logic.</li>
     <li>The zsh plugins and zle widgets keep their code. They move into <code>modules/zsh/init.zsh</code>.</li>
     <li>The toolbox repo and its <code>sync-manifest.jsonc</code> stay as they are.</li>
