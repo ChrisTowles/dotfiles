@@ -1,0 +1,23 @@
+# Starship Configuration
+# https://starship.rs/config/
+
+# Module order - put git_status before git_metrics
+format = """$directory$git_branch$git_status$git_metrics$all"""
+
+# Git status - file count (dim)
+[git_status]
+style = 'dimmed'
+format = '([· $modified]($style) )'
+modified = '$count files'
+staged = ''
+untracked = ''
+deleted = ''
+renamed = ''
+conflicted = ''
+
+# Git metrics - lines added/deleted
+[git_metrics]
+disabled = false
+added_style = 'green'
+deleted_style = 'red'
+format = '([+$added]($added_style) )([-$deleted]($deleted_style) )'

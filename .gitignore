@@ -126,4 +126,4 @@ dist
 # LazyVim lock file (generated on first run)
 
 # broot writes its launcher install-state here; machine state, not config.
-config/broot/launcher/
+modules/broot/launcher/
