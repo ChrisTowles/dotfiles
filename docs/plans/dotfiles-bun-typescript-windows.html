@@ -1871,6 +1871,11 @@ if (document.readyState === 'loading') document.addEventListener('DOMContentLoad
 })();
 
 </script>
+<style>
+  /* The artifact host wraps the page in its own body, whose light default
+     background and color hide the runtime theme set on html. */
+  body { background: var(--paper); color: var(--ink); }
+</style>
 <body>
 
 <header>
@@ -2030,7 +2035,7 @@ export function order(mods: Module[], os: OS): Module[] {
 +   **gen**(shell)                             @ lib/emit.ts:1
 </script>
     
-<script type="text/plain" data-excerpt="config/claude/setup-settings.ts:1" data-start="1" data-sha="2ef1dd2">
+<script type="text/plain" data-excerpt="config/claude/setup-settings.ts:1" data-start="1" data-sha="bab1c05">
 #!/usr/bin/env bun
 
 import { readFileSync, writeFileSync, mkdirSync, lstatSync, renameSync, symlinkSync, readdirSync, existsSync } from "fs";
@@ -2060,7 +2065,7 @@ const settingsFile = join(process.env.HOME!, ".claude", "settings.json");
 +   link .zshrc / $PROFILE; chsh or WT default
 </script>
     
-<script type="text/plain" data-excerpt="install.sh:1" data-start="1" data-sha="2ef1dd2">
+<script type="text/plain" data-excerpt="install.sh:1" data-start="1" data-sha="bab1c05">
 #!/usr/bin/env bash
 # install.sh - Bootstrap dotfiles on a fresh machine
 # Usage: curl -fsSL https://raw.githubusercontent.com/ChrisTowles/dotfiles/main/install.sh | bash
@@ -2126,7 +2131,7 @@ fh() { ... }        # from init.zsh           function fh { ... }   # from init.
 
   <doc-claim>
     <p><code>DOTFILES_SETUP=1</code> goes. Setup never runs inside shell startup.</p>
-    <doc-code src=".zshrc" lines="369-377" title=".zshrc today: source each file, setup inline" file=".zshrc" start="369" sha="2ef1dd2"><script type="text/plain"># Source custom functions
+    <doc-code src=".zshrc" lines="369-377" title=".zshrc today: source each file, setup inline" file=".zshrc" start="369" sha="bab1c05"><script type="text/plain"># Source custom functions
 for _fn in "$DOTFILES_DIR"/functions/*.sh(N); do
   if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
     echo "\033[2m──\033[0m \033[36m${_fn:t}\033[0m \033[2m──\033[0m"
@@ -2151,7 +2156,7 @@ zsh_debug_section "autoload-functions"</script>
 - scripts/git-push.sh                          @ scripts/git-push.sh:1
 </script>
     
-<script type="text/plain" data-excerpt="config/git/ai-commit.ts:1" data-start="1" data-sha="2ef1dd2">
+<script type="text/plain" data-excerpt="config/git/ai-commit.ts:1" data-start="1" data-sha="bab1c05">
 #!/usr/bin/env bun
 
 import pc from "picocolors";
@@ -2160,7 +2165,7 @@ const MESSAGE_COUNT = 5;
 
 // Terminal control sequences (not colors — picocolors doesn't cover these)
 </script>
-<script type="text/plain" data-excerpt="scripts/git-push.sh:1" data-start="1" data-sha="2ef1dd2">
+<script type="text/plain" data-excerpt="scripts/git-push.sh:1" data-start="1" data-sha="bab1c05">
 #!/usr/bin/env bash
 # git-push.sh — push to this repo, handling gh account switching on macOS
 set -euo pipefail
@@ -2173,7 +2178,7 @@ if [[ "$(uname -s)" == "Darwin" ]]; then
 
   <doc-claim>
     <p>The claude wrappers come from one table of flags.</p>
-    <doc-code src="functions/60-claude-code.sh" lines="99-121" title="60-claude-code.sh today" file="functions/60-claude-code.sh" start="99" sha="2ef1dd2"><script type="text/plain">_claude_flags=(--permission-mode auto)
+    <doc-code src="functions/60-claude-code.sh" lines="99-121" title="60-claude-code.sh today" file="functions/60-claude-code.sh" start="99" sha="bab1c05"><script type="text/plain">_claude_flags=(--permission-mode auto)
 [[ "$(uname -s)" == "Linux" ]] && _claude_flags+=(--chrome)
 
 # c/ca: Opus at high effort. cr: resume, no model/effort override (keeps the resumed session's own settings).
