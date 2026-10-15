@@ -1,0 +1,46 @@
+name: ci
+
+# Runs only when code that ttd builds or runs changes (docs-only pushes skip it).
+on:
+  push:
+    branches: [main]
+    paths: &paths
+      - "bin/**"
+      - "lib/**"
+      - "modules/**"
+      - "config/**"
+      - "bootstrap.ts"
+      - "install.sh"
+      - "install.ps1"
+      - "package.json"
+      - "bun.lock"
+      - "tsconfig.json"
+      - ".github/workflows/ci.yml"
+  pull_request:
+    paths: *paths
+
+jobs:
+  check:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - run: bun install --frozen-lockfile
+      - run: bunx tsc --noEmit
+      - run: bun test
+      - name: lint (shellcheck, zsh -n, module graph)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get install -y -qq zsh shellcheck
+          bun run lint:shell
+          bun run lint:zsh
+          bun run lint:graph
+      # Parses the generated init (zsh -n / the pwsh parser) for this runner's OS
+      - run: bun bin/ttd.ts gen --check
+      - run: bun bin/ttd.ts gen pwsh --check
+        if: runner.os != 'Windows'
+      - run: bun bin/ttd.ts setup --dry-run

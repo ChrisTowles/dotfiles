@@ -2,16 +2,19 @@
   "name": "dotfiles",
   "version": "1.0.0",
   "private": true,
+  "bin": {
+    "ttd": "bin/ttd.ts"
+  },
   "scripts": {
     "test": "bun test",
     "typecheck": "bunx tsc --noEmit",
     "help": "bun run config/help.ts",
     "input-test": "bun run config/terminal-input-test.ts",
-    "commit": "bun run config/git/ai-commit.ts",
-    "claude:setup": "bun run config/claude/setup-settings.ts",
-    "lint": "bun run lint:shell && bun run lint:zsh",
-    "lint:shell": "shellcheck install.sh scripts/*.sh",
-    "lint:zsh": "zsh -c 'for f in .zshrc functions/*.sh; do zsh -n $f || exit 1; done'"
+    "lint": "bun run lint:shell && bun run lint:zsh && bun run lint:gen && bun run lint:graph",
+    "lint:shell": "shellcheck install.sh modules/*/*.sh",
+    "lint:zsh": "zsh -c 'for f in modules/zsh/zshrc modules/zsh/base.zsh modules/*/init*.zsh; do zsh -n $f || exit 1; done'",
+    "lint:gen": "bun bin/ttd.ts gen --check",
+    "lint:graph": "bun bin/ttd.ts graph --check"
   },
   "dependencies": {
     "picocolors": "^1.1.1"

@@ -1,0 +1,19 @@
+import { out } from "../../lib/helpers";
+import { install } from "../../lib/install";
+import { defineModule } from "../../lib/module";
+
+// Discord (Linux only — intentionally not installed on macOS or Windows)
+export default defineModule({
+  id: "discord",
+  os: ["linux"],
+  async setup(ctx) {
+    // Discord on Linux doesn't auto-update — resolve the latest .deb every run and reinstall when it differs
+    const url = await out(ctx, ["curl", "-sILo", "/dev/null", "-w", "%{url_effective}", "https://discord.com/api/download?platform=linux&format=deb"]);
+    if (!url.endsWith(".deb")) throw new Error("could not resolve the Discord download URL");
+    const latest = url.match(/\d+\.\d+\.\d+/)?.[0];
+    const current = await out(ctx, ["dpkg-query", "-W", "-f=${Version}", "discord"]);
+    if (current === latest) return;
+    ctx.log(current ? `updating Discord ${current} → ${latest}` : `installing Discord ${latest}`);
+    if ((await install(ctx, { via: "deb", pkg: "discord", url })) !== 0) throw new Error("Discord install failed");
+  },
+});

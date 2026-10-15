@@ -109,7 +109,7 @@ Hook configuration in `~/.claude/settings.json`:
           },
           {
             "type": "command",
-            "command": "bun run \"$HOME/code/p/dotfiles/config/claude/notify.ts\""
+            "command": "bun run \"$HOME/code/p/dotfiles/modules/claude/notify.ts\""
           }
         ]
       }

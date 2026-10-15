@@ -12,7 +12,7 @@ Wayland
 - [Claude Code](https://claude.ai/code) - `npm install -g @anthropic-ai/claude-code`
 - [GitHub CLI](https://cli.github.com/) - `sudo apt install gh`
 - [restic](https://restic.net/) - encrypted, deduplicating backups - see [restic](#restic)
-- [Bitwarden CLI](https://bitwarden.com/help/cli/) - `bw` - installed from the latest `cli-v*` GitHub release by `functions/69-bitwarden.sh` (Linux only)
+- [Bitwarden CLI](https://bitwarden.com/help/cli/) - `bw` - installed from the latest `cli-v*` GitHub release by `modules/bitwarden/module.ts` (Linux only)
 
 ## Screenshot Shortcut
 
@@ -47,7 +47,7 @@ Takes effect after next reboot.
 ## restic
 
 Encrypted, deduplicating backups of `~/.claude/projects` (Claude Code session
-transcripts). Managed by `functions/68-restic.sh`.
+transcripts). Managed by `modules/restic/module.ts`.
 
 **Pick the destination first — setup does nothing until you do.** Session
 transcripts contain whatever you were working on, so a work machine and a
@@ -59,7 +59,7 @@ personal machine must not share a repo. Add the choice to `~/.zshrc_local.sh`
 export CLAUDE_BACKUP_REPO="$HOME/srv/backups/claude-sessions"
 ```
 
-Then run `zsh-dotfiles-setup`. It installs restic, generates the encryption key
+Then run `ttd setup restic`. It installs restic, generates the encryption key
 at `~/.config/restic/claude-sessions.pass`, initializes the repo, and installs +
 enables a daily systemd user timer (`restic-claude-sessions.timer`) pointed at
 that same repo.

@@ -2,11 +2,11 @@
 
 ## Install / Update
 
-Managed by `functions/78-bambu-studio.sh`, which runs automatically as part of
+Managed by `modules/bambu/module.ts`, which runs automatically as part of
 setup:
 
 ```bash
-DOTFILES_SETUP=1 exec zsh
+ttd setup bambu
 ```
 
 Installs `com.bambulab.BambuStudio` from Flathub (`stable` branch), adding the

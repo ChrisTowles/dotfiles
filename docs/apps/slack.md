@@ -1,8 +1,8 @@
 # Slack
 
-Team communication app. Installed automatically via `zsh-dotfiles-setup`.
+Team communication app. Installed automatically via `ttd setup`.
 
-See [`functions/77-slack.sh`](../../functions/77-slack.sh) for install logic.
+See [`modules/slack/module.ts`](../../modules/slack/module.ts) for install logic.
 
 ## Notes
 

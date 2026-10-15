@@ -4,105 +4,70 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Repository Overview
 
-Personal dotfiles managing Zsh shell configuration, tool setup, and app configs for Linux and macOS development environments.
+Personal dotfiles for Linux (Pop!_OS, x86_64), macOS and Windows. All setup logic is TypeScript on Bun, driven by one CLI: **`ttd`** (towles tool dotfiles, `bin/ttd.ts`). Shell code is limited to small per-module snippets (functions that must change the shell's own state: `cd`, `print -z`, zle widgets).
 
 ## Setup & Installation
 
-**Fresh machine** — install script handles git, zsh, repo cloning, `.zshrc` symlink, and default shell:
+**Fresh machine** — the installers only install Bun, then run `bootstrap.ts` (git, clone to `~/code/p/dotfiles`, `bun install`, `ttd setup`):
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/ChrisTowles/dotfiles/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/ChrisTowles/dotfiles/main/install.sh | bash      # Linux / macOS
+irm https://raw.githubusercontent.com/ChrisTowles/dotfiles/main/install.ps1 | iex             # Windows (pwsh 7, Developer Mode on)
 ```
 
-**Re-run / update** — on an already-configured machine, reinstall tools and update plugins:
-
-```bash
-DOTFILES_SETUP=1 exec zsh
-# or use the alias: zsh-dotfiles-setup
-```
-
-Both paths trigger auto-installation of Zsh plugins (into `~/.zsh/`), generate shell completions, install tools (fnm, pnpm, bun, starship, fzf, tmux+TPM), and create config symlinks.
+**Re-run / update** on a configured machine: `ttd setup` (alias `ez-setup` = `ttd setup && exec zsh`). `ttd setup <module…>` runs only those modules. `ttd setup --dry-run [--os=linux|darwin|win32]` prints what it would do without changing anything — use it to test; never run a real `ttd setup` from a Claude session (it runs sudo and installs).
 
 ## Architecture
 
-### Shell Loading Order (.zshrc)
+### ttd
 
-1. Zsh plugins loaded from `~/.zsh/` (autosuggestions, completions, history-substring-search, z, fast-syntax-highlighting)
-2. Keybindings and completion styles
-3. History configuration
-4. All files in `functions/*.sh` sourced alphabetically
-5. Local overrides from `~/.zshrc_local.sh` (not tracked)
-6. `compinit` runs last
+`bin/ttd.ts` — builtins `setup`, `gen`, `graph`, `doctor`, `help`, `claude`, plus every command a module declares (`ttd gmain`, `ttd cbk-now`, …). Bare `ttd` opens an fzf picker over all commands (preview: `ttd help {1}`); a picked command that takes args is pushed onto the prompt (zsh `print -z` via `~/.cache/dotfiles/push`; pwsh: into history). `~/.bun/bin/ttd` is a symlink to `bin/ttd.ts` (Windows: `ttd.cmd`), created by `ttd setup`.
 
-### functions/ Directory
+`ttd claude <opus|sonnet|fable|architect|resume> [args]` (modules/claude/variants.ts) runs claude with preset flags and restores the terminal afterward; it takes a fast path that does not load the modules. `c`, `cr`, `cf`, `cfa`, … are aliases to it.
 
-Each file in `functions/` is a self-contained module for one tool. Files follow a pattern: PATH setup, environment initialization (via `eval`), aliases, and helper functions. Key modules:
+### Modules
 
-- **05-fnm.sh** - Node.js version manager setup with shell init and completions
-- **10-pnpm.sh** - Package manager, global tools (tsx, ni, @towles/tool)
-- **15-bun.sh** - JavaScript runtime
-- **16-uv.sh** - Python package manager
-- **17-rust.sh** - Rust toolchain via rustup, generates zsh completions
-- **20-fzf.sh** - Fuzzy finder setup with `fd` integration, `fh()` for home search
-- **21-bat.sh** - Cat clone with syntax highlighting, installed via cargo
-- **22-eza.sh** - Modern `ls` replacement via cargo; `ls`/`lt` aliases, `lsf()` fuzzy file filter
-- **23-claude-prompts.sh** - `claude-prompts()`/`cprompts` — fzf browser over the skills & prompt strings extracted from the Claude Code binary (extractor: config/claude/dump-prompts.ts)
-- **24-just.sh** - `just` command runner (brew on macOS, `cargo install --locked` on Linux), completions from `just --completions zsh`; `just-file` (path of the justfile in effect), `jf` (`just-fzf`, fzf recipe picker w/ `--show` preview — runs parameterless recipes, `print -z`s parameterised ones onto the prompt; Ctrl+E edits the justfile), `jn` (`just-new`, append a recipe: `jn [-d doc] <name> [cmd...]`, creates `./justfile` if none)
-- **25-git.sh** - `git-ai-commit()` for AI-powered commits, `gmain()`, common git aliases
-- **26-git-delta.sh** - Syntax-highlighted git diffs, installed via cargo
-- **30-lazygit.sh** - Terminal git UI, config symlink, `c` key mapped to `git-ai-commit`
-- **32-broot.sh** - broot tree-view/fuzzy-search navigator; `br` wrapper (evals `--outcmd` output so cd sticks in the parent shell), config via `BROOT_CONFIG_DIR` pointing at `config/broot/` — no symlink
-- **35-gh.sh** - GitHub CLI aliases, `pr()` push+PR, `gib()` issue browsing, `gh-git-config()` git user from GitHub API
-- **40-tmux.sh** - Session management (`ts`, `tsn`, `tss`, `ta`), TPM installation
-- **45-nerd-fonts.sh** - Nerd Font install + VS Code font config
-- **50-vscode.sh** - VS Code Insiders install, keybindings symlink
-- **55-starship.sh** - Prompt init with git metrics display
-- **60-claude-code.sh** - Claude Code install, statusline/notification hooks, Remote Control on at startup (Linux only, `remoteControlAtStartup` in setup-settings.ts), MCP server setup via `claude mcp add`, zsh completions generated from `claude --help` (config/generate-completions.ts, shared with `tt` in 19-tt.sh)
-- **64-granted.sh** - granted.dev AWS SSO profile switcher; `assume`/`assumef` aliases (`assume` must be *sourced* to export AWS_* into the shell), plus `granted-populate` to regenerate every local profile from SSO (`granted sso populate --prune`, backs up `~/.aws/config` first). Config file `~/.granted/config` is symlinked from `~/code/p/toolbox` via that repo's sync manifest, not from here
-- **65-aws-cli.sh** - AWS CLI completions (manual install warning)
-- **66-cloudflare.sh** - `cloudflare`, a wrapper over the Cloudflare CLI binary `cf` (npm package `cf`, installed via `pnpm install --global`). The bare `cf` name is the claude-fable wrapper from 60-claude-code.sh, so the completions from `cf complete zsh` are rewritten during setup to complete `cloudflare` and call `command cf`. Technical preview — positioned as the next version of Wrangler. Auth is interactive (`cf auth login`), not env vars. Note: *not* `flarectl` (the cloudflare-go CLI), which only shipped binaries on the abandoned `v0.*` tags
-- **68-restic.sh** - Encrypted backups of `~/.claude/projects` via restic; `cbk`/`cbk-now`/`cbk-restore`, generates + enables the `restic-claude-sessions` systemd user timer. Requires `CLAUDE_BACKUP_REPO` to be set explicitly (no default — see docs/linux-setup-notes.md#restic)
-- **69-bitwarden.sh** - Bitwarden CLI (`bw`), **Linux only** (macOS: `brew install bitwarden-cli` by hand). Resolves the newest `cli-v*` tag in `bitwarden/clients` (that repo also ships browser/desktop/web releases, so `--latest` is unreliable), downloads `bw-linux-<version>.zip`, installs to `/usr/local/bin`, generates completions
-- **70-i.sh** - Quick `cd` to project directories under `~/code/{p,w,f}`
-- **75-docker.sh** - Docker Engine install with completions
-- **76-chrome.sh** - Google Chrome install via apt repo / brew cask
-- **77-slack.sh** - Slack Desktop install
-- **78-cliphist.sh** - Wayland clipboard manager with wofi picker, COSMIC hotkey setup
-- **81-ghostty.sh** - Ghostty terminal install, config symlink, `ghostty-help` tips
-- **99-help.sh** - `zsh-dotfiles-help` command displaying all aliases/functions
+One folder per tool: `modules/<id>/module.ts` (a `defineModule({...})` default export; the id must equal the folder name), plus optional `init.zsh` / `init.ps1` (or `init.<os>.zsh`) snippets and the tool's config files. A `ModuleDef` (lib/types.ts) declares:
 
-### config/ Directory
+- `install` per OS (`unix` = linux + darwin) — `apt` (third-party `repo`: key + line, or `ppa`), `brew` (`cask`, `tap`, `app`), `winget`, `cargo`, `gh-release` (`tag: "prefix*"` = newest matching), `deb` (URL, resolver or release asset), `script`, `flatpak`, `pnpm-global`. `os` defaults to the keys of `install`. Installed = `bin` (default: the id) on PATH, or every spec for this OS confirms it (dpkg, brew, /Applications, winget, flatpak); `installed()` overrides that for things like fonts or an SDK dir.
+- `needs: [...]` — order comes from a topo sort (lib/graph.ts), not file names. Unknown needs and cycles are errors (`ttd graph --check`).
+- `links` — `{ from, to }`, `from` relative to the module folder, `to` a logical path: `config:` (native config dir), `xdg:` (~/.config on macOS too), `data:`, `~/`, or per-OS. Windows uses real symlinks (junctions for dirs) and needs Developer Mode. `ttd doctor` lists links that are missing or that an app replaced with a regular file.
+- `env`, `path`, `aliases` (string, or `{ zsh, pwsh }`), `commands` (TS functions run by `ttd <name>`; each also gets a shell alias unless `alias: false`), `capture` (static init output such as `fzf --zsh` / `starship init`, run once at gen time), `completions` (`argv` whose stdout is the completion script, or `help: cli` to parse its `--help` via config/generate-completions.ts), `setup(ctx)` hook.
+- Use `ctx` (lib/ctx.ts) for side effects: `ctx.exec` / `ctx.sudo` / `ctx.write` / `ctx.link` all honor dry run; `ctx.read` always runs (reads only); `ctx.notice` queues a post-setup message.
 
-- **help.ts** - Colored help output for all shell aliases and functions
-- **claude/** - TypeScript scripts for Claude Code hooks (statusline, notifications, settings setup) and `dump-prompts.ts` (extracts embedded skills/prompts from the claude binary)
-- **git/** - `ai-commit.ts` — interactive AI commit message generator with built-in fuzzy selector
-- **lazygit/** - `config.yml` — custom keybindings (`c` → `git-ai-commit`)
-- **tmux/tmux.conf** - Symlinked to `~/.config/tmux/tmux.conf` during setup
-- **vscode/** - `setup-settings.ts`, plus `linux/` and `mac/` keybindings
-- **karabiner/** - macOS keyboard remapping (home/end keys)
-- **ghostty/config** - Symlinked to `~/.config/ghostty/config`. `macos-option-as-alt = left` is required for fzf's `Alt+C` cd widget to fire — Ghostty's default leaves Option as a macOS compose key, so Option+C emits `ç` and never reaches zsh as `^[c`. `left` keeps the right Option composing accented characters
+Shared helpers are in `lib/helpers.ts` (`appInstalled`, `gitCloneOrPull`, `sudoCopyIfChanged`, `out`, `fzf`, `confirm`).
+
+### Shell loading
+
+- **zsh:** `~/.zshrc` → `modules/zsh/zshrc`. It sources `modules/zsh/base.zsh` (plugins from `~/.zsh/`, keybindings, zle widgets, completion styles, history, `compinit`), then `~/.cache/dotfiles/init.zsh`, then `~/.zshrc_local.sh` (untracked). If any `modules/**` or `lib/**` `.ts`/`.zsh` file is newer than the init, the zshrc runs `ttd gen zsh` first; otherwise a shell start runs no Bun.
+- **pwsh:** `$PROFILE` → `modules/pwsh/profile.ps1` — same pattern with `init.ps1` and `~/.pwsh_local.ps1`.
+- The generated init (lib/emit.ts) contains, per module in graph order and only if installed: env, PATH, captured init, the snippet, aliases, command aliases; then the `ttd` wrapper and its completion. Edit modules, never the generated file.
+
+### config/
+
+Shared scripts that are not one tool's: `help.ts` (the `ttd help` cheat sheet, hand-curated — update it when adding aliases), `generate-completions.ts` (zsh completions from `--help` for claude / tt), `terminal-input-test.ts`.
 
 ## Key Aliases
 
 ```
 g     → lazygit
-gc/gcm → git-ai-commit (AI-powered commit messages via Claude + interactive selector)
-gca   → git add . && git-ai-commit
+gc/gcm → ttd git-ai-commit (AI commit messages via Claude + interactive selector)
+gca   → git add . && ttd git-ai-commit
 ga    → git add .
 gp    → git push
 gs    → git status
-c     → claude --permission-mode auto --model opus --effort high (--chrome on Linux)
+c     → ttd claude opus (claude --permission-mode auto --model opus --effort high, --chrome on Linux)
 co/cor → same as c, explicit Opus name (cor resumes, overriding model/effort unlike cr)
-cs/csr → same, but --model sonnet --effort high (csr resumes, overriding model/effort)
-cf/cfa → same, but --model fable --effort medium/xhigh ("architect")
-cr/cfr/cfar → same as c/cf/cfa, plus --resume
-cloudflare → the Cloudflare CLI (its binary is `cf`, which the claude-fable wrapper shadows)
+cs/csr → ttd claude sonnet (csr resumes, overriding model/effort)
+cf/cfa → ttd claude fable / architect (--model fable --effort medium/xhigh)
+cr/cfr/cfar → resume variants
+cloudflare → the Cloudflare CLI (its binary is `cf`, which the claude-fable alias shadows)
 code  → code-insiders
-ls    → eza -la (dirs first, git status, icons; ls -al fallback)
+ls    → eza -la (dirs first, git status, icons)
 ez    → exec zsh
 dif   → delta (syntax-highlighted diff)
 jf    → just-fzf (fzf picker over justfile recipes)
-jn    → just-new (append a recipe to the justfile)
+jn    → ttd just-new (append a recipe to the justfile)
 gw    → gh browse
 zcd   → fuzzy-cd into a dir under cwd (same job as fzf's Alt+C, callable by name)
 ii    → fuzzy-cd into a ~/code/{p,w,f} project
@@ -125,41 +90,26 @@ This repo uses a **personal** GitHub identity (local git config):
 
 The work profile (`212787373_aero`) is the global default — this repo overrides it locally.
 
-**Pushing to this repo** — use `./scripts/git-push.sh` instead of `git push`. On macOS it switches to the `ChrisTowles` gh account, pushes, and switches back. On Linux it's a passthrough.
+**Pushing to this repo** — use `ttd push` instead of `git push`. On macOS it switches to the `ChrisTowles` gh account, pushes, and switches back. Elsewhere it is plain `git push`.
 
 ## Conventions
 
-- Shell functions use POSIX-compatible syntax where possible
-- PATH additions are idempotent (guarded by `case` checks against existing `$PATH`)
-- Setup/install logic is gated behind `DOTFILES_SETUP=1` to avoid running on every shell start
-- Platform detection uses `uname` checks for Linux vs macOS differences
-- Only two package managers need support: `brew` (macOS) and `apt` (Linux)
-- macOS supports both x86_64 and arm64 (Apple Silicon) — all macOS installs use `brew` which handles architecture automatically
-- macOS `/bin/bash` is 3.2 (lacks associative arrays, modern syntax) — Homebrew bash 5.x is required for tmux plugins. Installed via `brew install bash` in `40-tmux.sh` setup, and tmux.conf prepends `/opt/homebrew/bin` to PATH so `#!/usr/bin/env bash` finds it
-- Linux only needs x86_64 support — no ARM/aarch64 on Linux at this time
-- `${0:a:h}` resolves the sourced file's directory — but ONLY at the top level of a file, not inside functions. Inside a function, `$0` becomes the shell name (e.g. `zsh`). If a function needs the file's directory, capture it in a variable at the top level first:
-  ```bash
-  _MY_DIR="${0:a:h}"        # top-level: correct
-  my_func() {
-    echo "$_MY_DIR"          # function: uses captured value
-  }
-  ```
-- Complex logic (JSON merging, interactive UIs) should be extracted into TypeScript files under `config/` and called with `bun run`, rather than inlined in shell scripts
-- Functions files are numbered by 5s (05, 10, 15...) to allow inserting new files without renaming
-- TypeScript files use `bun run` (not `npx tsx`) — Bun is the primary TS runtime
-- One `package.json` at repo root — all `config/**/*.ts` files share dependencies
-- **Bun is the only package manager for this repo.** `bun.lock` is the sole lockfile; there is no `packageManager` field and no `pnpm-lock.yaml`. Use `bun install`, never `pnpm install`/`npm install` here. (`functions/10-pnpm.sh` still installs pnpm as a *system* tool for other projects — that is unrelated to this repo's own dependencies.)
-- No Python in shell modules — parse JSON and generate values with `bun -e` or a `config/**/*.ts` script, not `python3 -c`
-- Type-check with `bunx tsc --noEmit` — `tsconfig.json` covers `config/**/*.ts` with `@types/bun`
-- Lint shells with `bun run lint`. Note the split: `install.sh` and `scripts/*.sh` are bash and get `shellcheck`; `.zshrc` and `functions/*.sh` are **zsh** and get `zsh -n` instead. shellcheck has no zsh mode, so running it over the zsh files reports false errors on valid syntax (`${(z)var}`, `${=var}`) — don't add them back to `lint:shell`
-- lazygit custom commands need `zsh -ic '...'` to access shell functions (lazygit uses a plain shell by default)
-- `install.sh` is **bash** (not zsh) since it runs before zsh is installed — avoid zsh-isms in that file
-- Linux installs for GitHub-hosted CLIs use `gh release download` (not curl+grep):
-  ```bash
-  gh release download --repo owner/repo --pattern "tool_*_Linux_x86_64.tar.gz" -D /tmp --clobber
-  sudo install /tmp/tool /usr/local/bin/tool
-  ```
-- Rust ecosystem tools (bat, fd, eza, delta, starship) install via `cargo install`
-- Private/internal shell functions use underscore prefix (e.g. `_nerd_fonts_install`). Caveat: Claude Code's shell snapshot (which seeds its Bash tool sessions with your interactive functions) drops all underscore-prefixed functions — so a public function that calls a `_helper` at runtime will hit "command not found" inside Claude sessions. If a helper must exist wherever its public caller does, define it nested inside the caller (see `pr()` in `functions/35-gh.sh`); top-level underscore helpers are fine for setup-gated code and completions
-- Claude Code MCP servers are registered via `claude mcp add -s user` (stored in `~/.claude.json`), NOT in `settings.json`. The `settings.json` `mcpServers` field should stay empty. Setup in `60-claude-code.sh` handles idempotent registration.
-- Chrome DevTools MCP uses `--autoConnect` which connects to an existing Chrome session via the user data directory pipe. Requires Chrome 144+ with remote debugging enabled at `chrome://inspect/#remote-debugging`.
+- **Bun is the only package manager and the only prerequisite.** `bun.lock` is the sole lockfile. Use `bun install`, never `pnpm install`/`npm install` here. (`modules/pnpm` installs pnpm as a *system* tool for other projects.) TypeScript runs with `bun run`, never `npx tsx`.
+- Logic goes in TypeScript. Shell snippets (`init.zsh` / `init.ps1`) only for what must run in the shell itself: `cd`, `print -z`, zle widgets, `source`. No Python anywhere.
+- Hard cutover, no backward compatibility shims.
+- Package managers: `apt` (Linux), `brew` (macOS), `winget` (Windows). Linux is x86_64 only; macOS supports both arches via brew. Linux installs of GitHub-hosted CLIs use the `gh-release` backend.
+- Rust ecosystem tools (bat, fd, eza, delta, starship, just, broot) install via `cargo` on Linux/macOS and `winget` on Windows.
+- Windows scope: a tool not installed on the Mac is not installed on Windows either; Linux-only stays Linux-only. Mac-only modules are used on the work Mac — never drop them based on Linux shell history.
+- Type-check with `bunx tsc --noEmit`; test with `bun test`. Lint with `bun run lint`: shellcheck for `install.sh` and `modules/*/*.sh`; `zsh -n` for the zsh files (shellcheck has no zsh mode — don't point it at them); `ttd gen --check` parses the generated init; `ttd graph --check` validates the module graph on all three OSes.
+- CI (`.github/workflows/ci.yml`) runs on ubuntu, macos and windows, and only when code under bin/, lib/, modules/, config/ or the installers changes.
+- `install.sh` is **bash** (it runs before zsh exists) — no zsh-isms there.
+- macOS `/bin/bash` is 3.2 — the tmux module installs Homebrew bash for tmux plugins; tmux.conf prepends `/opt/homebrew/bin` to PATH.
+- zsh snippet functions: Claude Code's shell snapshot drops underscore-prefixed functions, so a public function must not call a top-level `_helper` at runtime — nest it instead.
+- `$EDITOR` carries flags (`code-insiders --wait`): call it as `${(z)EDITOR}` in zsh.
+- Claude Code MCP servers are registered via `claude mcp add -s user` (in `~/.claude.json`) by the claude module, NOT in `settings.json`, whose `mcpServers` stays empty.
+- Chrome DevTools MCP uses `--autoConnect`, which connects to an existing Chrome session. Requires Chrome 144+ with remote debugging enabled at `chrome://inspect/#remote-debugging`.
+- lazygit's `c` key runs `ttd git-ai-commit` (modules/lazygit/config.yml).
+- Ghostty: `macos-option-as-alt = left` is required for fzf's Alt+C on macOS (Option+C otherwise emits `ç`).
+- broot config is read via `BROOT_CONFIG_DIR` → `modules/broot` (no link).
+- restic needs `CLAUDE_BACKUP_REPO` set in `~/.zshrc_local.sh` — no default (see docs/linux-setup-notes.md#restic).
+- `~/.granted/config` is linked from `~/code/p/toolbox` via that repo's sync manifest, not from here.

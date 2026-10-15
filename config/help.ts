@@ -10,8 +10,10 @@ console.log(pc.bold(pc.cyan("━━━ Dotfiles Help ━━━")));
 console.log();
 
 console.log(h("Shell"));
+console.log(cmd("ttd", "Pick any dotfiles command (fzf); ttd help <cmd> for one"));
 console.log(cmd("ez", "Reload shell (exec zsh)"));
-console.log(cmd("zsh-dotfiles-setup", "Bootstrap all tools (DOTFILES_SETUP=1)"));
+console.log(cmd("ez-setup", "ttd setup (install, link, configure) + reload"));
+console.log(cmd("ttd doctor", "Config links missing or replaced by a regular file"));
 console.log(cmd("zsh-load", "Reload with timing debug"));
 console.log(cmd("ls", "eza -la (dirs first, git status, icons)"));
 console.log(cmd("lt [depth]", "Tree view (eza, default depth 2)"));
@@ -28,6 +30,7 @@ console.log(cmd("gp", "git push"));
 console.log(cmd("gs", "git status"));
 console.log(cmd("gmain", "Switch to main/master + pull"));
 console.log(cmd("gclean", "Delete local branches with gone remotes"));
+console.log(cmd("ttd push", "git push (macOS: as the personal gh account)"));
 console.log(cmd("gwt", "List worktrees (fzf), cd into selected one"));
 console.log(cmd("dif <a> <b>", "Diff two files with syntax highlighting (delta)"));
 console.log();
@@ -90,7 +93,7 @@ console.log(cmd("Alt+C", "cd into directory (macOS: left Option only)"));
 console.log();
 
 console.log(h("Claude Code"));
-console.log(cmd("c", "claude --permission-mode auto --model opus --effort high"));
+console.log(cmd("c", "ttd claude opus: --permission-mode auto --model opus --effort high"));
 console.log(cmd("co", "same as c, explicit Opus name"));
 console.log(cmd("cs", "claude ... --model sonnet --effort high"));
 console.log(cmd("cf", "claude ... --model fable --effort medium"));
@@ -122,7 +125,6 @@ console.log(h("Other"));
 console.log(cmd("code", "VS Code Insiders"));
 console.log(cmd("bat", "Syntax-highlighted cat (cat stays plain)"));
 console.log(cmd("nerd-fonts-setup", "Reinstall Nerd Fonts"));
-console.log(cmd("starship-setup", "Regenerate starship prompt config"));
 console.log(cmd("gh-alias-setup", "Reset gh CLI aliases"));
 console.log();
 
