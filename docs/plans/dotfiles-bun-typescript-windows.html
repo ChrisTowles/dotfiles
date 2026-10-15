@@ -1876,12 +1876,14 @@ if (document.readyState === 'loading') document.addEventListener('DOMContentLoad
 <header>
   <h1>Dotfiles on Bun, Three Platforms</h1>
   <doc-changes new="100" changed="14" deleted="62"></doc-changes>
-  <details class="thread"><summary>Why · 7 requests</summary>
+  <details class="thread"><summary>Why · 9 requests</summary>
     <doc-quote via="prompt" from="the user">pruning unused setup, replacing all shell scripts with TypeScript running on Bun (so Bun is the only bootstrap prerequisite), and adding Windows support alongside Linux and macOS.</doc-quote>
     <doc-quote via="prompt" from="the user">keep aws cli, psql, , really surprised, remember if something is only mac i use it on my work machine, keep android, sudo-askpass</doc-quote>
     <doc-quote via="prompt" from="the user">i'm game for a different way to delare dependencies order</doc-quote>
     <doc-quote via="prompt" from="the user">have the  things not installed on mac, not be installed on windows too, the diff is linux only,  for example discoard</doc-quote>
     <doc-quote via="prompt" from="the user">do add a keybinding ik use, ctrl + 4 keybaord mappying for macy equailvent</doc-quote>
+    <doc-quote via="prompt" from="the user">call it ttd</doc-quote>
+    <doc-quote via="prompt" from="the user">towles tool dotfiles is what its for for now</doc-quote>
     <doc-quote via="prompt" from="the user">i do want the CI to only need to build or run if there are infact changes to that code</doc-quote>
     <doc-quote via="prompt" from="the user">Use a hard cutover approach and never implement backward compatibility.</doc-quote>
   </details>
@@ -1941,8 +1943,8 @@ scripts/git-push.sh      gh account switch for the work profile
 
 <!-- ═════ 2 · ONE SETUP COMMAND ═════ -->
 <doc-claim>
-  <p>One <code>dots setup</code> command installs and links all modules.</p>
-  <doc-mock frame="terminal" title="dots setup --dry-run" w="480"><template><span class="dim">$</span> dots setup --dry-run
+  <p>One <code>ttd setup</code> command installs and links all modules.</p>
+  <doc-mock frame="terminal" title="ttd setup --dry-run" w="480"><template><span class="dim">$</span> ttd setup --dry-run
 <b>linux</b> · 41 modules · order from needs
 <span class="g">✓</span> rust      cargo 1.90 present
 <span class="g">✓</span> fzf       needs gh · present
@@ -1952,18 +1954,12 @@ scripts/git-push.sh      gh account switch for the work profile
 <span class="dim">-</span> karabiner skipped: darwin only
 <b>gen</b> ~/.cache/dotfiles/init.zsh
 <span class="y">Post-setup:</span> run 'gh auth login'</template></doc-mock>
-  <doc-ask id="cliname">
-    <p>What is the name of the CLI?</p>
-    <label><input type="radio" name="cliname" value="dots" checked> <code>dots</code> <small>no collision found</small></label>
-    <label><input type="radio" name="cliname" value="dot"> <code>dot</code> <small>Graphviz installs a <code>dot</code> binary</small></label>
-    <label><input type="radio" name="cliname" value="dotf"> <code>dotf</code></label>
-  </doc-ask>
 
   <doc-claim>
     <p>Each module is one folder with one typed <code>module.ts</code>.</p>
     <doc-tree caption="Configs move next to the module that links them.">
 <script type="text/plain">
-+ bin/dots.ts            # the CLI; package.json "bin", installed by bun link
++ bin/ttd.ts            # the CLI; package.json "bin", installed by bun link
 + lib/                   # module type, graph, platforms, backends, emitters
 + modules/
 +   lazygit/
@@ -2022,9 +2018,9 @@ export function order(mods: Module[], os: OS): Module[] {
 
   <doc-claim>
     <p>Each OS gives one <code>Platform</code> with one package manager.</p>
-    <doc-calls title="dots setup" caption="Each install spec goes to one backend.">
+    <doc-calls title="ttd setup" caption="Each install spec goes to one backend.">
 <script type="text/plain">
-+ **setup**(argv)                              @ bin/dots.ts:1
++ **setup**(argv)                              @ bin/ttd.ts:1
 +   **order**(modules, os)                     @ lib/graph.ts:1
 +   **installSpec**(ctx, spec)                 @ lib/install.ts:1
 +     **apt** / **brew** / **winget**          @ lib/backends/pkg.ts:1
@@ -2050,12 +2046,12 @@ export function order(mods: Module[], os: OS): Module[] {
 + **bootstrap**()                              @ bootstrap.ts:1
 +   ensure git (apt / brew / winget)
 +   git clone → ~/code/p/dotfiles
-+   bun install; bun link                      -- puts dots on PATH
-+   dots setup
++   bun install; bun link                      -- puts ttd on PATH
++   ttd setup
 +   link .zshrc / $PROFILE; chsh or WT default
 </script>
     
-<script type="text/plain" data-excerpt="install.sh:1" data-start="1" data-sha="3bd848a">
+<script type="text/plain" data-excerpt="install.sh:1" data-start="1" data-sha="b223536">
 #!/usr/bin/env bash
 # install.sh - Bootstrap dotfiles on a fresh machine
 # Usage: curl -fsSL https://raw.githubusercontent.com/ChrisTowles/dotfiles/main/install.sh | bash
@@ -2072,7 +2068,7 @@ DOTFILES_REPO="https://github.com/ChrisTowles/dotfiles.git"
   <p>Every kept command works in zsh and pwsh. Startup skips Bun.</p>
   <doc-code title="where each kept name lives" lang="text">
 <script type="text/plain">
-dots subcommand   gmain gclean pr gib gwt* gh-git-config gh-alias-setup
+ttd subcommand   gmain gclean pr gib gwt* gh-git-config gh-alias-setup
   + alias         jn just-file granted-populate cbk cbk-now cbk-restore
                   git-ai-commit gc gcm gca tmux-help ghostty-help
                   claude-prompts cprompts zsh-dotfiles-help push
@@ -2088,19 +2084,19 @@ plain alias       g gs ga gp gw gco gi ghci ls lt dif code
     <doc-code title=".zshrc · sketch (the whole file)" lang="zsh">
 <script type="text/plain">
 DOTFILES_DIR="$HOME/code/p/dotfiles"
-_dots_init="$HOME/.cache/dotfiles/init.zsh"
+_ttd_init="$HOME/.cache/dotfiles/init.zsh"
 # newest file under modules/ and lib/; approximately 1 ms for 150 files
-_dots_new=( $DOTFILES_DIR/{modules,lib}/**/*(.Nom[1]) )
-if [[ ! -r $_dots_init || $_dots_new[1] -nt $_dots_init ]]; then
-  dots gen zsh || print -u2 "dots gen failed: using the old init"
+_ttd_new=( $DOTFILES_DIR/{modules,lib}/**/*(.Nom[1]) )
+if [[ ! -r $_ttd_init || $_ttd_new[1] -nt $_ttd_init ]]; then
+  ttd gen zsh || print -u2 "ttd gen failed: using the old init"
 fi
-source $_dots_init
+source $_ttd_init
 [[ -r ~/.zshrc_local.sh ]] && source ~/.zshrc_local.sh
 autoload -Uz compinit && compinit -C
 </script>
       <doc-pin line="5" tone="info" title="One stat walk, no Bun">Bun runs only on this branch.</doc-pin>
     </doc-code>
-    <doc-note tone="warn"><strong>Risk</strong> <code>Get-ChildItem -Recurse</code> in pwsh is slower than the zsh glob. If the check costs more than 30 ms, compare one stamp file that <code>dots</code> touches.</doc-note>
+    <doc-note tone="warn"><strong>Risk</strong> <code>Get-ChildItem -Recurse</code> in pwsh is slower than the zsh glob. If the check costs more than 30 ms, compare one stamp file that <code>ttd</code> touches.</doc-note>
   </doc-claim>
 
   <doc-claim>
@@ -2116,12 +2112,12 @@ source <(fzf --zsh)                           Import-Module PSFzf; Set-PsFzfOpti
 fh() { ... }        # from init.zsh           function fh { ... }   # from init.ps1
 </script>
     </doc-code>
-    <doc-note tone="info">The emitter bakes in the OS and what is installed at <code>gen</code> time. The old <code>command -v</code> guards go. <code>dots setup</code> always runs <code>gen</code> at the end.</doc-note>
+    <doc-note tone="info">The emitter bakes in the OS and what is installed at <code>gen</code> time. The old <code>command -v</code> guards go. <code>ttd setup</code> always runs <code>gen</code> at the end.</doc-note>
   </doc-claim>
 
   <doc-claim>
     <p><code>DOTFILES_SETUP=1</code> goes. Setup never runs inside shell startup.</p>
-    <doc-code src=".zshrc" lines="369-377" title=".zshrc today: source each file, setup inline" file=".zshrc" start="369" sha="3bd848a"><script type="text/plain"># Source custom functions
+    <doc-code src=".zshrc" lines="369-377" title=".zshrc today: source each file, setup inline" file=".zshrc" start="369" sha="b223536"><script type="text/plain"># Source custom functions
 for _fn in "$DOTFILES_DIR"/functions/*.sh(N); do
   if [[ "$DOTFILES_SETUP" -eq 1 ]]; then
     echo "\033[2m──\033[0m \033[36m${_fn:t}\033[0m \033[2m──\033[0m"
@@ -2130,23 +2126,23 @@ for _fn in "$DOTFILES_DIR"/functions/*.sh(N); do
   zsh_debug_section "$_fn"
 done
 zsh_debug_section "autoload-functions"</script>
-      <doc-pin line="371" tone="risk" title="This gate goes"><code>ez-setup</code> becomes <code>dots setup &amp;&amp; exec zsh</code>.</doc-pin>
+      <doc-pin line="371" tone="risk" title="This gate goes"><code>ez-setup</code> becomes <code>ttd setup &amp;&amp; exec zsh</code>.</doc-pin>
     </doc-code>
   </doc-claim>
 
   <doc-claim>
-    <p>Commands that do not change shell state move into <code>dots</code>.</p>
-    <doc-calls title="dots commands" caption="Each is a module field, so a module owns its commands.">
+    <p>Commands that do not change shell state move into <code>ttd</code>.</p>
+    <doc-calls title="ttd commands" caption="Each is a module field, so a module owns its commands.">
 <script type="text/plain">
-+ **dots** gmain                               @ modules/git/module.ts:1
-+ **dots** pr                                  @ modules/gh/module.ts:1    -- keeps the stacked-base logic
-+ **dots** cbk / cbk-now / cbk-restore         @ modules/restic/module.ts:1
-+ **dots** push                                @ modules/git/module.ts:1   -- was scripts/git-push.sh
-~ git-ai-commit                                @ config/git/ai-commit.ts:1 -- called as dots commit
++ **ttd** gmain                               @ modules/git/module.ts:1
++ **ttd** pr                                  @ modules/gh/module.ts:1    -- keeps the stacked-base logic
++ **ttd** cbk / cbk-now / cbk-restore         @ modules/restic/module.ts:1
++ **ttd** push                                @ modules/git/module.ts:1   -- was scripts/git-push.sh
+~ git-ai-commit                                @ config/git/ai-commit.ts:1 -- called as ttd commit
 - scripts/git-push.sh                          @ scripts/git-push.sh:1
 </script>
     
-<script type="text/plain" data-excerpt="config/git/ai-commit.ts:1" data-start="1" data-sha="3bd848a">
+<script type="text/plain" data-excerpt="config/git/ai-commit.ts:1" data-start="1" data-sha="b223536">
 #!/usr/bin/env bun
 
 import pc from "picocolors";
@@ -2155,7 +2151,7 @@ const MESSAGE_COUNT = 5;
 
 // Terminal control sequences (not colors — picocolors doesn't cover these)
 </script>
-<script type="text/plain" data-excerpt="scripts/git-push.sh:1" data-start="1" data-sha="3bd848a">
+<script type="text/plain" data-excerpt="scripts/git-push.sh:1" data-start="1" data-sha="b223536">
 #!/usr/bin/env bash
 # git-push.sh — push to this repo, handling gh account switching on macOS
 set -euo pipefail
@@ -2168,7 +2164,7 @@ if [[ "$(uname -s)" == "Darwin" ]]; then
 
   <doc-claim>
     <p>The claude wrappers come from one table of flags.</p>
-    <doc-code src="functions/60-claude-code.sh" lines="99-121" title="60-claude-code.sh today" file="functions/60-claude-code.sh" start="99" sha="3bd848a"><script type="text/plain">_claude_flags=(--permission-mode auto)
+    <doc-code src="functions/60-claude-code.sh" lines="99-121" title="60-claude-code.sh today" file="functions/60-claude-code.sh" start="99" sha="b223536"><script type="text/plain">_claude_flags=(--permission-mode auto)
 [[ "$(uname -s)" == "Linux" ]] && _claude_flags+=(--chrome)
 
 # c/ca: Opus at high effort. cr: resume, no model/effort override (keeps the resumed session's own settings).
@@ -2194,7 +2190,7 @@ cf()   { _claude_run "${_claude_flags_fable[@]}" "$@"; }</script></doc-code>
     <doc-ask id="claudewrap">
       <p>How do <code>c</code>, <code>cr</code>, <code>cf</code> and the others run?</p>
       <label><input type="radio" name="claudewrap" value="emit" checked> Shell functions, emitted from the table <small>no Bun hop on 1,385 uses</small></label>
-      <label><input type="radio" name="claudewrap" value="dots"> <code>dots claude &lt;variant&gt;</code> <small>approximately 20 ms more for each start</small></label>
+      <label><input type="radio" name="claudewrap" value="ttd"> <code>ttd claude &lt;variant&gt;</code> <small>approximately 20 ms more for each start</small></label>
     </doc-ask>
   </doc-claim>
 </doc-claim>
@@ -2225,7 +2221,7 @@ export async function preflight(ctx: Ctx) {
   if (!/0x1\b/.test(out.stdout))
     ctx.fail("Turn on Developer Mode: Settings > System > For developers")
 }
-// link() then uses fs.symlink on all three OSes; dots doctor flags
+// link() then uses fs.symlink on all three OSes; ttd doctor flags
 // a target that an app replaced with a regular file
 </script>
     </doc-code>
@@ -2270,8 +2266,8 @@ zoxide         one Rust binary, init for zsh and pwsh, reads its own db
   <p>The cutover lands in five PRs. Each leaves <code>main</code> usable.</p>
   <div class="cols">
     <div class="card"><h4>1 · Prune</h4><p>Delete the 8 tools. Shell only. No new code.</p></div>
-    <div class="card"><h4>2 · Core</h4><p>lib/, dots, all modules, init.zsh, new .zshrc. Delete functions/. CI for Linux and macOS.</p></div>
-    <div class="card"><h4>3 · Commands</h4><p>Move gmain, pr, cbk and the others into dots. Delete their snippets.</p></div>
+    <div class="card"><h4>2 · Core</h4><p>lib/, ttd, all modules, init.zsh, new .zshrc. Delete functions/. CI for Linux and macOS.</p></div>
+    <div class="card"><h4>3 · Commands</h4><p>Move gmain, pr, cbk and the others into ttd. Delete their snippets.</p></div>
     <div class="card"><h4>4 · Bootstrap</h4><p>bootstrap.ts, thin install.sh. Delete scripts/.</p></div>
     <div class="card"><h4>5 · Windows</h4><p>win32 platform, winget, pwsh emitter, install.ps1, PowerToys. Add the Windows runner.</p></div>
   </div>
@@ -2302,12 +2298,12 @@ functions/ → modules/
   77-discord 78-bambu-studio 79-popos  → discord/ bambu/ popos/
   78-clipboard-manager                 → clipboard/
   80-sudo-askpass 81-ghostty 82-handy  → sudo-askpass/ ghostty/ handy/
-  99-help                              → dots help
+  99-help                              → ttd help
   - 18 19-tt-tmux 35-neovim 42 62 63 83   # pruned, claim 1
 .zshrc                → modules/zsh/init.zsh + 10-line stub
 config/sudo-askpass.sh → modules/sudo-askpass/askpass.ts  (bun shebang)
 config/<tool>/         → modules/<tool>/   (lazygit tmux ghostty karabiner keyd sysctl broot)
-scripts/git-push.sh    → dots push
+scripts/git-push.sh    → ttd push
 + install.ps1  bootstrap.ts  modules/pwsh/profile.ps1  vscode/win/keybindings.json
 </script>
     </doc-tree>
@@ -2317,21 +2313,21 @@ scripts/git-push.sh    → dots push
     <p>Lint, types, CI and docs change last, by file.</p>
     <doc-code title="mechanical changes" lang="text">
 <script type="text/plain">
-package.json   "bin": { "dots": "bin/dots.ts" }
+package.json   "bin": { "ttd": "bin/ttd.ts" }
                lint:shell  shellcheck install.sh         (scripts/ gone)
                lint:shell  zsh -n .zshrc modules/**/*.zsh
-               lint:gen    dots gen --check               (zsh -n + pwsh AST parse)
-               lint:graph  dots graph --check             (cycles, unknown needs)
+               lint:gen    ttd gen --check               (zsh -n + pwsh AST parse)
+               lint:graph  ttd graph --check             (cycles, unknown needs)
 tsconfig.json  include: bin, lib, modules, bootstrap.ts, config
 .shellcheckrc  drop zsh suppressions; only install.sh is left
 .github/workflows/ci.yml   matrix ubuntu / macos / windows
                paths filter: modules lib bin config bootstrap.ts install.*
                              package.json bun.lock tsconfig.json ci.yml
-               steps: bun install, tsc, bun test, lint, dots setup --dry-run
-CLAUDE.md      new layout, needs, dots, winget, Dev Mode, no DOTFILES_SETUP
-README.md      two one-liners; dots commands replace zsh-dotfiles-setup
+               steps: bun install, tsc, bun test, lint, ttd setup --dry-run
+CLAUDE.md      new layout, needs, ttd, winget, Dev Mode, no DOTFILES_SETUP
+README.md      two one-liners; ttd commands replace zsh-dotfiles-setup
 docs/          linux, mac notes; new windows-setup-notes.md
-help.ts        becomes dots help; reads aliases from module data
+help.ts        becomes ttd help; reads aliases from module data
 config/claude  notify.ts: win32 player; paths use os.homedir(), not HOME
 config/vscode  setup-settings.ts: win32 %APPDATA% path
 </script>
