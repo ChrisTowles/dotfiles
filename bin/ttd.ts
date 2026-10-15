@@ -5,7 +5,7 @@ import { join } from "node:path";
 import { parseArgs } from "node:util";
 import pc from "picocolors";
 import { makeCtx } from "../lib/ctx";
-import { checkSyntax, commandList, generate, initFile } from "../lib/emit";
+import { addModulePaths, checkSyntax, commandList, generate, initFile } from "../lib/emit";
 import { order } from "../lib/graph";
 import { linkState } from "../lib/link";
 import { loadModules } from "../lib/module";
@@ -31,6 +31,7 @@ if (cmd === "-h" || cmd === "--help") cmd = "help";
 if (cmd === "claude") process.exit(await runClaude(rest[0] ?? "opus", rest.slice(1)));
 
 const mods = await loadModules();
+addModulePaths(mods);
 
 /** Flags of the builtins. Module commands get their argv untouched. */
 function flags(argv: string[]) {

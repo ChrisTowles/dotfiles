@@ -1,10 +1,10 @@
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
-import { join } from "node:path";
+import { delimiter, join } from "node:path";
 import { order } from "./graph";
 import { withTmp } from "./helpers";
 import { installedBy } from "./install";
 import { snippetPath } from "./module";
-import { CACHE, REPO, expandValue, pickOS } from "./platform";
+import { CACHE, REPO, currentOS, expandValue, pickOS } from "./platform";
 import type { Ctx, Module, Shell } from "./types";
 
 export const PUSH_FILE = join(CACHE, "push");
@@ -22,6 +22,24 @@ const PWSH_ALIASES = new Set(
 
 const zq = (s: string) => `'${s.replaceAll("'", `'\\''`)}'`;
 const pq = (s: string) => `'${s.replaceAll("'", "''")}'`;
+
+/**
+ * Prepend every module's `path` entries for this OS to the process PATH, so a
+ * tool in a module's own dir (~/.cargo/bin, PNPM_HOME, …) is found even when
+ * the shell that ran ttd has no generated init yet. Without it rust looks
+ * uninstalled, its path is left out of the init, and every cargo tool with it.
+ */
+export function addModulePaths(mods: Module[]): void {
+  const os = currentOS();
+  const have = (process.env.PATH ?? "").split(delimiter);
+  const add = new Set<string>();
+  for (const m of mods)
+    for (const raw of m.path ?? []) {
+      const v = pickOS(raw, os);
+      if (v !== undefined && !have.includes(expandValue(v))) add.add(expandValue(v));
+    }
+  if (add.size) process.env.PATH = [...add, ...have].join(delimiter);
+}
 
 /**
  * `installed()` if the module overrides it; otherwise `bin` on PATH, or every

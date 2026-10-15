@@ -34,7 +34,7 @@ export function makeCtx(opts: CtxOptions = {}): Ctx {
       try {
         const p = Bun.spawn(argv, {
           cwd: o.cwd,
-          env: o.env ? { ...process.env, ...o.env } : undefined,
+          env: { ...process.env, ...o.env },
           stdin: o.stdin !== undefined ? new Blob([o.stdin]) : "ignore",
           stdout: "pipe",
           stderr: "pipe",
@@ -54,7 +54,7 @@ export function makeCtx(opts: CtxOptions = {}): Ctx {
       try {
         const p = Bun.spawn(argv, {
           cwd: o.cwd,
-          env: o.env ? { ...process.env, ...o.env } : undefined,
+          env: { ...process.env, ...o.env },
           stdio: ["inherit", "inherit", "inherit"],
         });
         return await p.exited;
@@ -68,7 +68,9 @@ export function makeCtx(opts: CtxOptions = {}): Ctx {
       return ctx.exec(os === "win32" ? argv : ["sudo", ...argv]);
     },
 
-    has: (bin) => Bun.which(bin) !== null,
+    // Bun.which and Bun.spawn use the PATH Bun started with unless handed the
+    // current one, which addModulePaths may have extended.
+    has: (bin) => Bun.which(bin, { PATH: process.env.PATH }) !== null,
 
     log: (msg) => console.log(` ${msg}`),
 
