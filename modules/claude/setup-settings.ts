@@ -137,6 +137,7 @@ const uninstalls: Uninstall[] = [
   { kind: "github_marketplace", name: "compound-engineering",           marketplace: "compound-engineering-plugin" },
   { kind: "github_marketplace", name: "plannotator",                    marketplace: "plannotator" },
   { kind: "github_marketplace", name: "humanizer",                      marketplace: "humanizer" },
+  { kind: "github_marketplace", name: "typesafe",                       marketplace: "typesafe-ai" },
 ];
 
 // Marketplaces to remove. Move entries here from `marketplaces` to uninstall on next setup.
@@ -147,7 +148,13 @@ const uninstalls: Uninstall[] = [
 // Clear this after that run: removing a marketplace uninstalls every plugin it
 // owns, so leaving an entry here re-clones it and drops those plugins on each
 // setup — only the ones listed in `installs` come back.
-const uninstallMarketplaces: string[] = ["plannotator", "humanizer"];
+const uninstallMarketplaces: string[] = [
+  "plannotator",
+  "humanizer",
+  "typesafe-ai",
+  "superpowers-marketplace",
+  "compound-engineering-plugin",
+];
 
 const marketplacesDir = join(process.env.HOME!, ".claude", "plugins", "marketplaces");
 
