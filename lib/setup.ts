@@ -17,7 +17,7 @@ const completionArgv = (c: Completion): string[] =>
 
 async function setupModule(m: Module, ctx: Ctx): Promise<void> {
   const shell = shellFor(ctx.os);
-  const specs = [pickOS(m.install ?? {}, ctx.os) ?? []].flat();
+  const specs = [(m.install && pickOS(m.install, ctx.os)) || []].flat();
   let installed = await isInstalled(m, ctx);
   if (specs.length && !installed) {
     for (const spec of specs) {
