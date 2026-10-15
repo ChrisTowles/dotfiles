@@ -1,18 +1,7 @@
-import { existsSync } from "node:fs";
+import { existsSync, mkdtempSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import type { Ctx } from "./types";
-
-/**
- * Installed check for apps that are not (only) a binary on PATH:
- * any of `bins` on PATH, a macOS .app bundle, or a winget package id.
- */
-export function appInstalled(spec: { bins?: string[]; mac?: string; winget?: string }) {
-  return async (ctx: Ctx): Promise<boolean> => {
-    if (spec.bins?.some((b) => ctx.has(b))) return true;
-    if (ctx.os === "darwin" && spec.mac) return existsSync(`/Applications/${spec.mac}.app`);
-    if (ctx.os === "win32" && spec.winget) return (await ctx.read(["winget", "list", "--id", spec.winget, "--exact"])).code === 0;
-    return false;
-  };
-}
 
 export async function gitCloneOrPull(ctx: Ctx, url: string, dir: string): Promise<number> {
   const name = dir.split(/[\\/]/).pop();
@@ -60,4 +49,14 @@ export async function sudoCopyIfChanged(ctx: Ctx, src: string, dest: string): Pr
   // install unlinks the destination first, so a stale symlink there is replaced, not written through
   await ctx.sudo(["install", "-D", "-m", "0644", src, dest]);
   return true;
+}
+
+/** Run `fn` with a fresh temp dir, removed afterward whatever happens. */
+export async function withTmp<T>(prefix: string, fn: (dir: string) => Promise<T>): Promise<T> {
+  const dir = mkdtempSync(join(tmpdir(), prefix));
+  try {
+    return await fn(dir);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
 }

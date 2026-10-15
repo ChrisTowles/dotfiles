@@ -1,7 +1,8 @@
 #!/usr/bin/env bun
 
-import { readFileSync, writeFileSync, mkdirSync, lstatSync, renameSync, symlinkSync, readdirSync, existsSync } from "fs";
+import { readFileSync, writeFileSync, mkdirSync, readdirSync, existsSync } from "fs";
 import { join, dirname } from "path";
+import { ensureSymlink } from "../../lib/link";
 
 const configSrc = dirname(Bun.main);
 const settingsFile = join(process.env.HOME!, ".claude", "settings.json");
@@ -278,18 +279,6 @@ for (const item of installs) install(item);
 
 const claudeMdSrc = join(configSrc, "global-claude-md.md");
 const claudeMdDest = join(process.env.HOME!, ".claude", "CLAUDE.md");
-
-function ensureSymlink(src: string, dest: string) {
-  try {
-    const stat = lstatSync(dest);
-    if (!stat.isSymbolicLink()) {
-      renameSync(dest, dest + `.${new Date().toISOString().slice(0, 10)}.bak`);
-      symlinkSync(src, dest);
-    }
-  } catch {
-    symlinkSync(src, dest);
-  }
-}
 
 // Skip on macOS: work Mac uses a work-focused CLAUDE.md managed in ~/code/p/toolbox.
 // Linux (home) still gets the dotfiles-managed global CLAUDE.md.

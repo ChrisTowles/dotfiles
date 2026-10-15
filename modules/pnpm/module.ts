@@ -4,8 +4,8 @@ import { defineModule } from "../../lib/module";
 export default defineModule({
   id: "pnpm",
   needs: ["fnm"],
-  env: { PNPM_HOME: { linux: "~/.local/share/pnpm", darwin: "~/.local/share/pnpm" } },
-  path: [{ linux: "~/.local/share/pnpm", darwin: "~/.local/share/pnpm" }],
+  env: { PNPM_HOME: { unix: "~/.local/share/pnpm" } },
+  path: [{ unix: "~/.local/share/pnpm" }],
   completions: [{ shell: "zsh", argv: ["pnpm", "completion", "zsh"], name: "_pnpm" }],
   commands: {
     "pnpm-install-global": {

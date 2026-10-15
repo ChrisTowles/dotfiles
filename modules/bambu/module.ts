@@ -1,4 +1,4 @@
-import { existsSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { defineModule } from "../../lib/module";
 
@@ -7,7 +7,6 @@ const APP = "com.bambulab.BambuStudio";
 // Bambu Studio (Linux only — Flatpak from Flathub). https://flathub.org/apps/com.bambulab.BambuStudio
 export default defineModule({
   id: "bambu",
-  installed: async (ctx) => (await ctx.read(["flatpak", "info", "--user", APP])).code === 0,
   install: { linux: { via: "flatpak", id: APP } },
   async setup(ctx) {
     // Explicit default handlers so downloaded models open in Bambu Studio even if another slicer is installed later
@@ -20,7 +19,7 @@ export default defineModule({
     const text = readFileSync(fav, "utf8");
     if (text.includes(`"${APP}"`)) return;
     const fixed = text.includes('"BambuStudio"') ? text.replace('"BambuStudio"', `"${APP}"`) : text.replace(/]\s*$/, `    "${APP}",\n]`);
-    if (!ctx.dryRun) writeFileSync(fav, fixed);
+    await ctx.write(fav, fixed);
     ctx.log(`added ${APP} to COSMIC panel favorites`);
     await ctx.read(["pkill", "-x", "cosmic-panel"]);
   },

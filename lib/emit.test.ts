@@ -28,6 +28,10 @@ describe("generate", () => {
     expect(text).toContain("Remove-Item -Force -ErrorAction SilentlyContinue Alias:gc");
     expect(text).toContain("function global:gc { ttd git-ai-commit @args }");
   });
+  test("pwsh: no alias removal for names that are not built in", async () => {
+    const text = await generate([fake({ aliases: { cfa: "ttd claude architect" } })], "pwsh", makeCtx({ os: "win32" }));
+    expect(text).not.toContain("Alias:cfa");
+  });
   test("an uninstalled module emits nothing", async () => {
     const mod = fake({ id: "nope", install: { linux: { via: "apt", pkg: "x" } }, bin: "definitely-not-on-path", aliases: { n: "nope" } });
     expect(await generate([mod], "zsh", makeCtx({ os: "linux" }))).not.toContain("alias n=");

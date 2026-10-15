@@ -1,5 +1,4 @@
 import pc from "picocolors";
-import { appInstalled } from "../../lib/helpers";
 import { defineModule } from "../../lib/module";
 
 const HELP = `${pc.bold(pc.cyan("Ghostty keybindings:"))}
@@ -22,19 +21,11 @@ ${pc.bold(pc.cyan("Known issues:"))}
 // Ghostty terminal (https://ghostty.org). No Windows build.
 export default defineModule({
   id: "ghostty",
-  installed: appInstalled({ bins: ["ghostty"], mac: "Ghostty" }),
   install: {
-    darwin: { via: "brew", pkg: "ghostty", cask: true },
+    // Ubuntu has no ghostty package: it comes from the mkasberg PPA
+    linux: { via: "apt", pkg: "ghostty", repo: { ppa: "mkasberg/ghostty-ubuntu" } },
+    darwin: { via: "brew", pkg: "ghostty", cask: true, app: "Ghostty" },
   },
-  os: ["linux", "darwin"],
   links: [{ from: "config", to: { linux: "~/.config/ghostty/config", darwin: "config:com.mitchellh.ghostty/config" } }],
   commands: { "ghostty-help": { desc: "Ghostty tips and workarounds", run: async () => void console.log(HELP) } },
-  async setup(ctx) {
-    // Ubuntu has no ghostty package: it comes from the mkasberg PPA
-    if (ctx.os === "linux" && !ctx.has("ghostty")) {
-      await ctx.sudo(["add-apt-repository", "-y", "ppa:mkasberg/ghostty-ubuntu"]);
-      await ctx.sudo(["apt-get", "update", "-qq"]);
-      if ((await ctx.sudo(["apt-get", "install", "-y", "-qq", "ghostty"])) !== 0) throw new Error("apt install ghostty failed");
-    }
-  },
 });

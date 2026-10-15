@@ -6,8 +6,7 @@ export default defineModule({
   id: "eza",
   needs: ["rust"],
   install: {
-    linux: { via: "cargo", crate: "eza" },
-    darwin: { via: "cargo", crate: "eza" },
+    unix: { via: "cargo", crate: "eza" },
     win32: { via: "winget", id: "eza-community.eza" },
   },
   aliases: {

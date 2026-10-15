@@ -4,7 +4,7 @@
  * generator, by recursively parsing its commander/clap-style --help output
  * (subcommands included) and emitting a completion function tree.
  *
- * Run by `ttd setup` (Completion argv "ttd-gen-completions <cli>"), or by hand:
+ * Run by `ttd setup` (a module completion `{ help: "<cli>" }`), or by hand:
  *
  *   bun run generate-completions.ts claude > ~/.zsh/completions/_claude
  *   bun run generate-completions.ts tt > ~/.zsh/completions/_tt

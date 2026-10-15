@@ -6,8 +6,7 @@ export default defineModule({
   id: "rust",
   bin: "rustc",
   install: {
-    linux: { via: "script", url: "https://sh.rustup.rs", args: ["-y", "--no-modify-path"] },
-    darwin: { via: "script", url: "https://sh.rustup.rs", args: ["-y", "--no-modify-path"] },
+    unix: { via: "script", url: "https://sh.rustup.rs", args: ["-y", "--no-modify-path"] },
     win32: { via: "winget", id: "Rustlang.Rustup" },
   },
   path: ["~/.cargo/bin"],

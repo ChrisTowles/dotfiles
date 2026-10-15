@@ -9,7 +9,7 @@ export default defineModule({
   needs: ["rust"],
   installed: (ctx) => ctx.has("tt"),
   // clap has no built-in generator here, so completions come from `tt --help`
-  completions: [{ shell: "zsh", argv: ["ttd-gen-completions", "tt"], name: "_tt" }],
+  completions: [{ shell: "zsh", help: "tt", name: "_tt" }],
   commands: {
     "tt-update": {
       desc: "Pull and reinstall the tt CLI from ~/code/p/towles-tool-rs",

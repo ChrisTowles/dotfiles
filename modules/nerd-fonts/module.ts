@@ -1,6 +1,6 @@
-import { existsSync, mkdtempSync, rmSync } from "node:fs";
-import { tmpdir } from "node:os";
+import { existsSync } from "node:fs";
 import { join } from "node:path";
+import { withTmp } from "../../lib/helpers";
 import { defineModule } from "../../lib/module";
 
 // FiraCode Nerd Font, for Starship and terminal icons
@@ -26,14 +26,12 @@ export default defineModule({
     const dir = join(ctx.home, ".local", "share", "fonts", "FiraCode");
     if (existsSync(dir)) return;
     ctx.log("installing FiraCode Nerd Font");
-    const tmp = mkdtempSync(join(tmpdir(), "ttd-font-"));
-    try {
-      await ctx.exec(["gh", "release", "download", "--repo", "ryanoasis/nerd-fonts", "--pattern", "FiraCode.zip", "-D", tmp, "--clobber"]);
+    await withTmp("ttd-font-", async (tmp) => {
+      const dl = ["gh", "release", "download", "--repo", "ryanoasis/nerd-fonts", "--pattern", "FiraCode.zip", "-D", tmp, "--clobber"];
+      if ((await ctx.exec(dl)) !== 0) throw new Error("font download failed");
       await ctx.exec(["mkdir", "-p", dir]);
       await ctx.exec(["unzip", "-o", "-q", join(tmp, "FiraCode.zip"), "-d", dir]);
       await ctx.exec(["fc-cache", "-f"]);
-    } finally {
-      rmSync(tmp, { recursive: true, force: true });
-    }
+    });
   },
 });

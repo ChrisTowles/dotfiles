@@ -1,30 +1,42 @@
 export type OS = "linux" | "darwin" | "win32";
 export type Shell = "zsh" | "pwsh";
-export type PerOS<T> = Partial<Record<OS, T>>;
+/** Per-OS values. `unix` covers linux and darwin; a key for one OS wins over it. */
+export type PerOS<T> = Partial<Record<OS | "unix", T>>;
 
 export const ALL_OS: OS[] = ["linux", "darwin", "win32"];
-export const SHELLS: Shell[] = ["zsh", "pwsh"];
 
 export type Install =
   | { via: "apt"; pkg: string | string[]; repo?: AptRepo }
-  | { via: "brew"; pkg: string; cask?: boolean; tap?: string }
+  /** `app`: the .app name in /Applications, so a cask installed by hand counts as installed. */
+  | { via: "brew"; pkg: string; cask?: boolean; tap?: string; app?: string }
   | { via: "winget"; id: string }
   | { via: "cargo"; crate: string; locked?: boolean; git?: string }
+  /**
+   * `tag` ending in `*` picks the newest release whose tag starts with the rest
+   * (for repos that ship several products); `{version}` in `asset` is the tag minus that prefix.
+   */
   | { via: "gh-release"; repo: string; asset: string; bins: string[]; tag?: string }
   | { via: "script"; url: string; args?: string[]; shell?: "sh" | "bash" }
   | { via: "flatpak"; id: string }
-  | { via: "pnpm-global"; pkg: string };
+  | { via: "pnpm-global"; pkg: string }
+  /** A .deb from a URL (or a resolver, for "latest" redirects/APIs) or a GitHub release asset. */
+  | { via: "deb"; pkg: string; url?: string | ((ctx: Ctx) => Promise<string>); gh?: { repo: string; asset: string } };
 
-/** A third-party apt repository: the signing key is fetched to `keyring`, `line` goes in sources.list.d. */
-export interface AptRepo {
-  name: string;
-  key: string;
-  keyring: string;
-  /** `{arch}` and `{keyring}` are filled in; `{codename}` is the Ubuntu codename. */
-  line: string;
-  /** Pipe the key through `gpg --dearmor` (keys published as ASCII armor but referenced as .gpg). */
-  dearmor?: boolean;
-}
+/**
+ * A third-party apt repository: either a Launchpad `ppa`, or a signing `key`
+ * fetched to `keyring` plus a `line` for sources.list.d.
+ */
+export type AptRepo =
+  | { ppa: string }
+  | {
+      name: string;
+      key: string;
+      keyring: string;
+      /** `{arch}` and `{keyring}` are filled in; `{codename}` is the Ubuntu codename. */
+      line: string;
+      /** Pipe the key through `gpg --dearmor` (keys published as ASCII armor but referenced as .gpg). */
+      dearmor?: boolean;
+    };
 
 /**
  * A link target is a logical path the Platform resolves per OS:
@@ -48,13 +60,13 @@ export interface Command {
   alias?: boolean;
 }
 
-export interface Completion {
-  shell: Shell;
-  /** Command that prints the completion script. "ttd-gen-completions <cli>" uses config/generate-completions.ts. */
-  argv: string[];
-  /** File name: zsh → ~/.zsh/completions/<name>, pwsh → ~/.cache/dotfiles/completions/<name>.ps1 */
-  name: string;
-}
+/**
+ * A completion script, written to ~/.zsh/completions/<name> (zsh) or
+ * ~/.cache/dotfiles/completions/<name>.ps1 (pwsh). Its text comes from `argv`'s
+ * stdout, or from parsing `<help> --help` (config/generate-completions.ts) for CLIs
+ * that have no generator.
+ */
+export type Completion = { shell: Shell; name: string } & ({ argv: string[] } | { help: string });
 
 export interface ModuleDef {
   id: string;
@@ -64,7 +76,10 @@ export interface ModuleDef {
   os?: OS[];
   /** Probed with Bun.which. Defaults to `id`. */
   bin?: string;
-  /** Override the installed check (fonts, GUI apps, things with no binary). */
+  /**
+   * Override the installed check. The default: `bin` on PATH, or any install
+   * spec for this OS reports itself installed (dpkg, brew, winget, flatpak, /Applications).
+   */
   installed?: (ctx: Ctx) => boolean | Promise<boolean>;
   install?: PerOS<Install | Install[]>;
   links?: Link[];

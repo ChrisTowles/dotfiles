@@ -4,12 +4,11 @@ import { defineModule } from "../../lib/module";
 export default defineModule({
   id: "fnm",
   install: {
-    linux: { via: "script", url: "https://fnm.vercel.app/install", shell: "bash", args: ["--skip-shell"] },
-    darwin: { via: "script", url: "https://fnm.vercel.app/install", shell: "bash", args: ["--skip-shell"] },
+    unix: { via: "script", url: "https://fnm.vercel.app/install", shell: "bash", args: ["--skip-shell"] },
     win32: { via: "winget", id: "Schniz.fnm" },
   },
-  env: { FNM_PATH: { linux: "~/.local/share/fnm", darwin: "~/.local/share/fnm" } },
-  path: [{ linux: "~/.local/share/fnm", darwin: "~/.local/share/fnm" }],
+  env: { FNM_PATH: { unix: "~/.local/share/fnm" } },
+  path: [{ unix: "~/.local/share/fnm" }],
   completions: [
     { shell: "zsh", argv: ["fnm", "completions", "--shell", "zsh"], name: "_fnm" },
     { shell: "pwsh", argv: ["fnm", "completions", "--shell", "power-shell"], name: "fnm" },

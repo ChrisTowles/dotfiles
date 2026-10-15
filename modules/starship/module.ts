@@ -5,8 +5,7 @@ export default defineModule({
   id: "starship",
   needs: ["rust", "nerd-fonts"],
   install: {
-    linux: { via: "cargo", crate: "starship" },
-    darwin: { via: "cargo", crate: "starship" },
+    unix: { via: "cargo", crate: "starship" },
     win32: { via: "winget", id: "Starship.Starship" },
   },
   // The config used to be written by setup; now it is a link to the file in git

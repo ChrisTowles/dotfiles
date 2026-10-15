@@ -1,5 +1,6 @@
-import { defineModule } from "../../lib/module";
 import { out } from "../../lib/helpers";
+import { install } from "../../lib/install";
+import { defineModule } from "../../lib/module";
 
 // Discord (Linux only — intentionally not installed on macOS or Windows)
 export default defineModule({
@@ -13,8 +14,6 @@ export default defineModule({
     const current = await out(ctx, ["dpkg-query", "-W", "-f=${Version}", "discord"]);
     if (current === latest) return;
     ctx.log(current ? `updating Discord ${current} → ${latest}` : `installing Discord ${latest}`);
-    await ctx.exec(["curl", "-fL", url, "-o", "/tmp/discord.deb"]);
-    await ctx.sudo(["apt", "install", "-y", "/tmp/discord.deb"]);
-    await ctx.exec(["rm", "-f", "/tmp/discord.deb"]);
+    if ((await install(ctx, { via: "deb", pkg: "discord", url })) !== 0) throw new Error("Discord install failed");
   },
 });

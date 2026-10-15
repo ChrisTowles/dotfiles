@@ -22,6 +22,11 @@ describe("pickOS", () => {
     expect(pickOS({ linux: "a", darwin: "b" }, "darwin")).toBe("b");
     expect(pickOS({ linux: "a" }, "win32")).toBeUndefined();
   });
+  test("unix covers linux and darwin, and an OS key wins over it", () => {
+    expect(pickOS({ unix: "u", win32: "w" }, "darwin")).toBe("u");
+    expect(pickOS({ unix: "u", linux: "l" }, "linux")).toBe("l");
+    expect(pickOS({ unix: "u" }, "win32")).toBeUndefined();
+  });
   test("a plain value applies everywhere", () => {
     expect(pickOS("x", "win32")).toBe("x");
   });

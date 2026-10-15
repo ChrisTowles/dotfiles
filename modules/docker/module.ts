@@ -1,10 +1,9 @@
-import { appInstalled, out } from "../../lib/helpers";
+import { out } from "../../lib/helpers";
 import { defineModule } from "../../lib/module";
 
 // Docker Engine (Linux) / Docker Desktop (macOS, Windows) — https://docs.docker.com/engine/install/
 export default defineModule({
   id: "docker",
-  installed: appInstalled({ bins: ["docker"], mac: "Docker", winget: "Docker.DockerDesktop" }),
   install: {
     linux: {
       via: "apt",
@@ -16,7 +15,7 @@ export default defineModule({
         line: "deb [arch={arch} signed-by={keyring}] https://download.docker.com/linux/ubuntu {codename} stable",
       },
     },
-    darwin: { via: "brew", pkg: "docker", cask: true },
+    darwin: { via: "brew", pkg: "docker", cask: true, app: "Docker" },
     win32: { via: "winget", id: "Docker.DockerDesktop" },
   },
   completions: [

@@ -1,6 +1,6 @@
 import { homedir } from "node:os";
 import { join, resolve as resolvePath } from "node:path";
-import type { OS, PerOS } from "./types";
+import { ALL_OS, type OS, type PerOS } from "./types";
 
 export const REPO = resolvePath(import.meta.dir, "..");
 export const HOME = homedir();
@@ -49,8 +49,14 @@ export function expandValue(v: string): string {
   return v.replaceAll("{repo}", REPO);
 }
 
+const PER_OS_KEYS = [...ALL_OS, "unix"];
+
+function isPerOS<T>(v: T | PerOS<T>): v is PerOS<T> {
+  return v !== null && typeof v === "object" && !Array.isArray(v) && PER_OS_KEYS.some((k) => k in (v as object));
+}
+
+/** The value for `os`: a per-OS map's own key, then `unix` for linux/darwin. A plain value applies everywhere. */
 export function pickOS<T>(v: T | PerOS<T>, os: OS): T | undefined {
-  if (v !== null && typeof v === "object" && !Array.isArray(v) && ["linux", "darwin", "win32"].some((k) => k in (v as object)))
-    return (v as PerOS<T>)[os];
-  return v as T;
+  if (!isPerOS(v)) return v as T;
+  return v[os] ?? (os === "win32" ? undefined : v.unix);
 }

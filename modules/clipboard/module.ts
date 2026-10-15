@@ -1,5 +1,4 @@
 import { join } from "node:path";
-import { appInstalled } from "../../lib/helpers";
 import { defineModule } from "../../lib/module";
 
 const DESKTOP = (name: string, comment: string, exec: string) => `[Desktop Entry]
@@ -17,13 +16,13 @@ X-GNOME-Autostart-enabled=true
 export default defineModule({
   id: "clipboard",
   needs: ["gh"],
-  installed: appInstalled({ bins: ["cliphist"], mac: "Maccy", winget: "Microsoft.PowerToys" }),
+  bin: "cliphist",
   install: {
     linux: [
       { via: "apt", pkg: ["wl-clipboard", "wofi", "xdg-utils", "wtype", "gawk", "imagemagick", "ripgrep"] },
       { via: "gh-release", repo: "sentriz/cliphist", asset: "*-linux-amd64", bins: ["cliphist"] },
     ],
-    darwin: { via: "brew", pkg: "maccy", cask: true },
+    darwin: { via: "brew", pkg: "maccy", cask: true, app: "Maccy" },
     win32: { via: "winget", id: "Microsoft.PowerToys" },
   },
   // PowerToys rewrites this file when you edit remaps in its UI; `ttd doctor` flags a replaced link

@@ -27,16 +27,25 @@ if (Get-Module -ListAvailable PSReadLine) {
 # Regenerate the init when a file that feeds the emitter is newer than it.
 # Linked config files are not in the scan. A normal start runs no Bun.
 $ttdInit = Join-Path $HOME '.cache/dotfiles/init.ps1'
-$ttdNewest = Get-ChildItem -Recurse -File -Include *.ts, *.ps1 -Path (Join-Path $env:DOTFILES_DIR 'modules'), (Join-Path $env:DOTFILES_DIR 'lib') -ErrorAction SilentlyContinue |
-  Sort-Object LastWriteTime -Descending | Select-Object -First 1
-if ((-not (Test-Path $ttdInit)) -or ($ttdNewest -and $ttdNewest.LastWriteTime -gt (Get-Item $ttdInit).LastWriteTime)) {
+$ttdStale = -not (Test-Path $ttdInit)
+if (-not $ttdStale) {
+  # .NET enumeration that stops at the first newer file: far cheaper than Get-ChildItem -Recurse | Sort-Object
+  $initTime = [IO.File]::GetLastWriteTimeUtc($ttdInit)
+  foreach ($dir in 'modules', 'lib') {
+    foreach ($f in [IO.Directory]::EnumerateFiles((Join-Path $env:DOTFILES_DIR $dir), '*', [IO.SearchOption]::AllDirectories)) {
+      if ($f -match '\.(ts|ps1)$' -and [IO.File]::GetLastWriteTimeUtc($f) -gt $initTime) { $ttdStale = $true; break }
+    }
+    if ($ttdStale) { break }
+  }
+}
+if ($ttdStale) {
   if (Get-Command ttd -CommandType Application -ErrorAction SilentlyContinue) {
     ttd gen pwsh | Out-Null
     if ($LASTEXITCODE -ne 0) { Write-Warning 'ttd gen failed: using the old init' }
   }
 }
 if (Test-Path $ttdInit) { . $ttdInit }
-Remove-Variable ttdInit, ttdNewest, bunBin -ErrorAction SilentlyContinue
+Remove-Variable ttdInit, ttdStale, initTime, dir, f, bunBin -ErrorAction SilentlyContinue
 
 # Untracked per-machine overrides
 $localProfile = Join-Path $HOME '.pwsh_local.ps1'

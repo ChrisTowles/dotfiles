@@ -11,8 +11,7 @@ export default defineModule({
   needs: ["pnpm"],
   bin: "cf",
   install: {
-    linux: { via: "pnpm-global", pkg: "cf" },
-    darwin: { via: "pnpm-global", pkg: "cf" },
+    unix: { via: "pnpm-global", pkg: "cf" },
     win32: { via: "pnpm-global", pkg: "cf" },
   },
   aliases: {

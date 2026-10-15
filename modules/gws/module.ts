@@ -1,5 +1,6 @@
 import { existsSync } from "node:fs";
 import { join } from "node:path";
+import { withTmp } from "../../lib/helpers";
 import { defineModule } from "../../lib/module";
 
 // gws - Google Workspace CLI (https://github.com/googleworkspace/cli). Needs the
@@ -14,7 +15,11 @@ export default defineModule({
     if (!ctx.has("gcloud") && !existsSync(sdk)) {
       ctx.log("installing Google Cloud SDK");
       const url = "https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-linux-x86_64.tar.gz";
-      await ctx.exec(["sh", "-c", `curl -fsSL ${url} | tar -xz -C "${ctx.home}"`]);
+      const ok = await withTmp("ttd-gcloud-", async (tmp) => {
+        const file = join(tmp, "gcloud.tar.gz");
+        return (await ctx.exec(["curl", "-fsSL", url, "-o", file])) === 0 && (await ctx.exec(["tar", "-xzf", file, "-C", ctx.home])) === 0;
+      });
+      if (!ok) throw new Error("Google Cloud SDK download failed");
       await ctx.exec([join(sdk, "install.sh"), "--quiet", "--path-update=false", "--command-completion=false"]);
     }
     ctx.notice("Run 'gws auth setup' to configure Google Workspace CLI authentication");

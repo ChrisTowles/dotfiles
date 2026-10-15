@@ -5,8 +5,7 @@ import { defineModule } from "../../lib/module";
 export default defineModule({
   id: "bun",
   install: {
-    linux: { via: "script", url: "https://bun.sh/install", shell: "bash" },
-    darwin: { via: "script", url: "https://bun.sh/install", shell: "bash" },
+    unix: { via: "script", url: "https://bun.sh/install", shell: "bash" },
     win32: { via: "script", url: "https://bun.sh/install.ps1" },
   },
   env: { BUN_INSTALL: "~/.bun" },

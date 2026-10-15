@@ -1,10 +1,9 @@
-import { appInstalled } from "../../lib/helpers";
 import { defineModule } from "../../lib/module";
 
 // Google Chrome (https://www.google.com/chrome/)
 export default defineModule({
   id: "chrome",
-  installed: appInstalled({ bins: ["google-chrome", "google-chrome-stable"], mac: "Google Chrome", winget: "Google.Chrome" }),
+  bin: "google-chrome-stable",
   install: {
     linux: {
       via: "apt",
@@ -18,7 +17,7 @@ export default defineModule({
       },
     },
     darwin: [
-      { via: "brew", pkg: "google-chrome", cask: true },
+      { via: "brew", pkg: "google-chrome", cask: true, app: "Google Chrome" },
       { via: "brew", pkg: "defaultbrowser" },
     ],
     win32: { via: "winget", id: "Google.Chrome" },

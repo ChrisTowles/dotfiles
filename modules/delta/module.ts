@@ -5,8 +5,7 @@ export default defineModule({
   id: "delta",
   needs: ["rust", "git"],
   install: {
-    linux: { via: "cargo", crate: "git-delta" },
-    darwin: { via: "cargo", crate: "git-delta" },
+    unix: { via: "cargo", crate: "git-delta" },
     win32: { via: "winget", id: "dandavison.delta" },
   },
   // diff two files with syntax highlighting: dif file1 file2

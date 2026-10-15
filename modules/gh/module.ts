@@ -38,6 +38,13 @@ const GH_ALIASES: [string, string][] = [
   ["pr-ls", 'PAGER="less -FX" gh pr list'],
 ];
 
+async function setGhAliases(ctx: Ctx): Promise<void> {
+  for (const [name, cmd] of GH_ALIASES) {
+    await ctx.read(["gh", "alias", "delete", name]);
+    await ctx.exec(["gh", "alias", "set", name, "--shell", cmd]);
+  }
+}
+
 // GitHub CLI
 export default defineModule({
   id: "gh",
@@ -95,19 +102,11 @@ export default defineModule({
     "gh-git-config": { desc: "Set git user.name/user.email from your GitHub profile", run: ghGitConfig },
     "gh-alias-setup": {
       desc: "Reset the gh CLI aliases (m, mv, iv, pr-ls)",
-      async run(ctx) {
-        for (const [name, cmd] of GH_ALIASES) {
-          await ctx.read(["gh", "alias", "delete", name]);
-          await ctx.exec(["gh", "alias", "set", name, "--shell", cmd]);
-        }
-      },
+      run: setGhAliases,
     },
   },
   async setup(ctx) {
-    for (const [name, cmd] of GH_ALIASES) {
-      await ctx.read(["gh", "alias", "delete", name]);
-      await ctx.exec(["gh", "alias", "set", name, "--shell", cmd]);
-    }
+    await setGhAliases(ctx);
     if ((await ctx.read(["gh", "auth", "status"])).code !== 0) {
       ctx.notice("Run 'gh auth login' then 'gh-git-config' to set git user");
     } else if (!(await out(ctx, ["git", "config", "--global", "user.name"])) || !(await out(ctx, ["git", "config", "--global", "user.email"]))) {

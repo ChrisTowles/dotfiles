@@ -12,8 +12,7 @@ const MCPS: Record<string, string[]> = {
 export default defineModule({
   id: "claude",
   install: {
-    linux: { via: "script", url: "https://claude.ai/install.sh", shell: "bash" },
-    darwin: { via: "script", url: "https://claude.ai/install.sh", shell: "bash" },
+    unix: { via: "script", url: "https://claude.ai/install.sh", shell: "bash" },
     win32: { via: "script", url: "https://claude.ai/install.ps1" },
   },
   path: ["~/.local/bin"],
@@ -21,7 +20,7 @@ export default defineModule({
   // https://code.claude.com/docs/en/fullscreen
   env: { CLAUDE_CODE_NO_FLICKER: "1", CLAUDE_CODE_NEW_INIT: "1" },
   // claude has no built-in generator; parsed from --help each setup so they track CLI changes
-  completions: [{ shell: "zsh", argv: ["ttd-gen-completions", "claude"], name: "_claude" }],
+  completions: [{ shell: "zsh", help: "claude", name: "_claude" }],
   aliases: {
     // c/ca: Opus at high effort. cr: resume, no model/effort override (keeps the resumed session's own settings).
     // co/cor: Opus, explicit (cor overrides model/effort on resume, unlike cr).

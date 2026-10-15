@@ -6,8 +6,7 @@ export default defineModule({
   id: "bat",
   needs: ["rust"],
   install: {
-    linux: { via: "cargo", crate: "bat" },
-    darwin: { via: "cargo", crate: "bat" },
+    unix: { via: "cargo", crate: "bat" },
     win32: { via: "winget", id: "sharkdp.bat" },
   },
   // fzf Ctrl+T preview

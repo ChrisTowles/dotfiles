@@ -33,7 +33,7 @@ export default defineModule({
         line: "deb [arch={arch} signed-by={keyring}] https://packages.microsoft.com/repos/code stable main",
       },
     },
-    darwin: { via: "brew", pkg: "visual-studio-code-insiders", cask: true },
+    darwin: { via: "brew", pkg: "visual-studio-code-insiders", cask: true, app: "Visual Studio Code - Insiders" },
     win32: { via: "winget", id: "Microsoft.VisualStudioCode.Insiders" },
   },
   // --wait makes VS Code block until the tab is closed, which tools that use

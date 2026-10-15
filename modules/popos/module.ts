@@ -1,6 +1,7 @@
 import { existsSync, mkdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
-import { confirm, sudoCopyIfChanged } from "../../lib/helpers";
+import { confirm, gitCloneOrPull, sudoCopyIfChanged, withTmp } from "../../lib/helpers";
+import { aptInstall } from "../../lib/install";
 import { defineModule } from "../../lib/module";
 
 // COSMIC custom shortcuts:
@@ -51,14 +52,14 @@ export default defineModule({
 
     // keyd: system-level key remapping. Swaps left Ctrl ↔ left Super so macOS muscle memory transfers (keyd.conf).
     if (!ctx.has("keyd")) {
-      if ((await ctx.sudo(["apt-get", "install", "-y", "-qq", "keyd"])) !== 0) {
+      if ((await aptInstall(ctx, ["keyd"])) !== 0) {
         ctx.log("keyd not in apt, building from source");
-        const tmp = "/tmp/keyd-build";
-        await ctx.exec(["rm", "-rf", tmp]);
-        await ctx.exec(["git", "clone", "-q", "https://github.com/rvaiya/keyd", tmp]);
-        await ctx.exec(["make", "-C", tmp]);
-        await ctx.sudo(["make", "-C", tmp, "install"]);
-        await ctx.exec(["rm", "-rf", tmp]);
+        await withTmp("ttd-keyd-", async (tmp) => {
+          const src = join(tmp, "keyd");
+          await gitCloneOrPull(ctx, "https://github.com/rvaiya/keyd", src);
+          await ctx.exec(["make", "-C", src]);
+          await ctx.sudo(["make", "-C", src, "install"]);
+        });
       }
       await ctx.sudo(["systemctl", "enable", "--now", "keyd"]);
     }
