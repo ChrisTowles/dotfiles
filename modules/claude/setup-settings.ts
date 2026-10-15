@@ -101,7 +101,6 @@ const marketplaces: [string, string][] = [
 type Uninstall = Exclude<Install, { kind: "npm_skills_plugin" }>;
 
 const installs: Install[] = [
-  { kind: "github_marketplace", name: "typescript-lsp",       marketplace: "claude-plugins-official" },
   { kind: "github_marketplace", name: "claude-md-management", marketplace: "claude-plugins-official" },
   { kind: "github_marketplace", name: "frontend-design",      marketplace: "claude-plugins-official" },
   { kind: "github_marketplace", name: "plugin-dev",           marketplace: "claude-plugins-official" },
@@ -109,7 +108,6 @@ const installs: Install[] = [
   { kind: "github_marketplace", name: "tt",                   marketplace: "towles-tool" },
   { kind: "github_marketplace", name: "towles-tool-app",      marketplace: "towles-tool" },
   { kind: "github_marketplace", name: "document-skills",      marketplace: "anthropic-agent-skills" },
-  { kind: "github_marketplace", name: "code-simplifier",      marketplace: "claude-plugins-official" },
   { kind: "github_marketplace", name: "data",                 marketplace: "knowledge-work-plugins" },
   { kind: "github_marketplace", name: "html-plan",            marketplace: "claude-community" },
   // Just the one skill, not the whole mattpocock/skills bundle (~40 skills, several
@@ -138,6 +136,10 @@ const uninstalls: Uninstall[] = [
   { kind: "github_marketplace", name: "plannotator",                    marketplace: "plannotator" },
   { kind: "github_marketplace", name: "humanizer",                      marketplace: "humanizer" },
   { kind: "github_marketplace", name: "typesafe",                       marketplace: "typesafe-ai" },
+  // No value: typescript-language-server is not installed, so the LSP never started.
+  { kind: "github_marketplace", name: "typescript-lsp",                 marketplace: "claude-plugins-official" },
+  // Superseded by the built-in /simplify.
+  { kind: "github_marketplace", name: "code-simplifier",                marketplace: "claude-plugins-official" },
 ];
 
 // Marketplaces to remove. Move entries here from `marketplaces` to uninstall on next setup.
