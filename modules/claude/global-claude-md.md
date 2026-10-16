@@ -12,3 +12,7 @@ Repos live under `~/code/` in three directories: `p/` (personal), `w/` (work), `
 - `~/code/p/blog` — Personal blog
 - `~/code/p/towles-tool` — Personal tools and claude code plugin, cli named `tt`
 
+## Artifacts
+
+- Every published page themes its own background. Set `body { background: <token>; color: <token> }` from the page's tokens, and redefine those tokens, with `color-scheme: dark`, under `@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { … } }` and again under `:root[data-theme="dark"]`. A page that themes only `html`, or only its components, shows a white body behind dark cards in dark mode.
+- For an `/html-plan` page, add this after the runtime CSS: `body { background: var(--paper); color: var(--ink); }`, and `color-scheme: dark` in both dark blocks.
