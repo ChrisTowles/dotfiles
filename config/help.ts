@@ -100,6 +100,8 @@ console.log(cmd("cf", "claude ... --model fable --effort medium"));
 console.log(cmd("cfa", "claude ... --model fable --effort xhigh (\"architect\")"));
 console.log(cmd("cr", "--resume, keeping the session's own model/effort"));
 console.log(cmd("cor/csr/cfr/cfar", "--resume, overriding model/effort"));
+console.log(cmd("(Linux, repo root)", "adds --remote-control"));
+console.log(cmd("ca", "claude agents, scoped to this repo (--cwd <main checkout>; pass --cwd to override)"));
 console.log(cmd("cprompts", "Browse skills/prompts baked into the claude binary (fzf)"));
 console.log();
 

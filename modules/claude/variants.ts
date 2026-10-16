@@ -12,6 +12,45 @@ export const VARIANTS: Record<string, { desc: string; flags: string[] }> = {
   resume: { desc: "resume, keeping the session's model", flags: [...base, "--resume"] },
 };
 
+type GitPaths = { top: string; gitDir: string; commonDir: string };
+
+function gitPaths(cwd: string): GitPaths | null {
+  const r = Bun.spawnSync(
+    ["git", "rev-parse", "--path-format=absolute", "--show-toplevel", "--git-dir", "--git-common-dir"],
+    { cwd, stdout: "pipe", stderr: "ignore" },
+  );
+  if (r.exitCode !== 0) return null;
+  const [top, gitDir, commonDir] = r.stdout.toString().trim().split("\n");
+  return { top, gitDir, commonDir };
+}
+
+/** True when cwd is the top of a repo's main checkout (not a linked worktree, not a subdir). */
+export function inRootSlot(cwd = process.cwd()): boolean {
+  const g = gitPaths(cwd);
+  return !!g && g.top === cwd && g.gitDir === g.commonDir;
+}
+
+/**
+ * The folder `claude agents` is scoped to: the repo's main checkout, from any
+ * of its worktrees (claude puts them under <repo>/.claude/worktrees); outside
+ * a repo, cwd.
+ */
+export function agentsScope(cwd = process.cwd()): string {
+  const g = gitPaths(cwd);
+  return g?.commonDir.endsWith("/.git") ? g.commonDir.slice(0, -"/.git".length) : cwd;
+}
+
+/** `agents` → `agents --cwd <scope>`, unless a --cwd is already given. */
+export function scopeAgents(args: string[], scope: string): string[] {
+  if (args[0] !== "agents" || args.some((a) => /^--cwd(=|$)/.test(a))) return args;
+  return ["agents", "--cwd", scope, ...args.slice(1)];
+}
+
+/** Linux, from a repo's root slot: enable Remote Control. Subcommands (`agents`, `mcp`, …) take no flags. */
+export function rootSlotFlags(args: string[], rootSlot: boolean): string[] {
+  return rootSlot && !(args[0] && !args[0].startsWith("-")) ? ["--remote-control"] : [];
+}
+
 /**
  * Run claude in the foreground. Claude Code leaves theme-change reporting
  * (DECSET 2031) on when it exits, and the terminal's queued `ESC[?997;1n`
@@ -25,7 +64,9 @@ export async function runClaude(variant: string, args: string[]): Promise<number
   }
   // Ctrl+C belongs to claude; this process must outlive it to restore the terminal.
   process.on("SIGINT", () => {});
-  const p = Bun.spawn(["claude", ...v.flags, ...args], { stdio: ["inherit", "inherit", "inherit"] });
+  const extra = process.platform === "linux" ? rootSlotFlags(args, inRootSlot()) : [];
+  const argv = args[0] === "agents" ? scopeAgents(args, agentsScope()) : args;
+  const p = Bun.spawn(["claude", ...v.flags, ...extra, ...argv], { stdio: ["inherit", "inherit", "inherit"] });
   const code = await p.exited;
   process.stdout.write("\x1b[?2031l");
   if (process.stdin.isTTY) {

@@ -57,6 +57,8 @@ ga    → git add .
 gp    → git push
 gs    → git status
 c     → ttd claude opus (claude --permission-mode auto --model opus --effort high, --chrome on Linux)
+        Linux, run from a repo's main checkout root: also --remote-control
+ca    → ttd claude opus agents, scoped with --cwd to the repo's main checkout (covers its .claude/worktrees)
 co/cor → same as c, explicit Opus name (cor resumes, overriding model/effort unlike cr)
 cs/csr → ttd claude sonnet (csr resumes, overriding model/effort)
 cf/cfa → ttd claude fable / architect (--model fable --effort medium/xhigh)
